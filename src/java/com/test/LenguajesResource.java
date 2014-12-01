@@ -12,10 +12,8 @@ import java.util.List;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.LenguajeMapper;
 import modelo.Lenguaje;
+import modelo.Lenguajes;
 
 /**
  * REST Web Service
@@ -34,7 +33,7 @@ public class LenguajesResource {
 
     @Context
     private UriInfo context;
-    private LenguajeMapper usuarioMapper;
+    private LenguajeMapper lenguajeMapper;
 
     /**
      * Creates a new instance of LenguajesResource
@@ -56,17 +55,15 @@ public class LenguajesResource {
         cpds.setBreakAfterAcquireFailure(true);
         dt = cpds;
 
-        usuarioMapper = new LenguajeMapper(dt);
+        lenguajeMapper = new LenguajeMapper(dt);
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Lenguaje> getLenguajes() {
+    public Lenguajes getLenguajes() {
+        List<Lenguaje> lenguajes = lenguajeMapper.findAll();
         
-        List<Lenguaje> lenguajes = usuarioMapper.findAll();
-        System.out.println("numero lenguajes: " +lenguajes.size()+", lenguaje 1 (ej): "+lenguajes.get(0).getId()+lenguajes.get(0).getNombre());
-        
-        return lenguajes;
+        return new Lenguajes(lenguajes);
     }
     
     @POST
@@ -75,6 +72,5 @@ public class LenguajesResource {
     public String newLenguaje(@FormParam("json") String Json) throws IOException {
         return "error";
     }
-    
-    
+
 }
