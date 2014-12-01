@@ -5,7 +5,11 @@
  */
 package com.test;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.util.List;
+import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -17,6 +21,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.LenguajeMapper;
+import modelo.Lenguaje;
 
 /**
  * REST Web Service
@@ -28,18 +34,39 @@ public class LenguajesResource {
 
     @Context
     private UriInfo context;
+    private LenguajeMapper usuarioMapper;
 
     /**
      * Creates a new instance of LenguajesResource
      */
     public LenguajesResource() {
+        DataSource dt = null;
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        try {
+                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
+        } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+        cpds.setJdbcUrl("jdbc:mysql://localhost/Duocode");
+        cpds.setUser("root");
+        cpds.setPassword("");
+        cpds.setAcquireRetryAttempts(1);
+        cpds.setAcquireRetryDelay(1);
+        cpds.setBreakAfterAcquireFailure(true);
+        dt = cpds;
+
+        usuarioMapper = new LenguajeMapper(dt);
     }
     
     @GET
-    @Produces("text/html")
-    public String getLenguajes() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Lenguaje> getLenguajes() {
         
-        return "Devuelve lenguajes";
+        List<Lenguaje> lenguajes = usuarioMapper.findAll();
+        System.out.println("numero lenguajes: " +lenguajes.size()+", lenguaje 1 (ej): "+lenguajes.get(0).getId()+lenguajes.get(0).getNombre());
+        
+        return lenguajes;
     }
     
     @POST

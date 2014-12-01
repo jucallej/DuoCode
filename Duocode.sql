@@ -123,6 +123,7 @@ CREATE TABLE IF NOT EXISTS `leccion` (
 
 DROP TABLE IF EXISTS `lenguaje`;
 CREATE TABLE IF NOT EXISTS `lenguaje` (
+`ID` int(20) unsigned NOT NULL,
   `nombre` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -210,7 +211,7 @@ ALTER TABLE `leccion`
 -- Indices de la tabla `lenguaje`
 --
 ALTER TABLE `lenguaje`
- ADD PRIMARY KEY (`nombre`);
+ ADD PRIMARY KEY (`ID`);
 
 --
 -- Indices de la tabla `tema`
@@ -268,6 +269,9 @@ MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `tema`
 --
 ALTER TABLE `tema`
+MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `lenguaje`
 MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `usuario`
