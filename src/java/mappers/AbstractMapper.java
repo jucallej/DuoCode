@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -261,9 +262,14 @@ public abstract class AbstractMapper<T,K> {
 		}
 	}
 	
-	public void insert(T object){
+        /**
+         * @param object a insertar
+         * @return -1 si no tiene id autoincrement, y un int con el id, si tiene id Autoincrement
+         */
+	public int insert(T object){
 		String[] columNames = getColumnNames();
 		String[] assigments = new String[columNames.length];
+                int autoincrement = -1;
 		
 		for (int i=0; i<assigments.length; i++){
 			assigments[i]="?";
@@ -275,9 +281,10 @@ public abstract class AbstractMapper<T,K> {
 		
 		Connection con = null;
 		PreparedStatement stm = null;
+                ResultSet rs = null;
 		try {
 			con = ds.getConnection();
-			stm = con.prepareStatement(sql);
+			stm = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			Object[] objectFields = serializeObject(object);
 			int j=1;
 			for (int i=0; i<objectFields.length;i++){
@@ -285,6 +292,11 @@ public abstract class AbstractMapper<T,K> {
 				j++;
 			}
 			stm.execute();
+                        rs = stm.getGeneratedKeys();
+
+                        if (rs.next()) {
+                            autoincrement = rs.getInt(1);
+                        }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -296,7 +308,8 @@ public abstract class AbstractMapper<T,K> {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {}
-		}		
+		}
+                return autoincrement;
 	}
 	
 	public void delete(T object){

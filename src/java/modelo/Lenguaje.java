@@ -5,8 +5,6 @@
  */
 package modelo;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -29,6 +27,11 @@ public class Lenguaje {
         this.id = id;
         this.nombre = nombre;
     }
+    
+    public Lenguaje(String nombre) {
+        this.id = 0;
+        this.nombre = nombre;
+    }
 
     public int getId() {
         return id;
@@ -37,4 +40,8 @@ public class Lenguaje {
     public String getNombre() {
         return nombre;
     }   
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

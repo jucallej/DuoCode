@@ -7,19 +7,18 @@ package com.test;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.util.List;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.LenguajeMapper;
+import modelo.ErrorYID;
 import modelo.Lenguaje;
 import modelo.Lenguajes;
 
@@ -62,15 +61,20 @@ public class LenguajesResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Lenguajes getLenguajes() {
         List<Lenguaje> lenguajes = lenguajeMapper.findAll();
-        
         return new Lenguajes(lenguajes);
     }
     
+    /**
+     * Para probar por ej (app de chrome): https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo
+     * Poner en POST en Payload Raw {"nombre": "Java"} y lo de Set "Content-Type" a json
+     */
     @POST
-    @Produces("text/html")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String newLenguaje(@FormParam("json") String Json) throws IOException {
-        return "error";
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ErrorYID newLenguaje(Lenguaje lenguaje){
+        lenguaje.setId(0);
+        //el insert ya se encarga de poner  actulizar el id
+        lenguajeMapper.insert(lenguaje);
+        return new ErrorYID(lenguaje.getId());
     }
-
 }

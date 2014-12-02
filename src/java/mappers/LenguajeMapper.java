@@ -54,5 +54,14 @@ public class LenguajeMapper extends AbstractMapper <Lenguaje, Integer>{
     protected Integer getKey(Lenguaje object) {
         return object.getId();
     }
+
+    @Override
+    public int insert(Lenguaje object) {
+        int autoincrement = super.insert(object);
+        object.setId(autoincrement);
+        return autoincrement;
+    }
+    
+    
     
 }
