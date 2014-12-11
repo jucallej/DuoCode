@@ -5,7 +5,10 @@
  */
 package com.test;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
+import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -18,6 +21,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.EjercicioMapper;
+import modelo.ErrorYID;
+import modelo.IDUsuario;
+import utilidades.Comprobadores;
+import utilidades.DatosFijos;
 
 /**
  * REST Web Service
@@ -29,25 +37,49 @@ public class EjerciciosResource {
 
     @Context
     private UriInfo context;
+    private EjercicioMapper ejercicioMapper;
 
     /**
      * Creates a new instance of EjerciciosResource
      */
     public EjerciciosResource() {
+        DataSource dt = null;
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        try {
+                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
+        } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
+        cpds.setUser(DatosFijos.USER);
+        cpds.setPassword(DatosFijos.PASS);
+        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
+        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
+        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
+        dt = cpds;
+
+        ejercicioMapper = new EjercicioMapper(dt);
     }
     
     @GET
-    @Produces("text/html")
+    @Produces(MediaType.APPLICATION_JSON)
     public String getEjercicios() {
-        
         return "Devuelve ejercicios";
     }
     
+    /**
+     * Para probar por ej (app de chrome): https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo
+     * Poner en POST en Payload Raw {"idUsuario": "3"} sin las Comillas y lo de Set "Content-Type" a json
+     */
     @POST
-    @Produces("text/html")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String newEjercicio(@FormParam("json") String Json) throws IOException {
-        return "error";
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ErrorYID newEjercicio(IDUsuario nombre){
+        int posibleError = -1;
+        if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario()))
+            posibleError = ejercicioMapper.insert(0);
+        return new ErrorYID(posibleError);
     }
     
     

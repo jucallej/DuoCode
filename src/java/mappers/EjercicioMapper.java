@@ -14,44 +14,44 @@ import modelo.Lenguaje;
  *
  * @author Julián
  */
-public class LenguajeMapper extends AbstractMapper <String, String>{
+public class EjercicioMapper extends AbstractMapper <Integer, Integer>{
 
-    public LenguajeMapper(DataSource ds) {
+    public EjercicioMapper(DataSource ds) {
         super(ds);
     }
 
     @Override
     protected String getTableName() {
-        return "lenguaje";
+        return "ejercicio";
     }
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"nombre"};
+        return new String[] {"ID"};
     }
 
     @Override
-    protected Object[] serializeObject(String object) {
+    protected Object[] serializeObject(Integer object) {
         return new Object[]{object};
     }
 
     @Override
     protected String[] getKeyColumnNames() {
-        return new String[] {"nombre"};
+        return new String[] {"ID"};
     }
 
     @Override
-    protected Object[] serializeKey(String key) {
+    protected Object[] serializeKey(Integer key) {
         return new Object[]{key};
     }
 
     @Override
-    protected String buildObject(ResultSet rs) throws SQLException {
-        return rs.getString("nombre");
+    protected Integer buildObject(ResultSet rs) throws SQLException {
+        return rs.getInt("ID");
     }
 
     @Override
-    protected String getKey(String object) {
+    protected Integer getKey(Integer object) {
         return object;
     }
 }

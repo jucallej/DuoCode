@@ -5,7 +5,9 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,8 +22,11 @@ public class Lenguajes {
 
     public Lenguajes() {
     }
-    
-    public Lenguajes(List<Lenguaje> lenguajes) {
-        this.lenguajes = lenguajes;
+
+    public Lenguajes(List<String> lenguajes) {
+        this.lenguajes = new ArrayList<>();
+        for (String lenguaje: lenguajes){
+            this.lenguajes.add(new Lenguaje(lenguaje));
+        }
     }
 }

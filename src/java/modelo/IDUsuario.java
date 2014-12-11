@@ -13,18 +13,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Julián
  */
 @XmlRootElement
-public class Lenguaje {  
-    @XmlElement(name="nombre")
-    private String nombre;
+public class IDUsuario {
+    @XmlElement(name="idUsuario")
+    private int idUsuario;
 
-     public Lenguaje() {
-    }
-     
-    public Lenguaje(String nombre) {
-        this.nombre = nombre;
+    public IDUsuario() {
     }
 
-    public String getNombre() {
-        return nombre;
+    public IDUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+    
+    public int getIdUsuario() {
+        return idUsuario;
     }
 }

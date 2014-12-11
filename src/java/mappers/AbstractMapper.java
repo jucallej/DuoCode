@@ -264,12 +264,12 @@ public abstract class AbstractMapper<T,K> {
 	
         /**
          * @param object a insertar
-         * @return -1 si no tiene id autoincrement, y un int con el id, si tiene id Autoincrement
+         * @return 0 si no tiene id autoincrement, y un int con el id, si tiene id Autoincrement y -1 en caso de error
          */
 	public int insert(T object){
 		String[] columNames = getColumnNames();
 		String[] assigments = new String[columNames.length];
-                int autoincrement = -1;
+                int autoincrement = 0;
 		
 		for (int i=0; i<assigments.length; i++){
 			assigments[i]="?";
@@ -300,6 +300,7 @@ public abstract class AbstractMapper<T,K> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+                        autoincrement = -1;
 		}
 		finally{
 			try {

@@ -18,9 +18,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.LenguajeMapper;
-import modelo.ErrorYID;
-import modelo.Lenguaje;
+import modelo.ErrorYNombreConfirmacion;
 import modelo.Lenguajes;
+import utilidades.DatosFijos;
 
 /**
  * REST Web Service
@@ -46,12 +46,12 @@ public class LenguajesResource {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
         }
-        cpds.setJdbcUrl("jdbc:mysql://localhost/Duocode");
-        cpds.setUser("root");
-        cpds.setPassword("");
-        cpds.setAcquireRetryAttempts(1);
-        cpds.setAcquireRetryDelay(1);
-        cpds.setBreakAfterAcquireFailure(true);
+        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
+        cpds.setUser(DatosFijos.USER);
+        cpds.setPassword(DatosFijos.PASS);
+        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
+        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
+        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
         dt = cpds;
 
         lenguajeMapper = new LenguajeMapper(dt);
@@ -60,21 +60,19 @@ public class LenguajesResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Lenguajes getLenguajes() {
-        List<Lenguaje> lenguajes = lenguajeMapper.findAll();
+        List<String> lenguajes = lenguajeMapper.findAll();
         return new Lenguajes(lenguajes);
     }
     
     /**
      * Para probar por ej (app de chrome): https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo
-     * Poner en POST en Payload Raw {"nombre": "Java"} y lo de Set "Content-Type" a json
+     * Poner en POST en Payload Raw "Java" sin las Comillas y lo de Set "Content-Type" a json
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newLenguaje(Lenguaje lenguaje){
-        lenguaje.setId(0);
-        //el insert ya se encarga de poner  actulizar el id
-        lenguajeMapper.insert(lenguaje);
-        return new ErrorYID(lenguaje.getId());
+    public ErrorYNombreConfirmacion newLenguaje(String lenguaje){
+        int posibleError = lenguajeMapper.insert(lenguaje);
+        return new ErrorYNombreConfirmacion(posibleError, lenguaje);
     }
 }
