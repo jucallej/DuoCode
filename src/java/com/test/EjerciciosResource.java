@@ -8,6 +8,7 @@ package com.test;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.util.List;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -22,6 +23,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.EjercicioMapper;
+import modelo.Ejercicios;
 import modelo.ErrorYID;
 import modelo.IDUsuario;
 import utilidades.Comprobadores;
@@ -62,10 +64,12 @@ public class EjerciciosResource {
         ejercicioMapper = new EjercicioMapper(dt);
     }
     
+    //Mas o menos, no es igual a los requisitos
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getEjercicios() {
-        return "Devuelve ejercicios";
+    public Ejercicios getEjercicios() {
+        List<Integer> ejercicios= ejercicioMapper.findAll();
+        return new Ejercicios(ejercicios);
     }
     
     /**
@@ -101,12 +105,24 @@ public class EjerciciosResource {
         return "{\"error\" : \"no\"}";
     }
     
+    /**
+     * Para probar por ej (app de chrome): https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo
+     * Poner en DELETE en Payload Raw {"idUsuario": "3"} sin las Comillas y lo de Set "Content-Type" a json
+     */
     @DELETE
     @Path("{idEjercicio}")
-    public String deleteEjercicio(@PathParam("idEjercicio") int id, @FormParam("idUser") String idUser){
-        return "{error:no}";
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Error deleteEjercicio(@PathParam("{idEjercicio}") int id, IDUsuario nombre){
+        System.out.println("aqui, id: "+id);
+        
+        String posibleError = "si";
+        if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario())){
+            this.ejercicioMapper.delete(id);
+             posibleError = "no";
+        }
+        System.out.println("aqui");
+        return new Error(posibleError);
     }
-    
 
-    
 }
