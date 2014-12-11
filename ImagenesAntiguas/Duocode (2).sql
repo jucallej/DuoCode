@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS `desbloqueadapor` (
 
 DROP TABLE IF EXISTS `ejercicio`;
 CREATE TABLE IF NOT EXISTS `ejercicio` (
-`ID` int(20) unsigned NOT NULL
+`ID` int(20) unsigned NOT NULL,
+  `idLeccion` int(20) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `enunciado`;
@@ -65,17 +66,10 @@ CREATE TABLE IF NOT EXISTS `favorito` (
 DROP TABLE IF EXISTS `leccion`;
 CREATE TABLE IF NOT EXISTS `leccion` (
 `ID` int(20) unsigned NOT NULL,
-  `orden` int(20) unsigned NOT NULL,
   `titulo` varchar(50) NOT NULL,
   `descripcion` text,
   `idTema` int(20) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-DROP TABLE IF EXISTS `leccionconstaejercicio`;
-CREATE TABLE IF NOT EXISTS `leccionconstaejercicio` (
-  `idLeccion` int(20) unsigned NOT NULL,
-  `idEjercicio` int(20) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `lenguaje`;
 CREATE TABLE IF NOT EXISTS `lenguaje` (
@@ -85,7 +79,6 @@ CREATE TABLE IF NOT EXISTS `lenguaje` (
 DROP TABLE IF EXISTS `tema`;
 CREATE TABLE IF NOT EXISTS `tema` (
 `ID` int(20) unsigned NOT NULL,
-  `orden` int(20) unsigned NOT NULL,
   `titulo` varchar(50) NOT NULL,
   `descripcion` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -113,7 +106,7 @@ ALTER TABLE `desbloqueadapor`
  ADD PRIMARY KEY (`idLeccion`,`desbloqueadaPor`), ADD KEY `desbloqueadaPor` (`desbloqueadaPor`);
 
 ALTER TABLE `ejercicio`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD KEY `idLeccion` (`idLeccion`);
 
 ALTER TABLE `enunciado`
  ADD PRIMARY KEY (`ID`), ADD KEY `idEjercicio` (`idEjercicio`), ADD KEY `lenguaje` (`lenguaje`);
@@ -126,9 +119,6 @@ ALTER TABLE `favorito`
 
 ALTER TABLE `leccion`
  ADD PRIMARY KEY (`ID`), ADD KEY `idTema` (`idTema`);
-
-ALTER TABLE `leccionconstaejercicio`
- ADD PRIMARY KEY (`idLeccion`,`idEjercicio`), ADD KEY `idEjercicio` (`idEjercicio`);
 
 ALTER TABLE `lenguaje`
  ADD PRIMARY KEY (`nombre`);
@@ -169,6 +159,9 @@ ALTER TABLE `desbloqueadapor`
 ADD CONSTRAINT `desbloqueadapor_ibfk_1` FOREIGN KEY (`idLeccion`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `desbloqueadapor_ibfk_2` FOREIGN KEY (`desbloqueadaPor`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE `ejercicio`
+ADD CONSTRAINT `ejercicio_ibfk_1` FOREIGN KEY (`idLeccion`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE `enunciado`
 ADD CONSTRAINT `enunciado_ibfk_1` FOREIGN KEY (`idEjercicio`) REFERENCES `ejercicio` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `enunciado_ibfk_2` FOREIGN KEY (`lenguaje`) REFERENCES `lenguaje` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -187,10 +180,6 @@ ADD CONSTRAINT `favorito_ibfk_4` FOREIGN KEY (`lenguajeDestino`) REFERENCES `len
 
 ALTER TABLE `leccion`
 ADD CONSTRAINT `leccion_ibfk_1` FOREIGN KEY (`idTema`) REFERENCES `tema` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `leccionconstaejercicio`
-ADD CONSTRAINT `leccionconstaejercicio_ibfk_1` FOREIGN KEY (`idLeccion`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `leccionconstaejercicio_ibfk_2` FOREIGN KEY (`idEjercicio`) REFERENCES `ejercicio` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `usuariovotacandidato`
 ADD CONSTRAINT `usuariovotacandidato_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
