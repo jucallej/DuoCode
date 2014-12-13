@@ -5,7 +5,11 @@
  */
 package com.test;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.util.List;
+import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -19,6 +23,11 @@ import static javax.ws.rs.HttpMethod.POST;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.EjercicioMapper;
+import modelo.Tema;
+import mappers.TemaMapper;
+import modelo.Temas;
+import utilidades.DatosFijos;
 
 /**
  * REST Web Service
@@ -30,11 +39,30 @@ public class TemasResource {
 
     @Context
     private UriInfo context;
+    private TemaMapper temaMapper;
+
 
     /**
      * Creates a new instance of DuocodeResource
      */
     public TemasResource() {
+        DataSource dt = null;
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        try {
+                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
+        } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
+        cpds.setUser(DatosFijos.USER);
+        cpds.setPassword(DatosFijos.PASS);
+        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
+        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
+        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
+        dt = cpds;
+        
+        temaMapper = new TemaMapper(dt);
     }
 
     /**
@@ -45,10 +73,10 @@ public class TemasResource {
      * "localhost/duocode/rest/temas/idTema2"] }
      */
     @GET
-    @Produces("text/html")
-    public String getHtml() {
-        //TODO return proper representation object
-        return "Devuelve temas";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Temas getTemas() {
+        List<Tema> temas = temaMapper.findAll();
+        return new Temas(temas);
     }
 
     

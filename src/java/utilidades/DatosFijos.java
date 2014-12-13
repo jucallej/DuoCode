@@ -14,6 +14,7 @@ public class DatosFijos {
     public static final String USER = "root";
     public static final String PASS = "";
     public static final String RUTA_EJERCICIOS = "http://localhost:8080/DuoCode/rest/ejercicios";
+    public static final String RUTA_TEMAS = "http://localhost:8080/DuoCode/rest/temas/";
     
     public static final int AcquireRetryAttempts = 1;
     public static final int AcquireRetryDelay = 1;
