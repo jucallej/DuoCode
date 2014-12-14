@@ -16,17 +16,17 @@ import utilidades.DatosFijos;
  * @author Julián
  */
 @XmlRootElement
-public class Ejercicios {
+public class Enunciados {
     @XmlList
-    private List<Ruta> ejercicios;
+    private List<Ruta> enunciados;
 
-    public Ejercicios() {
+    public Enunciados() {
     }
 
-    public Ejercicios(List<Integer> ejercicios) {
-        this.ejercicios = new ArrayList<>();
-        for (Integer ejercicio: ejercicios){
-            this.ejercicios.add(new Ruta(DatosFijos.RUTA_EJERCICIOS+ejercicio));
+    public Enunciados(List<Enunciado> enunciados) {
+        this.enunciados = new ArrayList<>();
+        for (Enunciado enunciado: enunciados){
+            this.enunciados.add(new Ruta(DatosFijos.RUTA_ENUNCIADOS+enunciado.getIdEnunciado()));
         }
     }
 }

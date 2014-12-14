@@ -21,9 +21,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import mappers.EjercicioMapper;
+import mappers.EnunciadoMapper;
 import modelo.Ejercicios;
+import modelo.Enunciados;
 import modelo.ErrorYID;
 import modelo.IDUsuario;
 import utilidades.Comprobadores;
@@ -40,6 +43,7 @@ public class EjerciciosResource {
     @Context
     private UriInfo context;
     private EjercicioMapper ejercicioMapper;
+    private EnunciadoMapper enunciadoMapper;
 
     /**
      * Creates a new instance of EjerciciosResource
@@ -62,6 +66,7 @@ public class EjerciciosResource {
         dt = cpds;
 
         ejercicioMapper = new EjercicioMapper(dt);
+        enunciadoMapper = new EnunciadoMapper(dt);
     }
     
     //Mas o menos, no es igual a los requisitos
@@ -92,19 +97,20 @@ public class EjerciciosResource {
      
     @GET
     @Path("{idEjercicio}")
-    @Produces("text/json")
-    public String getEjercicio(@PathParam("idEjercicio") String idEjercicio) {
-        //TODO return proper representation object
-        return "Devuelve Ejercicio";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Enunciados getEjercicio(@PathParam("idEjercicio") int idEjercicio) {
+        return new Enunciados(enunciadoMapper.getEnunciadosDeUnEjercicio(idEjercicio));
     }
     
+    //En principio no hay put
+    /**
     @PUT
     @Path("{idEjercicio}")
     @Consumes("text/json")
     public String putEjercicio(@PathParam("json") String content) {
         return "{\"error\" : \"no\"}";
     }
-    
+    **/
     /**
      * Para probar por ej (app de chrome): https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo
      * Poner en DELETE en Payload Raw {"idUsuario": "3"} sin las Comillas y lo de Set "Content-Type" a json
@@ -113,16 +119,18 @@ public class EjerciciosResource {
     @Path("{idEjercicio}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Error deleteEjercicio(@PathParam("{idEjercicio}") int id, IDUsuario nombre){
-        System.out.println("aqui, id: "+id);
-        
+    public Error deleteEjercicio(@PathParam("idEjercicio") int idEjercicio){//, IDUsuario nombre){
         String posibleError = "si";
-        if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario())){
-            this.ejercicioMapper.delete(id);
-             posibleError = "no";
-        }
-        System.out.println("aqui");
+
+        //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario())){
+            if(this.ejercicioMapper.delete(idEjercicio))
+                posibleError = "no";
+
+        System.out.println(posibleError);
         return new Error(posibleError);
     }
 
+    //Lo borra, pero no devuelve bien si lo ha borrado o no, y no logro coger a la vez lo de IDUsuario y el pathparam
+    //Es posible que el fallo está en Error, que lo intente usar en EnunciadosResource y no funcionaba, lo quite y funciono
+    //Volviendolo a pensar es posible que el fallo este al usuar objetos con un solo atributo (Error y IDUsuario solo tienen un atributo y ambos dan problemas)
 }

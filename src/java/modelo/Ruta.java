@@ -13,14 +13,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Julián
  */
 @XmlRootElement
-public class Ejercicio {  
+public class Ruta {  
     @XmlElement(name="ruta")
     private String ruta;
 
-     public Ejercicio() {
+     public Ruta() {
     }
      
-    public Ejercicio(String nombre) {
+    public Ruta(String nombre) {
         this.ruta = nombre;
     }
 

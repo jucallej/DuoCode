@@ -5,7 +5,11 @@
  */
 package com.test;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.util.Date;
+import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -18,6 +22,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.EnunciadoMapper;
+import modelo.Ejercicios;
+import modelo.Enunciado;
+import modelo.Enunciados;
+import modelo.ErrorYID;
+import modelo.IDUsuario;
+import utilidades.DatosFijos;
 
 /**
  * REST Web Service
@@ -29,25 +40,47 @@ public class EnunciadosResource {
 
     @Context
     private UriInfo context;
+    private EnunciadoMapper enunciadoMapper;
 
     /**
      * Creates a new instance of EnunciadosResource
      */
     public EnunciadosResource() {
+        DataSource dt = null;
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        try {
+                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
+        } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
+        cpds.setUser(DatosFijos.USER);
+        cpds.setPassword(DatosFijos.PASS);
+        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
+        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
+        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
+        dt = cpds;
+
+        enunciadoMapper = new EnunciadoMapper(dt);
     }
 
-      @GET
-    @Produces("text/html")
-    public String getEnunciados() {
-        
-        return "Devuelve enunciados";
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Enunciados getEnunciados() {
+        return new Enunciados(enunciadoMapper.findAll());
     }
     
     @POST
-    @Produces("text/html")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String newEnunciado(@FormParam("json") String Json) throws IOException {
-        return "error";
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    // {"nombreLenguaje": "Java", "codigo": "codigo del enunciado", "idUsuario": "1", "idDelEjercicioQueResuelve": "3"}
+    // hay que tener en la bd al usuario y ej creados
+    public ErrorYID newEnunciado(Enunciado enunciado){
+        enunciado.setEnunciado(0);
+        enunciado.setFechaCreacion(new Date());
+        int nuevoID = enunciadoMapper.insert(enunciado);
+        return new ErrorYID(nuevoID);
     }
     
     
@@ -56,22 +89,43 @@ public class EnunciadosResource {
      
     @GET
     @Path("{idEnunciado}")
-    @Produces("text/json")
-    public String getEnunciado(@PathParam("idEnunciado") String idEnunciado) {
-        //TODO return proper representation object
-        return "Devuelve Enunciado";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Enunciado getEnunciado(@PathParam("idEnunciado") int idEnunciado) {
+        return enunciadoMapper.findById(idEnunciado);
     }
     
+    // {"nombreLenguaje": "Java", "codigo": "codigo del enunciado", "idUsuario": "1", "idDelEjercicioQueResuelve": "3"}
+    // hay que tener en la bd al usuario y ej creados
+    //De nuevo lo modifica correctamente, pero no devuelve Error bien ?????????????
     @PUT
     @Path("{idEnunciado}")
-    @Consumes("text/json")
-    public String putEnunciado(@PathParam("json") String content) {
-        return "{\"error\" : \"no\"}";
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Error putEnunciado(@PathParam("idEnunciado") int idEnunciado, Enunciado enunciado) {
+        Enunciado aModificar = enunciadoMapper.findById(idEnunciado);
+        String error = "si";
+        if (aModificar != null){
+            enunciado.setEnunciado(idEnunciado);
+            enunciado.setFechaCreacion(aModificar.getFechaCreacion());
+            enunciadoMapper.update(enunciado);
+            error = "no";
+        }
+        
+        return new Error(error);
     }
     
     @DELETE
     @Path("{idEnunciado}")
-    public String deleteEnunciado(@PathParam("idEnunciado") int id, @FormParam("idUser") String idUser){
-        return "{error:no}";
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Error deleteEnunciado(@PathParam("idEnunciado") int idEnunciado){//, IDUsuario nombre){
+        String posibleError = "si";
+        Enunciado aBorrar = enunciadoMapper.findById(idEnunciado);
+        //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario())){
+            if(this.enunciadoMapper.delete(aBorrar))
+                posibleError = "no";
+
+        //System.out.println(posibleError);
+        return new Error(posibleError);
     }
 }

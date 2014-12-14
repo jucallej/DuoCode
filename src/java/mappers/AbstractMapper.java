@@ -313,10 +313,11 @@ public abstract class AbstractMapper<T,K> {
                 return autoincrement;
 	}
 	
-	public void delete(T object){
+	public boolean delete(T object){
 		String[] columNames = getColumnNames();
 		String[] assigments = new String[columNames.length];
 		QueryCondition[] conditions = getConditionFromKey(getKey(object));
+                boolean eliminado = true;
 		
 		for (int i=0; i<assigments.length; i++){
 			assigments[i]=columNames[i]+" = ?";
@@ -340,6 +341,7 @@ public abstract class AbstractMapper<T,K> {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+                        eliminado = false;
 		}
 		finally{
 			try {
@@ -348,7 +350,8 @@ public abstract class AbstractMapper<T,K> {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {}
-		}		
+		}
+                return eliminado;
 	}
         
         public List<T> findAll(){
