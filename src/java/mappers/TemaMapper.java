@@ -31,7 +31,7 @@ public class TemaMapper extends AbstractMapper <Tema, Integer>{
 
     @Override
     protected Object[] serializeObject(Tema object) {
-        return new Object[]{object.getId(), object.getTitulo(), object.getDescripcion(), object.getOrden()};
+        return new Object[]{object.getId(), object.getOrden(), object.getTitulo(), object.getDescripcion()};
     }
 
     @Override

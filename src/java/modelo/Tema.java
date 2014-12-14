@@ -34,7 +34,7 @@ public class Tema {
     }
      
     public Tema(int id, int orden, String titulo, String descripcion) {
-        this.ruta = DatosFijos.RUTA_TEMAS+titulo;
+        this.ruta = DatosFijos.RUTA_TEMAS+id;
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -59,5 +59,9 @@ public class Tema {
     
     public int getOrden() {
         return orden;
+    }
+    
+    public void setId(int id){
+        this.id = id;
     }
 }
