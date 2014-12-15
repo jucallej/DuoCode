@@ -7,7 +7,6 @@ package modelo;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import utilidades.DatosFijos;
 
 /**
  *
@@ -15,9 +14,6 @@ import utilidades.DatosFijos;
  */
 @XmlRootElement
 public class Tema {
-    @XmlElement(name="ruta")
-    private String ruta;
-    
     @XmlElement(name="id")
     private int id;
     
@@ -30,19 +26,17 @@ public class Tema {
     @XmlElement(name="orden")
     private int orden;
 
+    @XmlElement(name="lecciones")
+    private Lecciones lecciones;
+
      public Tema() {
     }
      
     public Tema(int id, int orden, String titulo, String descripcion) {
-        this.ruta = DatosFijos.RUTA_TEMAS+id;
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.orden = orden;
-    }
-
-    public String getRuta() {
-        return ruta;
     }
     
     public int getId() {
@@ -63,5 +57,9 @@ public class Tema {
     
     public void setId(int id){
         this.id = id;
+    }
+    
+    public void setLecciones(Lecciones lecciones){
+        this.lecciones = lecciones;
     }
 }

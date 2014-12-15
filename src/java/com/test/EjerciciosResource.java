@@ -73,7 +73,7 @@ public class EjerciciosResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Ejercicios getEjercicios() {
-        List<Integer> ejercicios= ejercicioMapper.findAll();
+        List<Integer> ejercicios = ejercicioMapper.findAll();
         return new Ejercicios(ejercicios);
     }
     

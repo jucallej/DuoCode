@@ -10,6 +10,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
+import utilidades.DatosFijos;
 
 /**
  *
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Temas {
     @XmlList
-    private List<Tema> temas;
+    private List<Ruta> temas;
     
     public Temas() {
     }
@@ -26,7 +27,7 @@ public class Temas {
     public Temas(List<Tema> temas) {
         this.temas = new ArrayList<>();
         for (Tema tema: temas){
-            this.temas.add(new Tema(tema.getId(), tema.getOrden(), tema.getTitulo(), tema.getDescripcion()));
+            this.temas.add(new Ruta(DatosFijos.RUTA_TEMAS+tema.getId()));
         }
     }
     

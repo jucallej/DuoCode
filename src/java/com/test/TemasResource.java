@@ -21,9 +21,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.LeccionesMapper;
 import modelo.Tema;
 import mappers.TemaMapper;
 import modelo.ErrorYID;
+import modelo.Lecciones;
 import modelo.Temas;
 import utilidades.DatosFijos;
 
@@ -38,6 +40,7 @@ public class TemasResource {
     @Context
     private UriInfo context;
     private TemaMapper temaMapper;
+    private LeccionesMapper leccioneMapper;
 
 
     /**
@@ -62,6 +65,7 @@ public class TemasResource {
         dt = cpds;
         
         temaMapper = new TemaMapper(dt);
+        leccioneMapper = new LeccionesMapper(dt);
     }
 
     /**
@@ -110,6 +114,7 @@ public class TemasResource {
     public Tema getTema(@PathParam("idTema") int idTema) {
         //TODO return proper representation object
         Tema tema = temaMapper.findById(idTema);
+        tema.setLecciones(new Lecciones(this.leccioneMapper.getLeccionesDeUnTema(tema.getId())));
         return tema;
     }
     
