@@ -20,6 +20,7 @@ import utilidades.DatosFijos;
 public class Temas {
     @XmlList
     private List<Ruta> temas;
+    //private List<String> temas;
     
     public Temas() {
     }
@@ -28,6 +29,8 @@ public class Temas {
         this.temas = new ArrayList<>();
         for (Tema tema: temas){
             this.temas.add(new Ruta(DatosFijos.RUTA_TEMAS+tema.getId()));
+            //this.temas.add(DatosFijos.RUTA_TEMAS+tema.getId());
+
         }
     }
     

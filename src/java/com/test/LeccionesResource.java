@@ -96,19 +96,14 @@ public class LeccionesResource {
 "descripcion":"desc inicial",
 "orden":8,
 "idTema":1,
-"ejercicios":{
-"ejercicios":[]},
-"idPrerrequisitos":{"lecciones":[]}}
+"ejercicios":[],
+"idPrerrequisitos":[]}
 * 
 * 
 * Leccion con ej y requisitos (no es exactamente igual a como está en los requisitos):
-{"titulo":"Leccion PruebaPost",
-"descripcion":"desc inicial",
-"orden":8,
-"idTema":1,
-"ejercicios":{
-"ejercicios":[{"ruta": 3}, {"ruta": 5}]},
-"idPrerrequisitos":{"lecciones":[{"ruta": 1}, {"ruta": 3}]}}
+{"titulo":"Leccion PruebaPost","descripcion":"desc inicial","orden":9,"idTema":1,
+"ejercicios":[{"ruta":3}, {"ruta":5}],
+"leccionesDesbloqueadoras":[{"ruta":1}, {"ruta":6}]}
      */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -117,19 +112,17 @@ public class LeccionesResource {
         leccion.setId(0);
         int nuevoId = this.leccioneMapper.insert(leccion);
         leccion.setId(nuevoId);
-        Ejercicios ejercicios = leccion.getEjercicios();
-        Lecciones leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
+        List<Ruta> ejercicios = leccion.getEjercicios();
+        List<Ruta> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
         
         if(ejercicios != null){ // Lo insertamos
-            List<Ruta> intEjercicios = ejercicios.getEjercicios();
-            if (intEjercicios != null && intEjercicios.size() > 0)
-                for (Ruta intEjercicio : intEjercicios)
+            if (ejercicios.size() > 0)
+                for (Ruta intEjercicio : ejercicios)
                     this.leccionConstaEjerciciosMapper.insert(new IDsLeccionYEjercidio(leccion.getId(), Integer.parseInt(intEjercicio.geRuta())));
         }
         if (leccionesDesbloqueadoras != null){ // Lo insertamos
-            List<Ruta> intLeccionesDesbloqueadoras = leccionesDesbloqueadoras.getLecciones();
-            if (intLeccionesDesbloqueadoras != null && intLeccionesDesbloqueadoras.size() > 0)
-                for (Ruta intLecciones : intLeccionesDesbloqueadoras)
+            if (leccionesDesbloqueadoras.size() > 0)
+                for (Ruta intLecciones : leccionesDesbloqueadoras)
                     this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), Integer.parseInt(intLecciones.geRuta())));
         }
         return new ErrorYID(nuevoId);
@@ -153,33 +146,25 @@ public class LeccionesResource {
         Leccion leccion = leccioneMapper.findById(idLeccion);
         
         List<IDsLeccionYEjercidio> ejerciciosDeLaLeccion = leccionConstaEjerciciosMapper.getIDsLeccionYEjercidioConIDELeccion(leccion.getId());
-        Ejercicios ejercicios = new Ejercicios();
-        ejercicios.setEjerciciosATravesDeIDsLeccionYEjercidio(ejerciciosDeLaLeccion);
-        leccion.setEjercicios(ejercicios);
+        leccion.setEjercicios(ejerciciosDeLaLeccion);
         
         List<IDsLeccionYLeccionDesbloqueadora> requisitos = this.requisitosLeccionesMapper.getIDsLeccionYDesbloqueadorasConIDELeccion(leccion.getId());
-        Lecciones leccionesRequisitos = new Lecciones();
-        leccionesRequisitos.setLeccionesRequisitos(requisitos);
-        leccion.setLeccionesDesbloqueadoras(leccionesRequisitos);
+        leccion.setLeccionesDesbloqueadoras(requisitos);
         
         return leccion;
     }
     /** Es complejito, pero bueno ... ahí queda y parece funcionar
-     * EJ (en principio se le puede putear que sigue funcionando):
-{"titulo":"Leccion PruebaPut",
-"descripcion":"desc inicial",
-"orden":9,
-"idTema":1,
-"ejercicios":{
-"ejercicios":[{"ruta": 3}]},
-"idPrerrequisitos":{"lecciones":[{"ruta": 1}, {"ruta": 2}]}}
+     * EJ (en principio se le puede putear que sigue funcionando (array vacios funciona)):
+{"titulo":"Leccion PruebaPut","descripcion":"desc inicial","orden":9,"idTema":1,
+"ejercicios":[{"ruta":4}, {"ruta":5}],
+"leccionesDesbloqueadoras":[{"ruta":8}]}
 
      */
     @PUT
     @Path("{idLeccion}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID putLeccion(@PathParam("idLeccion") int id, Leccion leccion) {
+    public ErrorYID putLeccion(@PathParam("idLeccion") int id, Leccion leccion) { //Un poco más limpio
         leccion.setId(id);
 
         Leccion leccionExistente = this.leccioneMapper.findById(id);
@@ -187,14 +172,11 @@ public class LeccionesResource {
         if (leccionExistente != null){//Exite, y lo podemos actualizar
             //Sacamos los ej y lecciones existentes
             List<IDsLeccionYEjercidio> ejerciciosDeLaLeccion = leccionConstaEjerciciosMapper.getIDsLeccionYEjercidioConIDELeccion(leccion.getId());
-            Ejercicios ejerciciosAnhadir = new Ejercicios();
-            ejerciciosAnhadir.setEjerciciosATravesDeIDsLeccionYEjercidio(ejerciciosDeLaLeccion);
-            leccionExistente.setEjercicios(ejerciciosAnhadir);
+            leccionExistente.setEjercicios(ejerciciosDeLaLeccion);
+
 
             List<IDsLeccionYLeccionDesbloqueadora> requisitos = this.requisitosLeccionesMapper.getIDsLeccionYDesbloqueadorasConIDELeccion(leccion.getId());
-            Lecciones leccionesRequisitos = new Lecciones();
-            leccionesRequisitos.setLeccionesRequisitos(requisitos);
-            leccionExistente.setLeccionesDesbloqueadoras(leccionesRequisitos);
+            leccionExistente.setLeccionesDesbloqueadoras(requisitos);
             
             //Actualizamos la leccion
             this.leccioneMapper.update(leccion);
@@ -202,39 +184,27 @@ public class LeccionesResource {
             //Para no borrar algo que queramos mantener (que igual desencadena borrados en cadena (ej ejercicio resuleto)) vamos a hacerlo poco a poco
             
             //Estos tienen en ruta tienen int, es un poco extraño, pero funciona, son los que queremos tener
-            Ejercicios ejercicios = leccion.getEjercicios();
-            Lecciones leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
+            List<Ruta> ejercicios = leccion.getEjercicios();
+            List<Ruta> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
             
             //Miramos los que ya estan
             if (leccionExistente.getEjercicios() != null){
-                List<Integer> ejerciciosExistentes = leccionExistente.getEjercicios().getIntEjercicios();
-                //Miramos en los que ya están, si no los queremos mantener los borramos, y si ya están los quitamos de las variables de arriba "ejercicios" y "leccionesDesbloqueadoras"
-                for (Integer ejerciciosExistente : ejerciciosExistentes){
-                    if (!ejercicios.contienen(ejerciciosExistente)) //Si ya existe lo borra de ejercicios (no hace falta añadirlo, y sino lo mantiende y devuelve false)
-                        this.leccionConstaEjerciciosMapper.delete(new IDsLeccionYEjercidio(leccion.getId(), ejerciciosExistente));
-                }
+                leccionExistente.quitarLeccionesQueBorramosYEvitarAnhadir(ejercicios, this.leccionConstaEjerciciosMapper);
             }
             
             if (leccionExistente.getLeccionesDesbloqueadoras() != null){
-                List<Integer> leccionesDesbloqueadorasExistentes = leccionExistente.getLeccionesDesbloqueadoras().getIntLecciones();
-                //Miramos en los que ya están, si no están incluidos los borramos
-                for (Integer leccionesDesbloqueadorasExistente : leccionesDesbloqueadorasExistentes){
-                    if (!leccionesDesbloqueadoras.contienen(leccionesDesbloqueadorasExistente)) //Similar al if de arriba
-                        this.requisitosLeccionesMapper.delete(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), leccionesDesbloqueadorasExistente));
-                }
+                leccionExistente.quitarEjerciciosQueBorramosYEvitarAnhadir(leccionesDesbloqueadoras, this.requisitosLeccionesMapper);
             }
             
             //Si llegamos hasta aquí y la leccion que nos han dado sigue teniendo ej entonces esos no estaban antes y los metemos con en el POST
             if(ejercicios != null){ // Lo insertamos
-                List<Ruta> intEjercicios = ejercicios.getEjercicios();
-                if (intEjercicios != null && intEjercicios.size() > 0)
-                    for (Ruta intEjercicio : intEjercicios)
+                if (ejercicios.size() > 0)
+                    for (Ruta intEjercicio : ejercicios)
                         this.leccionConstaEjerciciosMapper.insert(new IDsLeccionYEjercidio(leccion.getId(), Integer.parseInt(intEjercicio.geRuta())));
             }
             if (leccionesDesbloqueadoras != null){ // Lo insertamos
-                List<Ruta> intLeccionesDesbloqueadoras = leccionesDesbloqueadoras.getLecciones();
-                if (intLeccionesDesbloqueadoras != null && intLeccionesDesbloqueadoras.size() > 0)
-                    for (Ruta intLecciones : intLeccionesDesbloqueadoras)
+                if (leccionesDesbloqueadoras.size() > 0)
+                    for (Ruta intLecciones : leccionesDesbloqueadoras)
                         this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), Integer.parseInt(intLecciones.geRuta())));
             }
         }

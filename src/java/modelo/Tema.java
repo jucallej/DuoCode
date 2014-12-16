@@ -5,8 +5,12 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
+import utilidades.DatosFijos;
 
 /**
  *
@@ -26,8 +30,8 @@ public class Tema {
     @XmlElement(name="orden")
     private int orden;
 
-    @XmlElement(name="lecciones")
-    private Lecciones lecciones;
+    @XmlList
+    private List<Ruta> lecciones;
 
      public Tema() {
     }
@@ -59,7 +63,10 @@ public class Tema {
         this.id = id;
     }
     
-    public void setLecciones(Lecciones lecciones){
-        this.lecciones = lecciones;
+    public void setLecciones(List<Leccion> lecciones){
+        this.lecciones = new ArrayList<>();
+        for (Leccion leccion: lecciones){
+            this.lecciones.add(new Ruta(DatosFijos.RUTA_LECCIONES+leccion.getId()));
+        }
     }
 }

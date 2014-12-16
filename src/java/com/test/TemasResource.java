@@ -114,7 +114,7 @@ public class TemasResource {
     public Tema getTema(@PathParam("idTema") int idTema) {
         //TODO return proper representation object
         Tema tema = temaMapper.findById(idTema);
-        tema.setLecciones(new Lecciones(this.leccioneMapper.getLeccionesDeUnTema(tema.getId())));
+        tema.setLecciones(this.leccioneMapper.getLeccionesDeUnTema(tema.getId()));
         return tema;
     }
     
