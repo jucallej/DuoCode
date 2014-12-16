@@ -18,9 +18,11 @@ public class DatosFijos {
     public static final String RUTA_TEMAS = "http://localhost:8080/DuoCode/rest/temas/";
     public static final String RUTA_ENUNCIADOS = "http://localhost:8080/DuoCode/rest/enunciados/";
     public static final String RUTA_LECCIONES = "http://localhost:8080/DuoCode/rest/leciones/";
+    public static final String RUTA_USUARIOS = "http://localhost:8080/DuoCode/rest/usuarios/";
     
     public static final int AcquireRetryAttempts = 1;
     public static final int AcquireRetryDelay = 1;
     
     public static final boolean BreakAfterAcquireFailure = true;
+
 }
