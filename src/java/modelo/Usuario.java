@@ -29,6 +29,9 @@ public class Usuario {
     
     @XmlElement(name="rol")
     private short rol;
+    
+    public Usuario() {
+    }
 
     public Usuario(int id, String nick, String correo, String pass, short rol) {
         this.id = id;

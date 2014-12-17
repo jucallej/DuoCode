@@ -93,7 +93,7 @@ public abstract class AbstractMapper<T,K> {
 	 * @return Lista de objetos de la tabla que cumplen las condiciones dadas. 
 	 *         Si ninguno de ellos las cumple, se devuelve una lista vacía.
 	 */
-	protected List<T> findByConditions(QueryCondition[] conditions) {
+	public List<T> findByConditions(QueryCondition[] conditions) {
 		/*
 		 * Este método debería hacer uso de los métodos abstractos:
 		 * 

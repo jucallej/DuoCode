@@ -9,6 +9,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.locks.Condition;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -22,7 +23,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.Operator;
+import mappers.QueryCondition;
 import mappers.UsuarioMapper;
+import modelo.ErrorYID;
+import modelo.IDUsuario;
 import modelo.Usuario;
 import modelo.Usuarios;
 import utilidades.DatosFijos;
@@ -72,20 +77,27 @@ public class UsuariosResource {
     //Habría que diferenciar los dos Get.
     @GET
     @Path("{correoNick}")
-    public String getUsuarioId(@PathParam("correoNick") String correoNick) {
-        
-        return "{ \"error\" : \"no\", //Si error es no todo ha ido bien, si es "
-                + "si, o tiene otra mensaje descriptivo ha habido un error (ej. "
-                + "no existe usuario para ese correo/nick lo que sea) "
-                + "\"usuarios\" : [\"localhost/duocode/rest/usuario/idUsuario1\","
-                + " \"localhost/duocode/rest/usuario/idUsuario2\"] }";
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ErrorYID getUsuarioId(@PathParam("correoNick") String correoNick) {
+        int id = -1;
+        List<Usuario> hola = usuarioMapper.findByConditions(new QueryCondition[]{new QueryCondition("correo", Operator.EQ, correoNick)});
+        List<Usuario> hola2 = usuarioMapper.findByConditions(new QueryCondition[]{new QueryCondition("nick", Operator.EQ, correoNick)});
+        if(hola.size() == 1)
+            id = hola.get(0).getId();
+        else if(hola2.size()==1)
+            id = hola2.get(0).getId();
+        return new ErrorYID(id);
     }
     
     @POST
-    @Produces("text/json")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public String newUsuario(@FormParam("json") String Json) throws IOException {
-        return "error";
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ErrorYID newUsuario(Usuario usuario) throws IOException {
+        usuario.setId(0);
+        usuario.setRol((short)0);
+        int nuevoID = usuarioMapper.insert(usuario);
+        return new ErrorYID(nuevoID);
     }
     
     
@@ -103,8 +115,14 @@ public class UsuariosResource {
     
     @DELETE
     @Path("{idUsuario}")
-    public String deleteUsuario(@PathParam("idUsuario") int id, @FormParam("idUser") String idUser){
-        return "{error:no}";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Error deleteUsuario(@PathParam("idUsuario") int id){
+        String posibleError = "si";
+        Usuario aBorrar = usuarioMapper.findById(id);
+            if(this.usuarioMapper.delete(aBorrar))
+                posibleError = "no";
+
+        return new Error(posibleError);
     }
     
     

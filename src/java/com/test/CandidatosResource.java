@@ -19,16 +19,19 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.CandidatoMapper;
 import mappers.EnvioMapper;
-//import mappers.UsuarioMapper;
+import mappers.UsuarioMapper;
+import mappers.UsuarioVotaCandidatoMapper;
 import modelo.Candidato;
 import modelo.Candidatos;
 import modelo.ErrorYID;
-//import modelo.Usuario;
+import modelo.Usuario;
+import modelo.UsuarioVotaCandidato;
 import utilidades.DatosFijos;
 
 /**
@@ -42,7 +45,9 @@ public class CandidatosResource {
     @Context
     private UriInfo context;
     private CandidatoMapper candidatoMapper;
-//    private UsuarioMapper usuarioMapper;
+    private UsuarioMapper usuarioMapper;
+    private UsuarioVotaCandidatoMapper usuarioVotaCandidatoMapper;
+
     /**
      * Creates a new instance of CandidatosResource
      */
@@ -65,7 +70,8 @@ public class CandidatosResource {
         dt = cpds;
         
         candidatoMapper = new CandidatoMapper(dt);
-//        usuarioMapper = new UsuarioMapper(dt);
+        usuarioMapper = new UsuarioMapper(dt);
+        usuarioVotaCandidatoMapper = new UsuarioVotaCandidatoMapper(dt);
     }
 
     @GET 
@@ -102,16 +108,20 @@ public class CandidatosResource {
     @Path("{idCandidato}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String putCandidato(@PathParam("idCandidato") int idCandidato, @PathParam("idUsuario") int idUsuario) {
+    public String putCandidato(@PathParam("idCandidato") int idCandidato) {
+        int idUsuario=1;
         Candidato aModificar = candidatoMapper.findById(idCandidato);
-      /*  Usuario usuario = usuarioMapper.findById(idUsuario);
-        UsuarioVotaCandidato uvc = new UsuarioVotaCandidato(idUsuario, idCandidato);
-        String voto = "positivo";
-        if(usuarioVotaCandidatoMapper.insert(uvc) == -1){
-            usuarioVotaCandidatoMapper.delete(uvc);
-            voto = "negativo";
-        }*/
-        return "voto";
+        Usuario usuario = usuarioMapper.findById(idUsuario);
+        String voto = "Ha ocurrido un error";
+        if(aModificar != null && usuario != null){
+            UsuarioVotaCandidato uvc = new UsuarioVotaCandidato(idUsuario, idCandidato);
+            voto = "positivo";
+            if(usuarioVotaCandidatoMapper.insert(uvc) == -1){
+                usuarioVotaCandidatoMapper.delete(uvc);
+                voto = "negativo";
+            }
+        }
+        return voto;
     }
     
     
