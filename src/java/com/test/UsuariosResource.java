@@ -5,7 +5,11 @@
  */
 package com.test;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.util.List;
+import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -18,38 +22,57 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.UsuarioMapper;
+import modelo.Usuario;
+import modelo.Usuarios;
+import utilidades.DatosFijos;
 
 /**
  * REST Web Service
  *
- * @author jcarlos
+ * @author Johana
  */
 @Path("usuarios")
 public class UsuariosResource {
-
+    
     @Context
     private UriInfo context;
+    private UsuarioMapper usuarioMapper;
 
     /**
      * Creates a new instance of UsuariosResource
      */
     public UsuariosResource() {
+        DataSource dt = null;
+        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        
+        try {
+                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
+        } catch (PropertyVetoException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+        }
+        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
+        cpds.setUser(DatosFijos.USER);
+        cpds.setPassword(DatosFijos.PASS);
+        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
+        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
+        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
+        dt = cpds;
+        
+        usuarioMapper = new UsuarioMapper(dt);
     }
     
     @GET
-    @Produces("text/json")
-    public String getUsuario() {
-        
-        return "{ \"error\" : \"no\", "
-                + "//Si error es no todo ha ido bien, si es si, o tiene otra "
-                + "mensaje descriptivo ha habido un error (ej. no existe "
-                + "usuario para ese correo/nick lo que sea) "
-                + "\"usuario\" : \"localhost/duocode/rest/usuario/idUsuario\" }";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Usuarios getUsuario() {
+        List<Usuario> usuarios = usuarioMapper.findAll();
+        return new Usuarios(usuarios);
     }
     //Habría que diferenciar los dos Get.
     @GET
-    @Path("{idUsuario}")
-    public String getUsuarioId() {
+    @Path("{correoNick}")
+    public String getUsuarioId(@PathParam("correoNick") String correoNick) {
         
         return "{ \"error\" : \"no\", //Si error es no todo ha ido bien, si es "
                 + "si, o tiene otra mensaje descriptivo ha habido un error (ej. "
@@ -71,10 +94,10 @@ public class UsuariosResource {
      
     @GET
     @Path("{idUsuario}")
-    @Produces("text/json")
-    public String getUsuario1(@PathParam("idUsuario") String idUsuario) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Usuario getUsuario1(@PathParam("idUsuario") int idUsuario) {
         //TODO return proper representation object
-        return "Devuelve usuario en json";
+        return usuarioMapper.findById(idUsuario);
     }
     
     
