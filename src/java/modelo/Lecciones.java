@@ -8,6 +8,7 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import utilidades.DatosFijos;
@@ -15,9 +16,10 @@ import utilidades.DatosFijos;
 
 @XmlRootElement
 public class Lecciones {
-    @XmlList
-    private List<Ruta> lecciones;
-    //private List <Integer> intLecciones; //Para insertarlos en leccionResource, para lo demás no se usan
+    //@XmlList
+    //private List<Ruta> lecciones;
+    @XmlElement(name="lecciones")
+    private List<String> lecciones;
     
     public Lecciones() {
     }
@@ -26,7 +28,7 @@ public class Lecciones {
         this.lecciones = new ArrayList<>();
         //intLecciones = new ArrayList<>();
         for (Leccion leccion: lecciones){
-            this.lecciones.add(new Ruta(DatosFijos.RUTA_LECCIONES+leccion.getId()));
+            this.lecciones.add(DatosFijos.RUTA_LECCIONES+leccion.getId());
             //this.intLecciones.add(leccion.getId());
         }
     }
@@ -35,7 +37,7 @@ public class Lecciones {
         this.lecciones = new ArrayList<>();
         //intLecciones = new ArrayList<>();
         for (IDsLeccionYLeccionDesbloqueadora requisito: requisitos){
-            this.lecciones.add(new Ruta(DatosFijos.RUTA_LECCIONES+requisito.getIdLeccionDesbloqueadora()));
+            this.lecciones.add(DatosFijos.RUTA_LECCIONES+requisito.getIdLeccionDesbloqueadora());
             //this.intLecciones.add(requisito.getIdLeccionDesbloqueadora());
         }
     }
@@ -44,7 +46,7 @@ public class Lecciones {
         return intLecciones;
     }
 **/
-    public List<Ruta> getLecciones() {
+    public List<String> getLecciones() {
         return lecciones;
     }
 }

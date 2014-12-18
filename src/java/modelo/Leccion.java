@@ -32,14 +32,14 @@ public class Leccion {
     
     @XmlElement(name="idTema")
     private int idTema;
-    
-    @XmlList
-    private List<Ruta> ejercicios;
+
+    @XmlElement(name="ejercicios")
+    private List<String> ejercicios;
+
+    @XmlElement(name="leccionesDesbloqueadoras")
+    private List<String> leccionesDesbloqueadoras;
     
     private List<Integer> intEjercicios;
-    
-    @XmlList
-    private List<Ruta> leccionesDesbloqueadoras;
     private List<Integer> intLecionesDesbloqueadoras;
 
     public Leccion() {
@@ -53,7 +53,7 @@ public class Leccion {
         this.idTema = idTema;
     }
 
-    public Leccion(int id, String titulo, String descripcion, int orden, int idTema, List<Ruta> ejercicios, List<Ruta> leccionesDesbloqueadoras) {
+    public Leccion(int id, String titulo, String descripcion, int orden, int idTema, List<String> ejercicios, List<String> leccionesDesbloqueadoras) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -91,7 +91,7 @@ public class Leccion {
         this.ejercicios = new ArrayList<>();
         intEjercicios = new ArrayList<>();
         for (IDsLeccionYEjercidio ejercicio: ejercicios){
-            this.ejercicios.add(new Ruta(DatosFijos.RUTA_LECCIONES+ejercicio.getIdEjercicio()));
+            this.ejercicios.add(DatosFijos.RUTA_EJERCICIOS+ejercicio.getIdEjercicio());
             this.intEjercicios.add(ejercicio.getIdEjercicio());
         }
     }
@@ -100,27 +100,27 @@ public class Leccion {
         this.leccionesDesbloqueadoras = new ArrayList<>();
         this.intLecionesDesbloqueadoras = new ArrayList<>();
         for (IDsLeccionYLeccionDesbloqueadora requisito: leccionesDesbloqueadoras){
-            this.leccionesDesbloqueadoras.add(new Ruta(DatosFijos.RUTA_LECCIONES+requisito.getIdLeccionDesbloqueadora()));
+            this.leccionesDesbloqueadoras.add(DatosFijos.RUTA_LECCIONES+requisito.getIdLeccionDesbloqueadora());
             this.intLecionesDesbloqueadoras.add(requisito.getIdLeccionDesbloqueadora());
         }
     }
 
-    public List<Ruta> getEjercicios() {
+    public List<String> getEjercicios() {
         return ejercicios;
     }
 
-    public List<Ruta> getLeccionesDesbloqueadoras() {
+    public List<String> getLeccionesDesbloqueadoras() {
         return leccionesDesbloqueadoras;
     } 
     
     //Si ya existe lo borra de lecciones (no hace falta añadirlo, y sino lo mantiende y devuelve false)
-    private boolean contienenLecciones(List<Ruta> leccionesDesbloqueadoras, Integer leccionesDesbloqueadorasExistente) {
+    private boolean contienenLecciones(List<String> leccionesDesbloqueadoras, Integer leccionesDesbloqueadorasExistente) {
         boolean encontrado = false;
-        Iterator<Ruta> iterador = leccionesDesbloqueadoras.iterator();
+        Iterator<String> iterador = leccionesDesbloqueadoras.iterator();
         
         while (!encontrado && iterador.hasNext()){
-            Ruta ruta = iterador.next();
-            if (Integer.parseInt(ruta.geRuta()) == leccionesDesbloqueadorasExistente){
+            String dato = iterador.next();
+            if (Integer.parseInt(dato) == leccionesDesbloqueadorasExistente){
                 encontrado = true;
                 iterador.remove();
             }
@@ -130,14 +130,14 @@ public class Leccion {
     }
     
     //Si ya existe lo borra de ejercicios (no hace falta añadirlo, y sino lo mantiende y devuelve false)
-    private boolean contienenEjercicios(List<Ruta> ejercicios, Integer ejerciciosExistente) {
+    private boolean contienenEjercicios(List<String> ejercicios, Integer ejerciciosExistente) {
         boolean encontrado = false;
-        Iterator<Ruta> iterador = ejercicios.iterator();
+        Iterator<String> iterador = ejercicios.iterator();
         
         while (!encontrado && iterador.hasNext()){
-            Ruta ruta = iterador.next();
+            String dato = iterador.next();
             
-            if (Integer.parseInt(ruta.geRuta()) == ejerciciosExistente){
+            if (Integer.parseInt(dato) == ejerciciosExistente){
                 encontrado = true;
                 iterador.remove();
             }
@@ -154,7 +154,7 @@ public class Leccion {
         return intLecionesDesbloqueadoras;
     }
 
-    public void quitarLeccionesQueBorramosYEvitarAnhadir(List<Ruta> ejercicios, LeccionConstaEjerciciosMapper leccionConstaEjerciciosMapper) {
+    public void quitarLeccionesQueBorramosYEvitarAnhadir(List<String> ejercicios, LeccionConstaEjerciciosMapper leccionConstaEjerciciosMapper) {
         //Miramos en los que ya están, si no los queremos mantener los borramos, y si ya están los quitamos de las variables de arriba "ejercicios" y "leccionesDesbloqueadoras"
         for (Integer ejerciciosExistente : intEjercicios){
             //if (!ejercicios.contienenEjercicios(ejerciciosExistente)) //Si ya existe lo borra de ejercicios (no hace falta añadirlo, y sino lo mantiende y devuelve false)
@@ -163,7 +163,7 @@ public class Leccion {
         }
     }
 
-    public void quitarEjerciciosQueBorramosYEvitarAnhadir(List<Ruta> leccionesDesbloqueadoras, RequisitosLeccionesMapper requisitosLeccionesMapper) {
+    public void quitarEjerciciosQueBorramosYEvitarAnhadir(List<String> leccionesDesbloqueadoras, RequisitosLeccionesMapper requisitosLeccionesMapper) {
         //Miramos en los que ya están, si no están incluidos los borramos
         for (Integer leccionesDesbloqueadorasExistente : intLecionesDesbloqueadoras){
             if (!contienenLecciones(leccionesDesbloqueadoras, leccionesDesbloqueadorasExistente)) //Similar al if de arriba

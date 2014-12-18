@@ -7,6 +7,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import utilidades.DatosFijos;
@@ -17,8 +18,8 @@ import utilidades.DatosFijos;
  */
 @XmlRootElement
 public class Enunciados {
-    @XmlList
-    private List<Ruta> enunciados;
+    @XmlElement(name="enunciados")
+    private List<String> enunciados;
 
     public Enunciados() {
     }
@@ -26,7 +27,7 @@ public class Enunciados {
     public Enunciados(List<Enunciado> enunciados) {
         this.enunciados = new ArrayList<>();
         for (Enunciado enunciado: enunciados){
-            this.enunciados.add(new Ruta(DatosFijos.RUTA_ENUNCIADOS+enunciado.getIdEnunciado()));
+            this.enunciados.add(DatosFijos.RUTA_ENUNCIADOS+enunciado.getIdEnunciado());
         }
     }
 }

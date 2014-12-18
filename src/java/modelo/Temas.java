@@ -7,6 +7,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import utilidades.DatosFijos;
@@ -17,9 +18,10 @@ import utilidades.DatosFijos;
  */
 @XmlRootElement
 public class Temas {
-    @XmlList
-    private List<Ruta> temas;
-    //private List<String> temas;
+    //@XmlList
+    //private List<Ruta> temas;
+    @XmlElement(name="temas")
+    private List<String> temas;
     
     public Temas() {
     }
@@ -27,10 +29,9 @@ public class Temas {
     public Temas(List<Tema> temas) {
         this.temas = new ArrayList<>();
         for (Tema tema: temas){
-            this.temas.add(new Ruta(DatosFijos.RUTA_TEMAS+tema.getId()));
-            //this.temas.add(DatosFijos.RUTA_TEMAS+tema.getId());
+            //this.temas.add(new Ruta(DatosFijos.RUTA_TEMAS+tema.getId()));
+            this.temas.add(DatosFijos.RUTA_TEMAS+tema.getId());
 
         }
     }
-    
 }

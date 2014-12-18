@@ -8,6 +8,7 @@ package modelo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import utilidades.DatosFijos;
@@ -18,8 +19,8 @@ import utilidades.DatosFijos;
  */
 @XmlRootElement
 public class Ejercicios {
-    @XmlList
-    private List<Ruta> ejercicios;
+    @XmlElement(name="ejercicios")
+    private List<String> ejercicios;
     //private List <Integer> intEjercicios; //Para insertarlos en leccionResource, para lo demás no se usan
 
     public Ejercicios() {
@@ -29,7 +30,7 @@ public class Ejercicios {
         this.ejercicios = new ArrayList<>();
         //intEjercicios = new ArrayList<>();
         for (Integer ejercicio: ejercicios){
-            this.ejercicios.add(new Ruta(DatosFijos.RUTA_EJERCICIOS+ejercicio));
+            this.ejercicios.add(DatosFijos.RUTA_EJERCICIOS+ejercicio);
             //this.intEjercicios.add(ejercicio);
         }
     }
@@ -38,7 +39,7 @@ public class Ejercicios {
         this.ejercicios = new ArrayList<>();
         //intEjercicios = new ArrayList<>();
         for (IDsLeccionYEjercidio ejercicio: ejerciciosDeLaLeccion){
-            this.ejercicios.add(new Ruta(DatosFijos.RUTA_EJERCICIOS+ejercicio.getIdEjercicio()));
+            this.ejercicios.add(DatosFijos.RUTA_EJERCICIOS+ejercicio.getIdEjercicio());
             //this.intEjercicios.add(ejercicio.getIdEjercicio());
         }
     }
@@ -47,7 +48,7 @@ public class Ejercicios {
         return intEjercicios;
     }
 */
-    public List<Ruta> getEjercicios() {
+    public List<String> getEjercicios() {
         return ejercicios;
     } 
 }

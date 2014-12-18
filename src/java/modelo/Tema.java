@@ -30,8 +30,9 @@ public class Tema {
     @XmlElement(name="orden")
     private int orden;
 
-    @XmlList
-    private List<Ruta> lecciones;
+    //@XmlList
+    @XmlElement(name="lecciones")
+    private List<String> lecciones;
 
      public Tema() {
     }
@@ -66,7 +67,7 @@ public class Tema {
     public void setLecciones(List<Leccion> lecciones){
         this.lecciones = new ArrayList<>();
         for (Leccion leccion: lecciones){
-            this.lecciones.add(new Ruta(DatosFijos.RUTA_LECCIONES+leccion.getId()));
+            this.lecciones.add(DatosFijos.RUTA_LECCIONES+leccion.getId());
         }
     }
 }
