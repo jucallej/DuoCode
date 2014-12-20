@@ -16,8 +16,6 @@ import utilidades.DatosFijos;
 
 @XmlRootElement
 public class Lecciones {
-    //@XmlList
-    //private List<Ruta> lecciones;
     @XmlElement(name="lecciones")
     private List<String> lecciones;
     
@@ -26,26 +24,18 @@ public class Lecciones {
 
     public Lecciones(List<Leccion> lecciones) {
         this.lecciones = new ArrayList<>();
-        //intLecciones = new ArrayList<>();
         for (Leccion leccion: lecciones){
             this.lecciones.add(DatosFijos.RUTA_LECCIONES+leccion.getId());
-            //this.intLecciones.add(leccion.getId());
         }
     }
     
     public void setLeccionesRequisitos(List<IDsLeccionYLeccionDesbloqueadora> requisitos){
         this.lecciones = new ArrayList<>();
-        //intLecciones = new ArrayList<>();
         for (IDsLeccionYLeccionDesbloqueadora requisito: requisitos){
             this.lecciones.add(DatosFijos.RUTA_LECCIONES+requisito.getIdLeccionDesbloqueadora());
-            //this.intLecciones.add(requisito.getIdLeccionDesbloqueadora());
         }
     }
-/**
-    public List<Integer> getIntLecciones() {
-        return intLecciones;
-    }
-**/
+
     public List<String> getLecciones() {
         return lecciones;
     }

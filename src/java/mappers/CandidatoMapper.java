@@ -7,6 +7,7 @@ package mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import modelo.Candidato;
 
@@ -52,6 +53,10 @@ public class CandidatoMapper extends AbstractMapper<Candidato, Integer>{
     @Override
     protected Integer getKey(Candidato object) {
         return object.getId();
+    }
+    
+    public List<Candidato> getCandidatosPropuestos(int idUsuario){
+        return this.findByConditions(new QueryCondition[]{new QueryCondition("idUsuario", Operator.EQ, idUsuario)});
     }
     
 }

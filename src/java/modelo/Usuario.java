@@ -5,7 +5,9 @@
  */
 package modelo;
 
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -29,6 +31,15 @@ public class Usuario {
     
     @XmlElement(name="rol")
     private short rol;
+    
+    @XmlList
+    private List<Favorito> favoritos;
+    
+    @XmlList
+    private List<Envio> historialEjercicios;
+    
+    @XmlList
+    private List<Candidato> candidatosPropuestos;
     
     public Usuario() {
     }
@@ -80,6 +91,28 @@ public class Usuario {
     public void setRol(short rol) {
         this.rol = rol;
     }
-    
-    
+
+    public List<Envio> getHistorialEjercicios() {
+        return historialEjercicios;
+    }
+
+    public void setHistorialEjercicios(List<Envio> envios) {
+        this.historialEjercicios = envios;
+    }
+
+    public List<Candidato> getCandidatosPropuestos() {
+        return candidatosPropuestos;
+    }
+
+    public void setCandidatosPropuestos(List<Candidato> candidatosPropuestos) {
+        this.candidatosPropuestos = candidatosPropuestos;
+    }
+
+    public List<Favorito> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(List<Favorito> favoritos) {
+        this.favoritos = favoritos;
+    }
 }

@@ -7,6 +7,7 @@ package mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import modelo.Envio;
 
@@ -53,5 +54,9 @@ public class EnvioMapper extends AbstractMapper <Envio, Integer>{
     @Override
     protected Integer getKey(Envio object) {
         return object.getId();
+    }
+    
+    public List<Envio> getHistorialUsuario(int idUsuario){
+        return this.findByConditions(new QueryCondition[]{new QueryCondition("idUsuario", Operator.EQ, idUsuario)});
     }
 }

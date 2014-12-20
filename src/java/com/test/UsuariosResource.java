@@ -23,6 +23,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import mappers.CandidatoMapper;
+import mappers.EnvioMapper;
+import mappers.FavoritoMapper;
 import mappers.Operator;
 import mappers.QueryCondition;
 import mappers.UsuarioMapper;
@@ -43,6 +46,9 @@ public class UsuariosResource {
     @Context
     private UriInfo context;
     private UsuarioMapper usuarioMapper;
+    private EnvioMapper envioMapper;
+    private CandidatoMapper candidatoMapper;
+    private FavoritoMapper favoritoMapper;
 
     /**
      * Creates a new instance of UsuariosResource
@@ -66,6 +72,9 @@ public class UsuariosResource {
         dt = cpds;
         
         usuarioMapper = new UsuarioMapper(dt);
+        envioMapper = new EnvioMapper(dt);
+        candidatoMapper = new CandidatoMapper(dt);
+        favoritoMapper = new FavoritoMapper(dt);
     }
     
     @GET
@@ -74,6 +83,7 @@ public class UsuariosResource {
         List<Usuario> usuarios = usuarioMapper.findAll();
         return new Usuarios(usuarios);
     }
+    /**
     //Habría que diferenciar los dos Get.
     @GET
     @Path("{correoNick}")
@@ -88,7 +98,7 @@ public class UsuariosResource {
         else if(hola2.size()==1)
             id = hola2.get(0).getId();
         return new ErrorYID(id);
-    }
+    }**/
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -108,8 +118,13 @@ public class UsuariosResource {
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
     public Usuario getUsuario1(@PathParam("idUsuario") int idUsuario) {
-        //TODO return proper representation object
-        return usuarioMapper.findById(idUsuario);
+        Usuario usuario = usuarioMapper.findById(idUsuario);
+        
+        usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));
+        usuario.setCandidatosPropuestos(this.candidatoMapper.getCandidatosPropuestos(usuario.getId()));
+        usuario.setFavoritos(this.favoritoMapper.getEFavoritosDeUnUsuario(usuario.getId()));
+        
+        return usuario;
     }
     
     

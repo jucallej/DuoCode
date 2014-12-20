@@ -7,6 +7,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import utilidades.DatosFijos;
 
@@ -15,9 +16,8 @@ import utilidades.DatosFijos;
  * @author jcarlos
  */
 public class Usuarios {
-        
-    @XmlList
-    private List<Ruta> usuarios;
+    @XmlElement(name="usuarios")
+    private List<String> usuarios;
 
     public Usuarios() {
     }
@@ -25,7 +25,7 @@ public class Usuarios {
     public Usuarios(List<Usuario> usuarios) {
         this.usuarios = new ArrayList<>();
         for (Usuario usuario: usuarios){
-            this.usuarios.add(new Ruta(DatosFijos.RUTA_USUARIOS+usuario.getId()));
+            this.usuarios.add(DatosFijos.RUTA_USUARIOS+usuario.getId());
         }
     }
 }
