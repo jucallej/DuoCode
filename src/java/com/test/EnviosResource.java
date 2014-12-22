@@ -77,10 +77,6 @@ public class EnviosResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public ErrorYPuntuacion putEnvio(Envio envio) {
-        //content: {"ejercicio" : "localhost/duocode/rest/ejercicios/idEjercicio1", 
-        //"idLenguajeOrigien": "1", "idLenguajeDestino": "2", 
-        //"codigo": "codigo enviado en el lenguaje de destino", 
-        //"idUsuario" : "idDelUsuario"}
         envio.setId(0);
         envio.setFecha(new Date());
         Puntuador.puntuar(envio);
@@ -90,6 +86,4 @@ public class EnviosResource {
         
         return new ErrorYPuntuacion(envio.getPuntuacion());
     }
-    
-    //Para el envio no se puede repetir usuario lenguaje origen y lenguaje destino
 }

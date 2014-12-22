@@ -9,15 +9,12 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -26,11 +23,9 @@ import javax.ws.rs.core.MediaType;
 import mappers.CandidatoMapper;
 import mappers.EnvioMapper;
 import mappers.FavoritoMapper;
-import mappers.Operator;
-import mappers.QueryCondition;
 import mappers.UsuarioMapper;
+import modelo.ErrorSimple;
 import modelo.ErrorYID;
-import modelo.IDUsuario;
 import modelo.Usuario;
 import modelo.Usuarios;
 import utilidades.DatosFijos;
@@ -131,14 +126,12 @@ public class UsuariosResource {
     @DELETE
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Error deleteUsuario(@PathParam("idUsuario") int id){
+    public ErrorSimple deleteUsuario(@PathParam("idUsuario") int id){
         String posibleError = "si";
         Usuario aBorrar = usuarioMapper.findById(id);
             if(this.usuarioMapper.delete(aBorrar))
                 posibleError = "no";
 
-        return new Error(posibleError);
+        return new ErrorSimple(posibleError);
     }
-    
-    
 }

@@ -27,6 +27,7 @@ import mappers.EjercicioMapper;
 import mappers.EnunciadoMapper;
 import modelo.Ejercicios;
 import modelo.Enunciados;
+import modelo.ErrorSimple;
 import modelo.ErrorYID;
 import modelo.IDUsuario;
 import utilidades.Comprobadores;
@@ -119,7 +120,7 @@ public class EjerciciosResource {
     @Path("{idEjercicio}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Error deleteEjercicio(@PathParam("idEjercicio") int idEjercicio){//, IDUsuario nombre){
+    public ErrorSimple deleteEjercicio(@PathParam("idEjercicio") int idEjercicio){//, IDUsuario nombre){
         String posibleError = "si";
 
         //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario())){
@@ -127,10 +128,6 @@ public class EjerciciosResource {
                 posibleError = "no";
 
         System.out.println(posibleError);
-        return new Error(posibleError);
+        return new ErrorSimple(posibleError);
     }
-
-    //Lo borra, pero no devuelve bien si lo ha borrado o no, y no logro coger a la vez lo de IDUsuario y el pathparam
-    //Es posible que el fallo está en Error, que lo intente usar en EnunciadosResource y no funcionaba, lo quite y funciono
-    //Volviendolo a pensar es posible que el fallo este al usuar objetos con un solo atributo (Error y IDUsuario solo tienen un atributo y ambos dan problemas)
 }

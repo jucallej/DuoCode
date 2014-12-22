@@ -14,7 +14,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -24,8 +23,8 @@ import javax.ws.rs.core.MediaType;
 import mappers.LeccionesMapper;
 import modelo.Tema;
 import mappers.TemaMapper;
+import modelo.ErrorSimple;
 import modelo.ErrorYID;
-import modelo.Lecciones;
 import modelo.Temas;
 import utilidades.DatosFijos;
 
@@ -129,7 +128,7 @@ public class TemasResource {
     @Path("{idTema}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Error putTema(@PathParam("idTema") int id, Tema tema) {
+    public ErrorSimple putTema(@PathParam("idTema") int id, Tema tema) {
         Tema aModificar = temaMapper.findById(id);
         String error = "si";
         if (aModificar != null){
@@ -137,20 +136,19 @@ public class TemasResource {
             temaMapper.update(tema);
             error = "no";
         }
-        return new Error(error);
+        return new ErrorSimple(error);
     }
     
     @DELETE
     @Path("{idTema}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Error deleteTema(@PathParam("idTema") int id){
+    public ErrorSimple deleteTema(@PathParam("idTema") int id){
         String posibleError = "si";
         Tema aBorrar = temaMapper.findById(id);
             if(this.temaMapper.delete(aBorrar))
                 posibleError = "no";
 
-        return new Error(posibleError);
+        return new ErrorSimple(posibleError);
     }
-    
 }

@@ -7,7 +7,6 @@ package com.test;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.util.List;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
@@ -15,7 +14,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -25,14 +23,12 @@ import javax.ws.rs.core.MediaType;
 import mappers.LeccionConstaEjerciciosMapper;
 import mappers.LeccionesMapper;
 import mappers.RequisitosLeccionesMapper;
-import mappers.TemaMapper;
-import modelo.Ejercicios;
 import modelo.ErrorYID;
 import modelo.IDsLeccionYEjercidio;
 import modelo.IDsLeccionYLeccionDesbloqueadora;
 import modelo.Leccion;
 import modelo.Lecciones;
-import modelo.Ruta;
+import modelo.ErrorSimple;
 import utilidades.DatosFijos;
 
 /**
@@ -108,7 +104,7 @@ public class LeccionesResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newLeccion(Leccion leccion) throws IOException {
+    public ErrorYID newLeccion(Leccion leccion) {
         leccion.setId(0);
         int nuevoId = this.leccioneMapper.insert(leccion);
         leccion.setId(nuevoId);
@@ -216,13 +212,13 @@ public class LeccionesResource {
     @Path("{idLeccion}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Error deleteTema(@PathParam("idLeccion") int id){ //Habría que comprobar la identidad de alguna manera, al igual que en los post y put
+    public ErrorSimple deleteTema(@PathParam("idLeccion") int id){ //Habría que comprobar la identidad de alguna manera, al igual que en los post y put
         String posibleError = "si";
         Leccion aBorrar = leccioneMapper.findById(id);
             if(this.leccioneMapper.delete(aBorrar))
                 posibleError = "no";
 
-        return new Error(posibleError);
+        return new ErrorSimple(posibleError);
     }
     
     

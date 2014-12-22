@@ -13,14 +13,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Julián
  */
 @XmlRootElement
-public class Error {
+public class ErrorSimple {
     @XmlElement(name="error")
     private String error;
 
-    public Error() {
+    public ErrorSimple() {
     }
 
-    public Error(String error) {
+    public ErrorSimple(String error) {
         this.error = error;
     }
 

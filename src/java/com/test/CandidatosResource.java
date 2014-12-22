@@ -29,9 +29,12 @@ import mappers.UsuarioMapper;
 import mappers.UsuarioVotaCandidatoMapper;
 import modelo.Candidato;
 import modelo.Candidatos;
+import modelo.ErrorSimple;
 import modelo.ErrorYID;
+import modelo.IDUsuario;
 import modelo.Usuario;
 import modelo.UsuarioVotaCandidato;
+import modelo.VotoIDUsuario;
 import utilidades.DatosFijos;
 
 /**
@@ -77,7 +80,6 @@ public class CandidatosResource {
     @GET 
     @Produces(MediaType.APPLICATION_JSON)
     public Candidatos getCandidatos() {
-        
         return new Candidatos(this.candidatoMapper.findAll());
     }
     
@@ -98,30 +100,36 @@ public class CandidatosResource {
     @GET
     @Path("{idCandidato}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Candidato getCandidato(@PathParam("idCandidato") int id) {
         //TODO return proper representation object
-        return candidatoMapper.findById(id);
+        Candidato candidato = candidatoMapper.findById(id);
+        //Aquí habría que mirar la tabla usuariovotacandidato y ver los votos que tiene -> candidato.setvotos(votosMapper.algo());
+        return candidato;
     }
     
     @PUT
     @Path("{idCandidato}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String putCandidato(@PathParam("idCandidato") int idCandidato) {
-        int idUsuario=1;
+    /*Poner en raw por ej
+    {"idUsuario": 1, "voto":"pos"}
+    */
+    public ErrorSimple putCandidato(@PathParam("idCandidato") int idCandidato, VotoIDUsuario votoIDUsuario) {
+        //No hace falta decirle al usuario que ha votado no? eso ya lo sabrá el. Y el usuario podría votar positivo si ya había votado positvo para quitar el voto. 
+        //Es decir hace falta pedir si el voto es "pos" o "neg" tambien.
         Candidato aModificar = candidatoMapper.findById(idCandidato);
-        Usuario usuario = usuarioMapper.findById(idUsuario);
-        String voto = "Ha ocurrido un error";
-        if(aModificar != null && usuario != null){
-            UsuarioVotaCandidato uvc = new UsuarioVotaCandidato(idUsuario, idCandidato);
-            voto = "positivo";
+        Usuario usuario = usuarioMapper.findById(votoIDUsuario.getIdUsuario());
+        String error = "si";
+
+        if(aModificar != null && usuario != null){ //Por aquí creo que hay que modificar algo, según el usuario voto pos o neg
+            UsuarioVotaCandidato uvc = new UsuarioVotaCandidato(votoIDUsuario.getIdUsuario(), idCandidato);
+            error = "no";
             if(usuarioVotaCandidatoMapper.insert(uvc) == -1){
                 usuarioVotaCandidatoMapper.delete(uvc);
-                voto = "negativo";
             }
         }
-        return voto;
+        
+        return new ErrorSimple(error);
     }
     
     
@@ -129,12 +137,12 @@ public class CandidatosResource {
     @Path("{idCandidato}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Error deleteCandidato(@PathParam("idCandidato") int id){
+    public ErrorSimple deleteCandidato(@PathParam("idCandidato") int id){
         String posibleError = "si";
         Candidato aBorrar = candidatoMapper.findById(id);
             if(this.candidatoMapper.delete(aBorrar))
                 posibleError = "no";
 
-        return new Error(posibleError);
+        return new ErrorSimple(posibleError);
     }
 }

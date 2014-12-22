@@ -7,7 +7,6 @@ package com.test;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
-import java.io.IOException;
 import java.util.Date;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
@@ -15,7 +14,6 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
@@ -23,11 +21,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.EnunciadoMapper;
-import modelo.Ejercicios;
 import modelo.Enunciado;
 import modelo.Enunciados;
+import modelo.ErrorSimple;
 import modelo.ErrorYID;
-import modelo.IDUsuario;
 import utilidades.DatosFijos;
 
 /**
@@ -101,7 +98,7 @@ public class EnunciadosResource {
     @Path("{idEnunciado}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Error putEnunciado(@PathParam("idEnunciado") int idEnunciado, Enunciado enunciado) {
+    public ErrorSimple putEnunciado(@PathParam("idEnunciado") int idEnunciado, Enunciado enunciado) {
         Enunciado aModificar = enunciadoMapper.findById(idEnunciado);
         String error = "si";
         if (aModificar != null){
@@ -111,21 +108,19 @@ public class EnunciadosResource {
             error = "no";
         }
         
-        return new Error(error);
+        return new ErrorSimple(error);
     }
     
     @DELETE
     @Path("{idEnunciado}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Error deleteEnunciado(@PathParam("idEnunciado") int idEnunciado){//, IDUsuario nombre){
+    public ErrorSimple deleteEnunciado(@PathParam("idEnunciado") int idEnunciado){
         String posibleError = "si";
         Enunciado aBorrar = enunciadoMapper.findById(idEnunciado);
-        //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario())){
-            if(this.enunciadoMapper.delete(aBorrar))
-                posibleError = "no";
+        if(this.enunciadoMapper.delete(aBorrar))
+            posibleError = "no";
 
-        //System.out.println(posibleError);
-        return new Error(posibleError);
+        return new ErrorSimple(posibleError);
     }
 }
