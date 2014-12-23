@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `candidato` (
   `idEjercicio` int(20) unsigned NOT NULL,
   `lenguajeOrigen` varchar(20) NOT NULL,
   `lenguajeDestino` varchar(20) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `desbloqueadapor`;
 CREATE TABLE IF NOT EXISTS `desbloqueadapor` (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `desbloqueadapor` (
 DROP TABLE IF EXISTS `ejercicio`;
 CREATE TABLE IF NOT EXISTS `ejercicio` (
 `ID` int(20) unsigned NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `enunciado`;
 CREATE TABLE IF NOT EXISTS `enunciado` (
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `envio` (
   `idEjercicio` int(20) unsigned NOT NULL,
   `lenguajeOrigen` varchar(20) NOT NULL,
   `lenguajeDestino` varchar(20) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `favorito`;
 CREATE TABLE IF NOT EXISTS `favorito` (
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `leccion` (
   `titulo` varchar(50) NOT NULL,
   `descripcion` text,
   `idTema` int(20) unsigned NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `leccionconstaejercicio`;
 CREATE TABLE IF NOT EXISTS `leccionconstaejercicio` (
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `tema` (
   `orden` int(20) unsigned NOT NULL,
   `titulo` varchar(50) NOT NULL,
   `descripcion` text
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `usuario`;
 CREATE TABLE IF NOT EXISTS `usuario` (
@@ -97,13 +97,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `correo` varchar(20) NOT NULL,
   `pass` varchar(20) NOT NULL,
   `rol` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-DROP TABLE IF EXISTS `usuariocompletaleccion`;
-CREATE TABLE IF NOT EXISTS `usuariocompletaleccion` (
-  `idUsuario` int(20) unsigned NOT NULL DEFAULT '0',
-  `idLeccion` int(20) unsigned NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `usuariovotacandidato`;
 CREATE TABLE IF NOT EXISTS `usuariovotacandidato` (
@@ -125,7 +119,7 @@ ALTER TABLE `enunciado`
  ADD PRIMARY KEY (`ID`), ADD KEY `idEjercicio` (`idEjercicio`), ADD KEY `lenguaje` (`lenguaje`);
 
 ALTER TABLE `envio`
- ADD PRIMARY KEY (`ID`), ADD KEY `lenguajeOrigen` (`lenguajeOrigen`), ADD KEY `lenguajeDestino` (`lenguajeDestino`), ADD KEY `lenguajeOrigen_2` (`lenguajeOrigen`,`lenguajeDestino`), ADD KEY `idUsuario` (`idUsuario`), ADD KEY `idEjercicio` (`idEjercicio`);
+ ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `lenguajeOrigen` (`lenguajeOrigen`), ADD UNIQUE KEY `lenguajeDestino` (`lenguajeDestino`), ADD KEY `idUsuario` (`idUsuario`), ADD KEY `idEjercicio` (`idEjercicio`);
 
 ALTER TABLE `favorito`
  ADD PRIMARY KEY (`idUsuario`,`idEjercicio`,`lenguajeOrigen`,`lenguajeDestino`), ADD KEY `idEjercicio` (`idEjercicio`), ADD KEY `lenguajeOrigen` (`lenguajeOrigen`), ADD KEY `lenguajeDestino` (`lenguajeDestino`);
@@ -144,9 +138,6 @@ ALTER TABLE `tema`
 
 ALTER TABLE `usuario`
  ADD PRIMARY KEY (`ID`);
-
-ALTER TABLE `usuariocompletaleccion`
- ADD PRIMARY KEY (`idUsuario`,`idLeccion`), ADD KEY `idLeccion` (`idLeccion`);
 
 ALTER TABLE `usuariovotacandidato`
  ADD PRIMARY KEY (`idUsuario`,`idCandidato`), ADD KEY `idCandidato` (`idCandidato`);
@@ -200,10 +191,6 @@ ADD CONSTRAINT `leccion_ibfk_1` FOREIGN KEY (`idTema`) REFERENCES `tema` (`ID`) 
 ALTER TABLE `leccionconstaejercicio`
 ADD CONSTRAINT `leccionconstaejercicio_ibfk_1` FOREIGN KEY (`idLeccion`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `leccionconstaejercicio_ibfk_2` FOREIGN KEY (`idEjercicio`) REFERENCES `ejercicio` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `usuariocompletaleccion`
-ADD CONSTRAINT `usuariocompletaleccion_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `usuariocompletaleccion_ibfk_2` FOREIGN KEY (`idLeccion`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `usuariovotacandidato`
 ADD CONSTRAINT `usuariovotacandidato_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
