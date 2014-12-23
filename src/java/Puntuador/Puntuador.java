@@ -37,6 +37,8 @@ public class Puntuador {
     Falta la tabla leccionesCompletadas o similar y un atributo en usuariovotacandidato para saber si el voto es positivo o negativo no?
 
     Falta como hacer y borrar favoritos en los requisitos. En un recurso nuevo (favoritos) un post para crearlos y un delete?¿ Que así se puede hacer fácil.
+    
+    FALLA DELETE DE FAV
 
     */
 }

@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.test.EjerciciosResource.class);
         resources.add(com.test.EnunciadosResource.class);
         resources.add(com.test.EnviosResource.class);
+        resources.add(com.test.FavoritosResource.class);
         resources.add(com.test.HolaMundoResource.class);
         resources.add(com.test.LeccionesResource.class);
         resources.add(com.test.LenguajesResource.class);
