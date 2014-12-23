@@ -33,12 +33,17 @@ public class Puntuador {
     
     /* ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡NUEVO!!!!!!!!!!!!!!!!!!
     Lo de que no devolvia Error era porque cogia la clase error de java (la de las expcepciones) en vez de la nuestra. Ya lo he cambiado (creo que no me he saltado nada).
-
-    Falta la tabla leccionesCompletadas o similar y un atributo en usuariovotacandidato para saber si el voto es positivo o negativo no?
-
-    Falta como hacer y borrar favoritos en los requisitos. En un recurso nuevo (favoritos) un post para crearlos y un delete?¿ Que así se puede hacer fácil.
     
-    FALLA DELETE DE FAV
+    FALLA DELETE DE FAV 
+    (añadido)->> ni idea es raro, no devuleve nada, es como si no se meteira en el método. Por cierto lo de
+    boolean error = favoritoMapper.delete(favorito); no estoy seguro que el delete devuelva un boolean, que modifique el insert para que devolviera el int del autoincrement
+    y queria modificar el delete, pero no se si lo llegué a hacer
+    
+    Lo de que fallava lo de candidatos era por un metodo en UsuarioVotaCandidatoMapper
+    @Override
+    protected Object[] serializeKey(UsuarioVotaCandidato key) {
+        return new Object[]{key.getIdUsuario(), key.getIdCandidato()}; // y estaba  return new Object[]{key}; 
+    }
 
     */
 }

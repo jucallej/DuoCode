@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
@@ -31,6 +32,9 @@ public class Usuario {
     
     @XmlElement(name="rol")
     private short rol;
+    
+    @XmlElement(name="leccionesCompletadas")
+    private List<Integer> leccionesCompletadas;
     
     @XmlList
     private List<Favorito> favoritos;
@@ -114,5 +118,12 @@ public class Usuario {
 
     public void setFavoritos(List<Favorito> favoritos) {
         this.favoritos = favoritos;
+    }
+
+    public void setLeccionesTerminadas(List<UsuarioCompletaLeccion> usuarioCompletaLeccionDeUnUsuario) {
+        leccionesCompletadas = new ArrayList<>();
+        for (UsuarioCompletaLeccion leccion: usuarioCompletaLeccionDeUnUsuario){
+            leccionesCompletadas.add(leccion.getIdLeccion());
+        }
     }
 }

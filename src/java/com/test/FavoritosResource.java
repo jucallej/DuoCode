@@ -22,7 +22,7 @@ import modelo.ErrorSimple;
 import modelo.ErrorYID;
 import modelo.Favorito;
 import modelo.Favoritos;
-import utilidades.Comprobadores;
+
 import utilidades.DatosFijos;
 
 /**
@@ -67,9 +67,10 @@ public class FavoritosResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newFavorito(Favorito favorito){
+    public ErrorSimple newFavorito(Favorito favorito){
         int posibleError = favoritoMapper.insert(favorito);
-        return new ErrorYID(posibleError);
+        String error = (posibleError<0)? "si":"no";
+        return new ErrorSimple(error); //En realidad no hay id
     }
     
     @DELETE

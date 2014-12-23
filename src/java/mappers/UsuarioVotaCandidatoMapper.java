@@ -42,7 +42,7 @@ public class UsuarioVotaCandidatoMapper extends AbstractMapper<UsuarioVotaCandid
 
     @Override
     protected Object[] serializeKey(UsuarioVotaCandidato key) {
-        return new Object[]{key};
+        return new Object[]{key.getIdUsuario(), key.getIdCandidato()};
     }
 
     @Override
@@ -57,5 +57,9 @@ public class UsuarioVotaCandidatoMapper extends AbstractMapper<UsuarioVotaCandid
     
     public List<UsuarioVotaCandidato> getVotosDeUnUsuario(int idUsuario){
         return this.findByConditions(new QueryCondition[]{new QueryCondition("idUsuario", Operator.EQ, idUsuario)});
+    }
+    
+    public List<UsuarioVotaCandidato> getVotosDeUnCandidato(int idCandidato){
+        return this.findByConditions(new QueryCondition[]{new QueryCondition("idCandidato", Operator.EQ, idCandidato)});
     }
 }

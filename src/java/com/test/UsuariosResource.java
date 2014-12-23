@@ -23,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import mappers.CandidatoMapper;
 import mappers.EnvioMapper;
 import mappers.FavoritoMapper;
+import mappers.UsuarioCompletaLeccionMapper;
 import mappers.UsuarioMapper;
 import modelo.ErrorSimple;
 import modelo.ErrorYID;
@@ -44,6 +45,7 @@ public class UsuariosResource {
     private EnvioMapper envioMapper;
     private CandidatoMapper candidatoMapper;
     private FavoritoMapper favoritoMapper;
+    private UsuarioCompletaLeccionMapper usuarioCompletaLeccionMapper;
 
     /**
      * Creates a new instance of UsuariosResource
@@ -70,6 +72,7 @@ public class UsuariosResource {
         envioMapper = new EnvioMapper(dt);
         candidatoMapper = new CandidatoMapper(dt);
         favoritoMapper = new FavoritoMapper(dt);
+        usuarioCompletaLeccionMapper = new UsuarioCompletaLeccionMapper(dt);
     }
     
     @GET
@@ -78,7 +81,7 @@ public class UsuariosResource {
         List<Usuario> usuarios = usuarioMapper.findAll();
         return new Usuarios(usuarios);
     }
-    /**
+    /*
     //Habría que diferenciar los dos Get.
     @GET
     @Path("{correoNick}")
@@ -93,12 +96,12 @@ public class UsuariosResource {
         else if(hola2.size()==1)
             id = hola2.get(0).getId();
         return new ErrorYID(id);
-    }**/
+    }*/
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newUsuario(Usuario usuario) throws IOException {
+    public ErrorYID newUsuario(Usuario usuario) {
         usuario.setId(0);
         usuario.setRol((short)0);
         int nuevoID = usuarioMapper.insert(usuario);
@@ -118,6 +121,7 @@ public class UsuariosResource {
         usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));
         usuario.setCandidatosPropuestos(this.candidatoMapper.getCandidatosPropuestos(usuario.getId()));
         usuario.setFavoritos(this.favoritoMapper.getEFavoritosDeUnUsuario(usuario.getId()));
+        usuario.setLeccionesTerminadas(this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(usuario.getId()));
         
         return usuario;
     }
@@ -129,8 +133,8 @@ public class UsuariosResource {
     public ErrorSimple deleteUsuario(@PathParam("idUsuario") int id){
         String posibleError = "si";
         Usuario aBorrar = usuarioMapper.findById(id);
-            if(this.usuarioMapper.delete(aBorrar))
-                posibleError = "no";
+        if(this.usuarioMapper.delete(aBorrar))
+            posibleError = "no";
 
         return new ErrorSimple(posibleError);
     }

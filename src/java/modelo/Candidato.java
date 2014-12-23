@@ -5,8 +5,11 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,6 +44,9 @@ public class Candidato {
 
     @XmlElement(name="lenguajeDestino")
     private String lenguajeDestino;
+    
+    @XmlElement(name="votos")
+    private List<Integer> votos;
 
     
      public Candidato() {
@@ -102,6 +108,14 @@ public class Candidato {
     
     public Date setFecha(Date fechaCandidato) {
         return this.fecha = fechaCandidato;
+    }
+
+    public void setVotos(List<UsuarioVotaCandidato> votosDeUnCandidato) {
+        this.votos = new ArrayList<>();
+        
+        for (UsuarioVotaCandidato voto: votosDeUnCandidato){
+            this.votos.add(voto.getIdUsuario());
+        }
     }
    
 }
