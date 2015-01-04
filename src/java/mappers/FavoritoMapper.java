@@ -7,9 +7,11 @@ package mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import javax.sql.DataSource;
 import modelo.Favorito;
+import modelo.Favoritos;
 
 /**
  *
@@ -58,5 +60,23 @@ public class FavoritoMapper extends AbstractMapper <Favorito, Favorito>{
     
     public List<Favorito> getEFavoritosDeUnUsuario(int idUsuario){
         return this.findByConditions(new QueryCondition[]{new QueryCondition("idUsuario", Operator.EQ, idUsuario)});
+    }
+    
+    public boolean updateFavoritos(Favoritos favoritos, int usuario){
+       int idUsuario = favoritos.comprobarQueElUsuarioSiempreEsElMismo(usuario);
+       boolean error = (idUsuario == -1);
+       if (!error){
+           List<Favorito> favoritosABorrar = getEFavoritosDeUnUsuario(usuario);
+           
+           for (Favorito favorito : favoritosABorrar){
+               delete(favorito);
+           }
+           
+           for(Favorito favorito : favoritos.getFavoritos()){
+               insert(favorito);
+           }
+       }
+       
+       return error; 
     }
 }

@@ -3,15 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.test;
+package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
 import javax.sql.DataSource;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
+
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -19,7 +21,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import mappers.FavoritoMapper;
 import modelo.ErrorSimple;
-import modelo.ErrorYID;
 import modelo.Favorito;
 import modelo.Favoritos;
 
@@ -73,12 +74,14 @@ public class FavoritosResource {
         return new ErrorSimple(error); //En realidad no hay id
     }
     
-    @DELETE
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteFavorito(Favorito favorito){
-        boolean error = favoritoMapper.delete(favorito);
-        String posibleError = (error==false)? "si":"no";
+    //En Header Form = "userID", "1"
+    //En Payload(RAW) {"favoritos":[{"idUsuario":1,"idEjercicio":4,"lenguajeOrigen":"C++","lenguajeDestino":"C++"},{"idUsuario":1,"idEjercicio":4,"lenguajeOrigen":"Java","lenguajeDestino":"C++"}]} 
+    public ErrorSimple deleteFavorito(Favoritos favorito, @HeaderParam("userID") int usuario){
+        boolean error = favoritoMapper.updateFavoritos(favorito, usuario);
+        String posibleError = (error==true)? "si":"no";
         return new ErrorSimple(posibleError);
     }
 }

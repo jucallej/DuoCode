@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.test;
+package rest;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -29,16 +29,15 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.test.CandidatosResource.class);
-        resources.add(com.test.EjerciciosResource.class);
-        resources.add(com.test.EnunciadosResource.class);
-        resources.add(com.test.EnviosResource.class);
-        resources.add(com.test.FavoritosResource.class);
-        resources.add(com.test.HolaMundoResource.class);
-        resources.add(com.test.LeccionesResource.class);
-        resources.add(com.test.LenguajesResource.class);
-        resources.add(com.test.TemasResource.class);
-        resources.add(com.test.UsuariosResource.class);
+        resources.add(rest.CandidatosResource.class);
+        resources.add(rest.EjerciciosResource.class);
+        resources.add(rest.EnunciadosResource.class);
+        resources.add(rest.EnviosResource.class);
+        resources.add(rest.FavoritosResource.class);
+        resources.add(rest.LeccionesResource.class);
+        resources.add(rest.LenguajesResource.class);
+        resources.add(rest.TemasResource.class);
+        resources.add(rest.UsuariosResource.class);
     }
     
 }

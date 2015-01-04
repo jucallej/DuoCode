@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Puntuador;
+package puntuador2;
 
 import modelo.Envio;
 
@@ -44,6 +44,22 @@ public class Puntuador {
     protected Object[] serializeKey(UsuarioVotaCandidato key) {
         return new Object[]{key.getIdUsuario(), key.getIdCandidato()}; // y estaba  return new Object[]{key}; 
     }
+    
+    
+    ---------------------------------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------------------------------------------
+    
+    Sobre FavoritosResource    
+    http://stackoverflow.com/questions/25229880/how-to-send-enclose-data-in-delete-request-in-jersey-client
+    http://stackoverflow.com/questions/299628/is-an-entity-body-allowed-for-an-http-delete-request
+    
+    Parece que el delete no tiene que llevar cosas en el Payload, así que lo he cambiado por un put, que puede servir también.
+    Para saber el idUsuario si le pasas el array vacio (quieres borrarlos todos) le he puesto un HeaderParam (así ya tenemos ej, aunque es lo mismo que los otros)
+    
+    He quitado la mayuscula de el paquete puntuador y que cambiado a rest el otro paquete, que parece que tiene más lógica. He borrado el holaMundo.
+    
+    Habría que pegarle un repaso, quitando comentarios que igual no hacen falta y dejandolo bonito y tal. Y deberiamos ponemos el nombre de los tres no?
 
     */
 }
