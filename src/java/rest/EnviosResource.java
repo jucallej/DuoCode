@@ -5,7 +5,7 @@
  */
 package rest;
 
-import puntuador2.Puntuador;
+import puntuador.Puntuador;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
 import java.util.Date;
