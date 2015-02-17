@@ -14,15 +14,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 public class UsuarioVotaCandidato {
     private int idUsuario;
-    
     private int idCandidato;
-    
+    private int voto;
     public UsuarioVotaCandidato() {
     }
 
-    public UsuarioVotaCandidato(int idUsuario, int idCandidato) {
+    public UsuarioVotaCandidato(int idUsuario, int idCandidato, int voto) {
         this.idUsuario = idUsuario;
         this.idCandidato = idCandidato;
+        this.voto = voto;
     }
 
     public int getIdUsuario() {
@@ -32,7 +32,10 @@ public class UsuarioVotaCandidato {
     public int getIdCandidato() {
         return idCandidato;
     }
-    
+
+    public int getVoto() {
+        return voto;
+    }    
 }
 
 

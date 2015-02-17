@@ -27,12 +27,12 @@ public class UsuarioVotaCandidatoMapper extends AbstractMapper<UsuarioVotaCandid
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"idUsuario", "idCandidato"};
+        return new String[] {"idUsuario", "idCandidato", "voto"};
     }
 
     @Override
     protected Object[] serializeObject(UsuarioVotaCandidato object) {
-        return new Object[]{object.getIdUsuario(), object.getIdCandidato()};
+        return new Object[]{object.getIdUsuario(), object.getIdCandidato(), object.getVoto()};
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UsuarioVotaCandidatoMapper extends AbstractMapper<UsuarioVotaCandid
 
     @Override
     protected UsuarioVotaCandidato buildObject(ResultSet rs) throws SQLException {
-        return new UsuarioVotaCandidato(rs.getInt("idUsuario"), rs.getInt("idCandidato"));
+        return new UsuarioVotaCandidato(rs.getInt("idUsuario"), rs.getInt("idCandidato"), rs.getInt("voto"));
     }
     
     @Override

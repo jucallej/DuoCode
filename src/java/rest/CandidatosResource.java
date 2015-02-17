@@ -110,22 +110,29 @@ public class CandidatosResource {
     }
     
     @PUT
-    @Path("{idCandidato}")
+    @Path("{idCandidato}/{voto}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     //Poner en raw el id del usuario: {"idUsuario":1}
-    public ErrorSimple putCandidato(@PathParam("idCandidato") int idCandidato, IDUsuario idUsuario) {
+    //poner en la url /candidatos/3/1  (3 es el idCandidato y 1 es voto positivo, 0 es negativo)
+    public ErrorSimple putCandidato(@PathParam("idCandidato") int idCandidato, IDUsuario idUsuario, @PathParam("voto") int posNeg) {
         Candidato aModificar = candidatoMapper.findById(idCandidato);
         Usuario usuario = usuarioMapper.findById(idUsuario.getIdUsuario());
         String error = "si";
 
         if(aModificar != null && usuario != null){
-            UsuarioVotaCandidato uvc = new UsuarioVotaCandidato(idUsuario.getIdUsuario(), idCandidato);
+            UsuarioVotaCandidato nuevo = new UsuarioVotaCandidato(idUsuario.getIdUsuario(), idCandidato, posNeg);
             error = "no";
             //Si no existe lo creamos, si existe lo borramos
-            if (usuarioVotaCandidatoMapper.findById(uvc) == null) usuarioVotaCandidatoMapper.insert(uvc);
-            
-            else usuarioVotaCandidatoMapper.delete(uvc);
+            UsuarioVotaCandidato antiguo = usuarioVotaCandidatoMapper.findById(nuevo); //Si el nuevo ya existe se guarda en antiguo
+            if (antiguo == null){
+                usuarioVotaCandidatoMapper.insert(nuevo);
+            }
+            else {
+                if(antiguo.getVoto() == nuevo.getVoto())
+                    usuarioVotaCandidatoMapper.delete(antiguo);
+                else usuarioVotaCandidatoMapper.update(nuevo);
+            }
         }
         
         return new ErrorSimple(error);
