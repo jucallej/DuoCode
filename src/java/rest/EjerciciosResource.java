@@ -18,6 +18,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.EjercicioMapper;
 import mappers.EnunciadoMapper;
@@ -81,9 +82,9 @@ public class EjerciciosResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newEjercicio(IDUsuario nombre){
-        int posibleError = -1;
-        if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario()))
+    public ErrorYID newEjercicio(){//IDUsuario nombre){
+      int posibleError = -1;
+        //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario()))
             posibleError = ejercicioMapper.insert(0);
         return new ErrorYID(posibleError);
     }
@@ -96,6 +97,7 @@ public class EjerciciosResource {
     @Path("{idEjercicio}")
     @Produces(MediaType.APPLICATION_JSON)
     public Enunciados getEjercicio(@PathParam("idEjercicio") int idEjercicio) {
+        if (ejercicioMapper.findById(idEjercicio) == null) throw new WebApplicationException(404);
         return new Enunciados(enunciadoMapper.getEnunciadosDeUnEjercicio(idEjercicio));
     }
     

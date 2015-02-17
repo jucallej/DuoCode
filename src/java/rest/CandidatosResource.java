@@ -21,6 +21,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.CandidatoMapper;
+import mappers.CandidatoMapperSinGestionadoPor;
 import mappers.UsuarioMapper;
 import mappers.UsuarioVotaCandidatoMapper;
 import modelo.Candidato;
@@ -46,6 +47,7 @@ public class CandidatosResource {
     private CandidatoMapper candidatoMapper;
     private UsuarioMapper usuarioMapper;
     private UsuarioVotaCandidatoMapper usuarioVotaCandidatoMapper;
+    private CandidatoMapperSinGestionadoPor candidatoMapperSinGestionadoPor;
 
     /**
      * Creates a new instance of CandidatosResource
@@ -71,6 +73,7 @@ public class CandidatosResource {
         candidatoMapper = new CandidatoMapper(dt);
         usuarioMapper = new UsuarioMapper(dt);
         usuarioVotaCandidatoMapper = new UsuarioVotaCandidatoMapper(dt);
+        candidatoMapperSinGestionadoPor = new CandidatoMapperSinGestionadoPor(dt);
     }
 
     @GET 
@@ -85,7 +88,11 @@ public class CandidatosResource {
     public ErrorYID newCandidato(Candidato candidato){
         candidato.setId(0);
         candidato.setFecha(new Date());
-        int nuevoID = candidatoMapper.insert(candidato);
+        int nuevoID;
+        if(candidato.getGestionadoPor() <= 0){
+            nuevoID = candidatoMapperSinGestionadoPor.insert(candidato);
+        }
+        else nuevoID = candidatoMapper.insert(candidato);
         return new ErrorYID(nuevoID);
     }
     

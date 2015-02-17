@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.EnunciadoMapper;
 import modelo.Enunciado;
@@ -88,7 +89,9 @@ public class EnunciadosResource {
     @Path("{idEnunciado}")
     @Produces(MediaType.APPLICATION_JSON)
     public Enunciado getEnunciado(@PathParam("idEnunciado") int idEnunciado) {
-        return enunciadoMapper.findById(idEnunciado);
+        Enunciado enunciado = enunciadoMapper.findById(idEnunciado);
+        if (enunciado == null) throw new WebApplicationException(404);
+        return enunciado;
     }
     
     // {"nombreLenguaje": "Java", "codigo": "codigo del enunciado", "idUsuario": "1", "idDelEjercicioQueResuelve": "3"}

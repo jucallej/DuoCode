@@ -7,6 +7,7 @@ package mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import modelo.Tema;
 
@@ -52,6 +53,10 @@ public class TemaMapper extends AbstractMapper <Tema, Integer>{
     @Override
     protected Integer getKey(Tema object) {
         return object.getId();
+    }
+    
+    public List<Tema> getTemasConOrden(int orden){
+        return this.findByConditions(new QueryCondition[]{new QueryCondition("orden", Operator.EQ, orden)});
     }
 
 }

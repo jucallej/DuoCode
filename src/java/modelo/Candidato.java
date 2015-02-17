@@ -57,7 +57,10 @@ public class Candidato {
         this.codigo = codigo;
         this.fecha = fecha;
         this.estado = estado;
-        this.gestionadoPor = gestionadoPor;
+        if (gestionadoPor >0)
+            this.gestionadoPor = gestionadoPor;
+        else 
+            this.gestionadoPor = -1;
         this.idUsuario = idUsuario;
         this.idEjercicio = idEjercicio;
         this.lenguajeOrigen = lenguajeOrigen;
@@ -108,6 +111,10 @@ public class Candidato {
     
     public Date setFecha(Date fechaCandidato) {
         return this.fecha = fechaCandidato;
+    }
+
+    public void setGestionadoPor(int gestionadoPor) {
+        this.gestionadoPor = gestionadoPor;
     }
 
     public void setVotos(List<UsuarioVotaCandidato> votosDeUnCandidato) {

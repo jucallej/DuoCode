@@ -19,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.LenguajeMapper;
 import modelo.ErrorYNombreConfirmacion;
+import modelo.Lenguaje;
 import modelo.Lenguajes;
 import utilidades.DatosFijos;
 
@@ -71,8 +72,8 @@ public class LenguajesResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYNombreConfirmacion newLenguaje(String lenguaje){
-        int posibleError = lenguajeMapper.insert(lenguaje);
-        return new ErrorYNombreConfirmacion(posibleError, lenguaje);
+    public ErrorYNombreConfirmacion newLenguaje(Lenguaje lenguaje){
+        int posibleError = lenguajeMapper.insert(lenguaje.getNombre());
+        return new ErrorYNombreConfirmacion(posibleError, lenguaje.getNombre());
     }
 }

@@ -5,9 +5,12 @@
  */
 package modelo;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
+import utilidades.DatosFijos;
 
 /**
  *
@@ -15,14 +18,17 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Candidatos {
-    @XmlList
-    private List<Candidato> candidatos;
+    @XmlElement(name="candidatos")
+    private List<String> candidatos;
     
     public Candidatos() {
     }
 
     public Candidatos(List<Candidato> candidatos) {
-        this.candidatos = candidatos;
+        this.candidatos = new ArrayList<>();
+        for (Candidato candidato: candidatos){
+            this.candidatos.add(DatosFijos.RUTA_CANDIDATOS+candidato.getId());
+        }
     }
     
 }

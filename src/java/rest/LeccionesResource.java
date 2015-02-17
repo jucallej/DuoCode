@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.LeccionConstaEjerciciosMapper;
 import mappers.LeccionesMapper;
@@ -140,14 +141,17 @@ public class LeccionesResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Leccion getLeccion(@PathParam("idLeccion") int idLeccion) {
         Leccion leccion = leccioneMapper.findById(idLeccion);
-        
-        List<IDsLeccionYEjercidio> ejerciciosDeLaLeccion = leccionConstaEjerciciosMapper.getIDsLeccionYEjercidioConIDELeccion(leccion.getId());
-        leccion.setEjercicios(ejerciciosDeLaLeccion);
-        
-        List<IDsLeccionYLeccionDesbloqueadora> requisitos = this.requisitosLeccionesMapper.getIDsLeccionYDesbloqueadorasConIDELeccion(leccion.getId());
-        leccion.setLeccionesDesbloqueadoras(requisitos);
-        
-        return leccion;
+        if (leccion != null){
+            List<IDsLeccionYEjercidio> ejerciciosDeLaLeccion = leccionConstaEjerciciosMapper.getIDsLeccionYEjercidioConIDELeccion(leccion.getId());
+            leccion.setEjercicios(ejerciciosDeLaLeccion);
+
+            List<IDsLeccionYLeccionDesbloqueadora> requisitos = this.requisitosLeccionesMapper.getIDsLeccionYDesbloqueadorasConIDELeccion(leccion.getId());
+            leccion.setLeccionesDesbloqueadoras(requisitos);
+
+            return leccion;
+        }
+        else
+            throw new WebApplicationException(404);
     }
     /** Es complejito, pero bueno ... ahí queda y parece funcionar
      * EJ (en principio se le puede putear que sigue funcionando (array vacios funciona)):

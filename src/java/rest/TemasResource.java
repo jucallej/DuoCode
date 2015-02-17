@@ -19,6 +19,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.LeccionesMapper;
 import modelo.Tema;
@@ -94,6 +95,8 @@ public class TemasResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public ErrorYID newTema(Tema tema) {
         tema.setId(0);
+        if(tema.getOrden() == 0 || temaMapper.getTemasConOrden(tema.getOrden()).size()>0)//0 es el int cuando no se le pasa en json
+            return new ErrorYID(-1);
         int nuevoID = temaMapper.insert(tema);
         return new ErrorYID(nuevoID);
     }
@@ -113,8 +116,12 @@ public class TemasResource {
     public Tema getTema(@PathParam("idTema") int idTema) {
         //TODO return proper representation object
         Tema tema = temaMapper.findById(idTema);
-        tema.setLecciones(this.leccioneMapper.getLeccionesDeUnTema(tema.getId()));
-        return tema;
+        if (tema != null){
+            tema.setLecciones(this.leccioneMapper.getLeccionesDeUnTema(tema.getId()));
+            return tema;
+        }
+        else
+            throw new WebApplicationException(404);
     }
     
     
