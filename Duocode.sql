@@ -108,7 +108,8 @@ CREATE TABLE IF NOT EXISTS `usuariocompletaleccion` (
 DROP TABLE IF EXISTS `usuariovotacandidato`;
 CREATE TABLE IF NOT EXISTS `usuariovotacandidato` (
   `idUsuario` int(20) unsigned NOT NULL,
-  `idCandidato` int(20) unsigned NOT NULL
+  `idCandidato` int(20) unsigned NOT NULL,
+  `voto` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -143,7 +144,7 @@ ALTER TABLE `tema`
  ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `usuario`
- ADD PRIMARY KEY (`ID`);
+ ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `nick` (`nick`,`correo`);
 
 ALTER TABLE `usuariocompletaleccion`
  ADD PRIMARY KEY (`idUsuario`,`idLeccion`), ADD KEY `idLeccion` (`idLeccion`);
