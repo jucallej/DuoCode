@@ -117,12 +117,12 @@ public class UsuariosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Usuario getUsuario1(@PathParam("idUsuario") int idUsuario) {
         Usuario usuario = usuarioMapper.findById(idUsuario);
-        
-        usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));
-        usuario.setCandidatosPropuestos(this.candidatoMapper.getCandidatosPropuestos(usuario.getId()));
-        usuario.setFavoritos(this.favoritoMapper.getEFavoritosDeUnUsuario(usuario.getId()));
-        usuario.setLeccionesTerminadas(this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(usuario.getId()));
-        
+        if(usuario!=null){//si el usuario existe nos ponemos a completarlo, si no existe devuelve null
+            usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));
+            usuario.setCandidatosPropuestos(this.candidatoMapper.getCandidatosPropuestos(usuario.getId()));
+            usuario.setFavoritos(this.favoritoMapper.getEFavoritosDeUnUsuario(usuario.getId()));
+            usuario.setLeccionesTerminadas(this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(usuario.getId()));
+        }
         return usuario;
     }
     

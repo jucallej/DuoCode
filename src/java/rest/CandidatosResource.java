@@ -118,23 +118,47 @@ public class CandidatosResource {
     public ErrorSimple putCandidato(@PathParam("idCandidato") int idCandidato, IDUsuario idUsuario, @PathParam("voto") int posNeg) {
         Candidato aModificar = candidatoMapper.findById(idCandidato);
         Usuario usuario = usuarioMapper.findById(idUsuario.getIdUsuario());
-        String error = "si";
+            String error = "si";
 
-        if(aModificar != null && usuario != null){
-            UsuarioVotaCandidato nuevo = new UsuarioVotaCandidato(idUsuario.getIdUsuario(), idCandidato, posNeg);
-            error = "no";
-            //Si no existe lo creamos, si existe lo borramos
-            UsuarioVotaCandidato antiguo = usuarioVotaCandidatoMapper.findById(nuevo); //Si el nuevo ya existe se guarda en antiguo
-            if (antiguo == null){
-                usuarioVotaCandidatoMapper.insert(nuevo);
+            if(aModificar != null && usuario != null){
+                UsuarioVotaCandidato nuevo = new UsuarioVotaCandidato(idUsuario.getIdUsuario(), idCandidato, posNeg);
+                error = "no";
+                //Si no existe lo creamos, si existe lo borramos
+                UsuarioVotaCandidato antiguo = usuarioVotaCandidatoMapper.findById(nuevo); //Si el nuevo ya existe se guarda en antiguo
+                if (antiguo == null){
+                    usuarioVotaCandidatoMapper.insert(nuevo);
+                }
+                else {
+                    if(antiguo.getVoto() == nuevo.getVoto())
+                        usuarioVotaCandidatoMapper.delete(antiguo);
+                    else usuarioVotaCandidatoMapper.update(nuevo);
+                }
             }
-            else {
-                if(antiguo.getVoto() == nuevo.getVoto())
-                    usuarioVotaCandidatoMapper.delete(antiguo);
-                else usuarioVotaCandidatoMapper.update(nuevo);
-            }
-        }
         
+        return new ErrorSimple(error);
+    } 
+    
+    
+    //Para que un usuario administrador (rol != 0) pueda gestionar un candidato
+    //se usa el Put del candidato con el id del usuario administrador en raw.
+    @PUT
+    @Path("{idCandidato}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    //Poner en raw el id del usuario: {"idUsuario":1}
+   
+    public ErrorSimple putCandidato(@PathParam("idCandidato") int idCandidato, IDUsuario idUsuario) {
+        Candidato aModificar = candidatoMapper.findById(idCandidato);
+        Usuario usuario = usuarioMapper.findById(idUsuario.getIdUsuario());
+       
+        String error = "si";
+        if(usuario.getId()!=0){
+        
+            error = "no";
+            aModificar.setGestionadoPor(usuario.getId());
+
+            candidatoMapper.update(aModificar);
+        }
         return new ErrorSimple(error);
     }
     
