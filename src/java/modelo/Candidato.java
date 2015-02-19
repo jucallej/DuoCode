@@ -117,6 +117,10 @@ public class Candidato {
         this.gestionadoPor = gestionadoPor;
     }
 
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
     public void setVotos(List<UsuarioVotaCandidato> votosDeUnCandidato) {
         this.votos = new ArrayList<>();
         

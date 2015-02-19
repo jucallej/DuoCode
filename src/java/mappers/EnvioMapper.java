@@ -48,7 +48,7 @@ public class EnvioMapper extends AbstractMapper <Envio, Integer>{
 
     @Override
     protected Envio buildObject(ResultSet rs) throws SQLException {
-        return new Envio(rs.getInt("ID"), rs.getString("codigo"), rs.getDate("fecha"), rs.getInt("puntuacion"), rs.getInt("idUsuario"), rs.getInt("idEjercicio"), rs.getString("lenguajeOrigen"), rs.getString("lenguajeDestino"));
+        return new Envio(rs.getInt("ID"), rs.getString("codigo"), rs.getTime("fecha"), rs.getInt("puntuacion"), rs.getInt("idUsuario"), rs.getInt("idEjercicio"), rs.getString("lenguajeOrigen"), rs.getString("lenguajeDestino"));
     }
 
     @Override

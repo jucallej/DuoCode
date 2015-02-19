@@ -47,7 +47,7 @@ public class CandidatoMapper extends AbstractMapper<Candidato, Integer>{
 
     @Override
     protected Candidato buildObject(ResultSet rs) throws SQLException {
-        return new Candidato(rs.getInt("ID"), rs.getString("codigo"), rs.getDate("fecha"), rs.getInt("estado"), rs.getInt("gestionadoPor"), rs.getInt("idUsuario"), rs.getInt("idEjercicio"), rs.getString("lenguajeOrigen"), rs.getString("lenguajeDestino"));
+        return new Candidato(rs.getInt("ID"), rs.getString("codigo"), rs.getTime("fecha"), rs.getInt("estado"), rs.getInt("gestionadoPor"), rs.getInt("idUsuario"), rs.getInt("idEjercicio"), rs.getString("lenguajeOrigen"), rs.getString("lenguajeDestino"));
     }
 
     @Override

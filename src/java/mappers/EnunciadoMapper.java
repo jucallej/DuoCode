@@ -48,7 +48,7 @@ public class EnunciadoMapper extends AbstractMapper <Enunciado, Integer>{
 
     @Override
     protected Enunciado buildObject(ResultSet rs) throws SQLException {
-        return new Enunciado(rs.getInt("ID"), rs.getString("texto"), rs.getInt("idEjercicio"), rs.getString("lenguaje"), rs.getDate("fecha") );
+        return new Enunciado(rs.getInt("ID"), rs.getString("texto"), rs.getInt("idEjercicio"), rs.getString("lenguaje"), rs.getTime("fecha") );
     }
 
     @Override
