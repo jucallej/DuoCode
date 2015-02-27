@@ -1,17 +1,15 @@
 body{
-	background-image: -webkit-gradient(linear, left bottom, right top, color-stop(0, #580818), color-stop(0.25, #580818), color-stop(0.25, #6f0a1e), color-stop(0.5, #6f0a1e), color-stop(0.5, #580818), color-stop(0.75, #580818), color-stop(0.75, #6f0a1e));
-	  background-size: 100px 100px;
-	  width:100%;
-	  height:100%;
-	);
+	background-color: #272822;
 	margin: 0;
 	padding: 0;
 	font-family: Verdana;
+	color: #fff;
 }
 
 .contenido{
-	background-color: #fff;
-	border-radius: 25px;
+	margin: 90px auto;
+	position: relative;
+	background-color: #171814;
 	box-shadow: 6px 6px 9px 0px rgba(0, 0, 0, 0.8);
   	padding: 2em;
   	margin-bottom: 2em;
@@ -36,14 +34,17 @@ body{
 }
 
 .header{
-	min-height: 2em; 
-	background-color: #fff;
+	z-index: 1000;
+	position: fixed;
+	width: 100%;
+	height: 70px; 
+	background-color: #171814;
 	text-align: center;
 	margin-bottom: 1em;
 }
 
 .header img{
-	height: 2em;
+	height: 1.5em;
 	width: auto;
 }
 
