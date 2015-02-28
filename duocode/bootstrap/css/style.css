@@ -64,11 +64,7 @@ body{
     height: 3em;
 }
 
-.collapsing{
-    background-color: #171814;
-}
-
-.collapse.in{
+.collapsing, .collapse.in, .breadcrumb{
     background-color: #171814;
 }
 
@@ -82,4 +78,41 @@ body{
 
 .boton{
 	margin-top: 2em;
+}
+
+.green{
+    color: #A6E22E !important;
+}
+
+.label{
+    margin: 1em;
+}
+
+pre, .codigoEditable{
+    margin-top: 0.5em;
+}
+
+.reomvePadding{
+    padding: 0em;
+}
+
+.padding{
+    padding: 2em;
+}
+
+.alert{
+    color: #A6E22E;
+}
+
+.incorrect{
+    color: red;
+}
+
+.favorito{
+    background-color: #FD971F;
+    margin-top: -0.3em;
+}
+
+.marcado{
+    color: #F92672;
 }
