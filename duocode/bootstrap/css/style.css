@@ -6,7 +6,7 @@ body{
 	color: #fff;
 }
 
-.contenido{
+.contenido, .lenguaje1, .lenguaje2{
 	margin: 90px auto;
 	position: relative;
 	background-color: #171814;
@@ -136,6 +136,7 @@ pre, .codigoEditable{
 .infoPersonal logo, .infoPersonal div{
     display: inline-block;
 }
+
 h3 {
     color: #A6E22E;
 }
@@ -143,4 +144,25 @@ h3 {
 .infoUsuario button{
     width: 100%;
     margin: 0.5em;
+}
+
+.comenzar{
+    min-width: 20%;
+    display: block;
+    margin: 0 auto 2em auto;
+    
+}
+
+.lenguaje1, .lenguaje2{
+	margin: 180px auto 50px auto;    
+}
+
+.lheader{
+    height: 150px;
+}
+
+.lheader img{
+    height: 3.5em;
+    width: auto;
+    margin-left: 50%;
 }
