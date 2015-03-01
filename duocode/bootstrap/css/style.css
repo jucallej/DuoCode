@@ -6,23 +6,17 @@ body{
 	color: #fff;
 }
 
-.contenido{
-	margin: 90px auto;
+.contenido, .lenguaje1{
+    margin: 90px auto;
+}
+
+.contenido, .lenguaje1, .lenguaje2{
 	position: relative;
 	background-color: #171814;
 	box-shadow: 6px 6px 9px 0px rgba(0, 0, 0, 0.8);
   	padding: 2em;
+    padding-top: 1em;
   	margin-bottom: 2em;
-}
-
-@media (min-width: 992px) {
-	.container1{
-		position: fixed;
-		max-width: 25%;
-	}	
-	.container{
-		width: 80%;
-	}
 }
 
 .left{
@@ -49,9 +43,23 @@ body{
 }
 
 .top{
+	margin: -0.2em auto 0 1em;
+    float: left;
+}
+
+.topMenu{
 	padding: 0.3em;
 	margin: 0 auto;
-	position: relative;
+    color: #F92672;
+}
+
+.navbar-toggle{
+    margin: 1em 3em 1em auto;
+    height: 3em;
+}
+
+.collapsing, .collapse.in, .breadcrumb{
+    background-color: #171814;
 }
 
 .clear{
@@ -64,4 +72,103 @@ body{
 
 .boton{
 	margin-top: 2em;
+}
+
+.green{
+    color: #A6E22E !important;
+}
+
+.label{
+    margin: 1em;
+}
+
+pre, .codigoEditable{
+    margin-top: 0.5em;
+}
+
+.reomvePadding{
+    padding: 0em;
+}
+
+.padding{
+    padding: 2em;
+}
+
+.alert{
+    color: #A6E22E;
+}
+
+.favorito{
+    background-color: #FD971F;
+    margin-top: -0.3em;
+}
+
+.marcado{
+    color: #F92672;
+}
+
+.container1{
+    color: #F92672;
+}
+
+.tituloCandidatos{
+    color: #F92672;
+}
+
+h3 {
+    color: #A6E22E;
+}
+
+.incorrect{
+    color: red !important;
+}
+
+.logo{
+    max-height: 8em;
+}
+
+.comenzar{
+    min-width: 20%;
+    display: block;
+    margin: 0 auto 2em auto;
+    
+}
+
+.lheader{
+    height: 150px;
+}
+
+.lheader img{
+    height: 3.5em;
+    width: auto;
+    margin-left: 50%;
+}
+
+.selectIdiomas{
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.emailPuntos{
+    margin-top: 1em;
+    color: white;
+}
+
+.btnLinks{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+@media (min-width: 992px) {
+	.container1{
+		position: fixed;
+		max-width: 25%;
+	}	
+	.container{
+		width: 80%;
+	}
+    
+    .lenguaje1, .lenguaje2{
+        margin: 180px auto 50px auto;    
+    }
 }
