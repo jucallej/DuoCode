@@ -6,24 +6,17 @@ body{
 	color: #fff;
 }
 
+.contenido, .lenguaje1{
+    margin: 90px auto;
+}
+
 .contenido, .lenguaje1, .lenguaje2{
-	margin: 90px auto;
 	position: relative;
 	background-color: #171814;
 	box-shadow: 6px 6px 9px 0px rgba(0, 0, 0, 0.8);
   	padding: 2em;
     padding-top: 1em;
   	margin-bottom: 2em;
-}
-
-@media (min-width: 992px) {
-	.container1{
-		position: fixed;
-		max-width: 25%;
-	}	
-	.container{
-		width: 80%;
-	}
 }
 
 .left{
@@ -105,10 +98,6 @@ pre, .codigoEditable{
     color: #A6E22E;
 }
 
-.incorrect{
-    color: red;
-}
-
 .favorito{
     background-color: #FD971F;
     margin-top: -0.3em;
@@ -117,33 +106,25 @@ pre, .codigoEditable{
 .marcado{
     color: #F92672;
 }
-.logo {
-    width: 35%;
-    height: auto;
-}
 
-.infoUsuario{
-    padding-top: 1em;
+.container1{
     color: #F92672;
 }
 
-.infoUsuario select {
-    float: right;
-    width: 8em;
-    color: black;
-}
-
-.infoPersonal logo, .infoPersonal div{
-    display: inline-block;
+.tituloCandidatos{
+    color: #F92672;
 }
 
 h3 {
     color: #A6E22E;
 }
 
-.infoUsuario button{
-    width: 100%;
-    margin: 0.5em;
+.incorrect{
+    color: red !important;
+}
+
+.logo{
+    max-height: 8em;
 }
 
 .comenzar{
@@ -151,10 +132,6 @@ h3 {
     display: block;
     margin: 0 auto 2em auto;
     
-}
-
-.lenguaje1, .lenguaje2{
-	margin: 180px auto 50px auto;    
 }
 
 .lheader{
@@ -165,4 +142,33 @@ h3 {
     height: 3.5em;
     width: auto;
     margin-left: 50%;
+}
+
+.selectIdiomas{
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.emailPuntos{
+    margin-top: 1em;
+    color: white;
+}
+
+.btnLinks{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+@media (min-width: 992px) {
+	.container1{
+		position: fixed;
+		max-width: 25%;
+	}	
+	.container{
+		width: 80%;
+	}
+    
+    .lenguaje1, .lenguaje2{
+        margin: 180px auto 50px auto;    
+    }
 }
