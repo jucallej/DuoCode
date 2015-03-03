@@ -58,7 +58,7 @@ body{
     height: 3em;
 }
 
-.collapsing, .collapse.in, .breadcrumb{
+.collapsing, .collapse.in, .breadcrumb, .collapse > div, .collapsing > div{
     background-color: #171814;
 }
 
@@ -180,4 +180,17 @@ a:hover{
 
 .popover-content{
     color: black;
+}
+
+.filaFavCand{
+    margin-bottom: 2em;
+}
+
+.terminarLeccion{
+    margin-bottom: 4em;
+}
+
+.ventajas{
+    color: white;
+    margin-top: 2em;
 }
