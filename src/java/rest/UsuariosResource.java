@@ -30,6 +30,7 @@ import modelo.ErrorYID;
 import modelo.Usuario;
 import modelo.Usuarios;
 import utilidades.DatosFijos;
+import utilidades.Utilidades;
 
 /**
  * REST Web Service
@@ -46,33 +47,20 @@ public class UsuariosResource {
     private CandidatoMapper candidatoMapper;
     private FavoritoMapper favoritoMapper;
     private UsuarioCompletaLeccionMapper usuarioCompletaLeccionMapper;
+    
+    static private ComboPooledDataSource cpds;
 
     /**
      * Creates a new instance of UsuariosResource
      */
     public UsuariosResource() {
-        DataSource dt = null;
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds = Utilidades.checkPoolNull(cpds);
         
-        try {
-                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
-        } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
-        cpds.setUser(DatosFijos.USER);
-        cpds.setPassword(DatosFijos.PASS);
-        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
-        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
-        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
-        dt = cpds;
-        
-        usuarioMapper = new UsuarioMapper(dt);
-        envioMapper = new EnvioMapper(dt);
-        candidatoMapper = new CandidatoMapper(dt);
-        favoritoMapper = new FavoritoMapper(dt);
-        usuarioCompletaLeccionMapper = new UsuarioCompletaLeccionMapper(dt);
+        usuarioMapper = new UsuarioMapper(cpds);
+        envioMapper = new EnvioMapper(cpds);
+        candidatoMapper = new CandidatoMapper(cpds);
+        favoritoMapper = new FavoritoMapper(cpds);
+        usuarioCompletaLeccionMapper = new UsuarioCompletaLeccionMapper(cpds);
     }
     
     @GET
@@ -115,7 +103,7 @@ public class UsuariosResource {
     @GET
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuario getUsuario1(@PathParam("idUsuario") int idUsuario) {
+    public Usuario getUsuario1(@PathParam("idUsuario") int idUsuario){
         Usuario usuario = usuarioMapper.findById(idUsuario);
         if(usuario!=null){//si el usuario existe nos ponemos a completarlo, si no existe devuelve null
             usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));

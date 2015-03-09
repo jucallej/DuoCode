@@ -23,6 +23,7 @@ import modelo.Envio;
 import modelo.Envios;
 import modelo.ErrorYPuntuacion;
 import utilidades.DatosFijos;
+import utilidades.Utilidades;
 
 /**
  * REST Web Service
@@ -35,29 +36,16 @@ public class EnviosResource {
     @Context
     private UriInfo context;
     private EnvioMapper envioMapper;
+    
+    static private ComboPooledDataSource cpds;
 
     /**
      * Creates a new instance of EnviosResource
      */
     public EnviosResource() {
-        DataSource dt = null;
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds = Utilidades.checkPoolNull(cpds);
         
-        try {
-                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
-        } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
-        cpds.setUser(DatosFijos.USER);
-        cpds.setPassword(DatosFijos.PASS);
-        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
-        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
-        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
-        dt = cpds;
-        
-        envioMapper = new EnvioMapper(dt);
+        envioMapper = new EnvioMapper(cpds);
     }
 
     

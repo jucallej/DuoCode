@@ -35,6 +35,7 @@ import modelo.Usuario;
 import modelo.UsuarioVotaCandidato;
 import modelo.VotoIDUsuario;
 import utilidades.DatosFijos;
+import utilidades.Utilidades;
 
 /**
  * REST Web Service
@@ -50,32 +51,19 @@ public class CandidatosResource {
     private UsuarioMapper usuarioMapper;
     private UsuarioVotaCandidatoMapper usuarioVotaCandidatoMapper;
     private CandidatoMapperSinGestionadoPor candidatoMapperSinGestionadoPor;
+    
+    static private ComboPooledDataSource cpds;
 
     /**
      * Creates a new instance of CandidatosResource
      */
     public CandidatosResource() {
-        DataSource dt = null;
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds = Utilidades.checkPoolNull(cpds);
         
-        try {
-                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
-        } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
-        cpds.setUser(DatosFijos.USER);
-        cpds.setPassword(DatosFijos.PASS);
-        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
-        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
-        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
-        dt = cpds;
-        
-        candidatoMapper = new CandidatoMapper(dt);
-        usuarioMapper = new UsuarioMapper(dt);
-        usuarioVotaCandidatoMapper = new UsuarioVotaCandidatoMapper(dt);
-        candidatoMapperSinGestionadoPor = new CandidatoMapperSinGestionadoPor(dt);
+        candidatoMapper = new CandidatoMapper(cpds);
+        usuarioMapper = new UsuarioMapper(cpds);
+        usuarioVotaCandidatoMapper = new UsuarioVotaCandidatoMapper(cpds);
+        candidatoMapperSinGestionadoPor = new CandidatoMapperSinGestionadoPor(cpds);
     }
 
     @GET 

@@ -25,6 +25,7 @@ import modelo.Favorito;
 import modelo.Favoritos;
 
 import utilidades.DatosFijos;
+import utilidades.Utilidades;
 
 /**
  *
@@ -36,25 +37,13 @@ public class FavoritosResource {
     @Context
     private UriInfo context;
     private FavoritoMapper favoritoMapper;
+    
+    static private ComboPooledDataSource cpds;
+    
     public FavoritosResource(){
-        DataSource dt = null;
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
+        cpds = Utilidades.checkPoolNull(cpds);
         
-        try {
-                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
-        } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
-        cpds.setUser(DatosFijos.USER);
-        cpds.setPassword(DatosFijos.PASS);
-        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
-        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
-        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
-        dt = cpds;
-        
-        favoritoMapper = new FavoritoMapper(dt);
+        favoritoMapper = new FavoritoMapper(cpds);
 
     }
     

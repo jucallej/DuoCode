@@ -29,6 +29,7 @@ import modelo.ErrorYID;
 import modelo.IDUsuario;
 import utilidades.Comprobadores;
 import utilidades.DatosFijos;
+import utilidades.Utilidades;
 
 /**
  * REST Web Service
@@ -42,29 +43,17 @@ public class EjerciciosResource {
     private UriInfo context;
     private EjercicioMapper ejercicioMapper;
     private EnunciadoMapper enunciadoMapper;
+    
+    static private ComboPooledDataSource cpds;
 
     /**
      * Creates a new instance of EjerciciosResource
      */
     public EjerciciosResource() {
-        DataSource dt = null;
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
-        try {
-                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
-        } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
-        cpds.setUser(DatosFijos.USER);
-        cpds.setPassword(DatosFijos.PASS);
-        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
-        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
-        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
-        dt = cpds;
+        cpds = Utilidades.checkPoolNull(cpds);
 
-        ejercicioMapper = new EjercicioMapper(dt);
-        enunciadoMapper = new EnunciadoMapper(dt);
+        ejercicioMapper = new EjercicioMapper(cpds);
+        enunciadoMapper = new EnunciadoMapper(cpds);
     }
     
     //Mas o menos, no es igual a los requisitos

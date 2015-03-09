@@ -27,6 +27,7 @@ import modelo.Enunciados;
 import modelo.ErrorSimple;
 import modelo.ErrorYID;
 import utilidades.DatosFijos;
+import utilidades.Utilidades;
 
 /**
  * REST Web Service
@@ -39,28 +40,16 @@ public class EnunciadosResource {
     @Context
     private UriInfo context;
     private EnunciadoMapper enunciadoMapper;
+    
+    static private ComboPooledDataSource cpds;
 
     /**
      * Creates a new instance of EnunciadosResource
      */
     public EnunciadosResource() {
-        DataSource dt = null;
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
-        try {
-                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
-        } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
-        cpds.setUser(DatosFijos.USER);
-        cpds.setPassword(DatosFijos.PASS);
-        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
-        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
-        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
-        dt = cpds;
+        cpds = Utilidades.checkPoolNull(cpds);
 
-        enunciadoMapper = new EnunciadoMapper(dt);
+        enunciadoMapper = new EnunciadoMapper(cpds);
     }
 
     @GET

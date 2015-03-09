@@ -9,7 +9,7 @@ package utilidades;
  *
  * @author Julián
  */
-public class DatosFijos {
+public final class DatosFijos {
     public static final String JdbcUrl = "jdbc:mysql://localhost/Duocode";
     public static final String USER = "root";
     public static final String PASS = "";
@@ -24,6 +24,5 @@ public class DatosFijos {
     public static final int AcquireRetryAttempts = 1;
     public static final int AcquireRetryDelay = 1;
     
-    public static final boolean BreakAfterAcquireFailure = true;
-
+    public static final boolean BreakAfterAcquireFailure = false;
 }

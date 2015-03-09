@@ -22,6 +22,7 @@ import modelo.ErrorYNombreConfirmacion;
 import modelo.Lenguaje;
 import modelo.Lenguajes;
 import utilidades.DatosFijos;
+import utilidades.Utilidades;
 
 /**
  * REST Web Service
@@ -34,28 +35,16 @@ public class LenguajesResource {
     @Context
     private UriInfo context;
     private LenguajeMapper lenguajeMapper;
+    
+    static private ComboPooledDataSource cpds;
 
     /**
      * Creates a new instance of LenguajesResource
      */
     public LenguajesResource() {
-        DataSource dt = null;
-        ComboPooledDataSource cpds = new ComboPooledDataSource();
-        try {
-                cpds.setDriverClass("org.gjt.mm.mysql.Driver");
-        } catch (PropertyVetoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
-        cpds.setJdbcUrl(DatosFijos.JdbcUrl);
-        cpds.setUser(DatosFijos.USER);
-        cpds.setPassword(DatosFijos.PASS);
-        cpds.setAcquireRetryAttempts(DatosFijos.AcquireRetryAttempts);
-        cpds.setAcquireRetryDelay(DatosFijos.AcquireRetryDelay);
-        cpds.setBreakAfterAcquireFailure(DatosFijos.BreakAfterAcquireFailure);
-        dt = cpds;
+        cpds = Utilidades.checkPoolNull(cpds);
 
-        lenguajeMapper = new LenguajeMapper(dt);
+        lenguajeMapper = new LenguajeMapper(cpds);
     }
     
     @GET
