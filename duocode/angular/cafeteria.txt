@@ -1,0 +1,45 @@
+app escritorio github.
+
+
+http://www.ajaxshake.com/plugin/ES/1068/ba9b0ab0/formulario-de-login-estilo-apple-con-transformaciones-css3-y-jquery-appleloginform.html
+
+-Vista inicio:
+
+-Inicio: dos ventanas:
+	-Qué lenguaje sabes?
+	-Qué lenguaje quieres aprender?
+
+-"Sesión": Dos combobox con lenguajes origen-destino que el usuario puede cambiar.
+	-Se guardará en la cookie.
+
+-Header:
+	-Gestión/votar candidatos.
+	-Aprende
+
+
+-Info Usuario:
+	-Foto/Nombre...
+	-Puntuación.
+	-Enlace a favoritos.
+	-Lenguaje origen-destino.
+
+-Ventana principal (Temas->Lecciones->...)
+	-
+
+-Separación de los ejercicios - solucion en horizontal->  [ ] [ ]
+	-No aparece la info de usuario.
+
+-Corregir ejercicio -> Si está mal, aparecen dos botones (enviar candidato / ver solución);
+
+-Favoritos:
+	-Tema x
+	-Lección 4:
+	Titulo      |	
+	 [ ] 		|
+	 c++->Java	|
+
+
+-Ventana donde escribir la solución->Activar resaltar syntax.
+
+-Candidatos para votar (estilo me gusta)
+	-Aparecen con la vista de "resolver ejercicio", cambiarían los botones de corregir -> Voto positivo / Voto negativo.

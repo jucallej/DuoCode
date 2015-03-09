@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html ng-app="duocodeApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <link rel="stylesheet" href="css/monokai_sublime.css">
+    <script src="js/highlight.min.js"></script>
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script src="js/angular.min.js"></script>
+
+    <script src="js/providers.js"></script>
+    <script src="js/duocode.js"></script>
+
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".codigoEditable").each(function (i, block) {
+                hljs.highlightBlock(block);
+            });
+        });
+    </script>
+
+    <title>Duocode</title>
+</head>
+
+<body>
+    <header>
+        <nav class="header navbar navbar-inverse">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><h1 class="top"><img src="./img/duocode.png"></h1></a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><h3 class="topMenu">Inicio</h3></a>
+                        </li>
+                        <li><a href="#"><h3 class="topMenu">Aprender</h3></a>
+                        </li>
+                        <li><a href="#"><h3 class="topMenu">Candidatos</h3></a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xs-12 right">
+                <div class="contenido">
+                    <ol class="breadcrumb">
+                        <li class="active">Temas</li>
+                    </ol>
+                    <div class="container-fluid">
+                        <div class="row" ng-controller="TemasController">
+                        <p ng-click="setEmail()"> (prueba de concepto) PULSAR AQUI y cambia el correo en los dos controladres (info usuario y aqui). Correo: {{usuario.correo}}. Esto permitira compartir cosas entre controladores.</p>
+                        	<div ng-repeat="tema in temas | orderBy:predicate" class="col-md-6 col-xs-12 left">
+                        		<a href="#">
+                                    <h1>{{tema.titulo}}</h1>
+                                </a>
+                                <p>{{tema.descripcion}}</p>
+                        	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-xs-12 left">
+                <div class="contenido container1" ng-controller="UsuarioController">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <h3>Información de usuario</h3>
+                            </div>
+
+                            <div class="col-lg-4 col-md-12">
+                                <img class="logo img-rounded img-responsive" src="img/user-icon1.png">
+
+                            </div>
+
+                            <div class="col-lg-8 col-md-12 emailPuntos">
+                                <p>{{usuario.correo}}</p>
+                                <p>Puntuación Total: {{puntuacion()}}</p>
+                            </div>
+                        </div>
+
+
+                        <div class="row selectIdiomas">
+                            <div class="col-lg-7 col-md-12">
+                                <p>Lenguaje actual:</p>
+                            </div>
+                            <div class="col-lg-5 col-md-12">
+                                <select class="form-control btn-default input-sm" ng-change="cambiarLenguajeSe()" ng-model="selectedItem">
+                                    <option ng-repeat="lenguaje in lenguajes" value="{{lenguaje}}" ng-selected="lenguaje === lenguajeQueSe">{{lenguaje}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row selectIdiomas">
+                            <div class="col-lg-7 col-md-12">
+                                <p>Lenguaje a aprender:</p>
+                            </div>
+                            <div class="col-lg-5 col-md-12">
+                                <select class="form-control btn-default input-sm" ng-change="cambiarLenguajeNOSe()" ng-model="selectedItemNoSe">
+                                    <option ng-repeat="lenguaje in lenguajes" value="{{lenguaje}}" ng-selected="lenguaje === idiomaQueNOSe">{{lenguaje}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-info btn-block btnLinks">Mis favoritos <span class="badge">{{numFavoritos()}}</span>
+                    </button>
+                    <button type="button" class="btn btn-info btn-block btnLinks">Mis candidatos <span class="badge">{{numCandidatos()}}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
