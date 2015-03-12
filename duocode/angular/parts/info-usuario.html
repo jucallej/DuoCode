@@ -1,0 +1,46 @@
+<div class="contenido container1" ng-controller="UsuarioController">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <h3>Información de usuario</h3>
+            </div>
+
+            <div class="col-lg-4 col-md-12">
+                <img class="logo img-rounded img-responsive" src="img/user-icon1.png">
+
+            </div>
+
+            <div class="col-lg-8 col-md-12 emailPuntos">
+                <p>{{usuario.correo}}</p>
+                <p>Puntuación Total: {{puntuacion()}}</p>
+            </div>
+        </div>
+
+
+        <div class="row selectIdiomas">
+            <div class="col-lg-7 col-md-12">
+                <p>Lenguaje actual:</p>
+            </div>
+            <div class="col-lg-5 col-md-12">
+                <select class="form-control btn-default input-sm" ng-change="cambiarLenguajeSe()" ng-model="selectedItem">
+                    <option ng-repeat="lenguaje in lenguajes" value="{{lenguaje}}" ng-selected="lenguaje === lenguajeQueSe">{{lenguaje}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row selectIdiomas">
+            <div class="col-lg-7 col-md-12">
+                <p>Lenguaje a aprender:</p>
+            </div>
+            <div class="col-lg-5 col-md-12">
+                <select class="form-control btn-default input-sm" ng-change="cambiarLenguajeNOSe()" ng-model="selectedItemNoSe">
+                    <option ng-repeat="lenguaje in lenguajes" value="{{lenguaje}}" ng-selected="lenguaje === idiomaQueNOSe">{{lenguaje}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-info btn-block btnLinks">Mis favoritos <span class="badge">{{numFavoritos()}}</span>
+    </button>
+    <button type="button" class="btn btn-info btn-block btnLinks">Mis candidatos <span class="badge">{{numCandidatos()}}</span>
+    </button>
+</div>

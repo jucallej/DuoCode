@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-xs-12 right">
+            <div class="contenido" ng-controller="LeccionesController">
+                <ol class="breadcrumb">
+                    <li><a href="#/temas" class="green">Temas</a></li>
+                    <li class="active">Temas {{idTema}}</li>
+                </ol>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div ng-repeat="leccion in lecciones | orderBy:predicate" class="col-md-6 col-xs-12 left">
+                            <a href="#/temas/{{idTema}}/{{leccion.id}}" ng-hide="leccionBloqueada(leccion.id)">
+                                <h1 ng-hide="leccionTerminada(leccion.id)">{{leccion.titulo}}</h1>
+                                <h1 ng-show="leccionTerminada(leccion.id)"><span class="glyphicon glyphicon-education"></span> {{leccion.titulo}}</h1>
+                            </a>
+                            <h1 ng-show="leccionBloqueada(leccion.id)" title="Leccion bloqueada">{{leccion.titulo}} {{leccion.id}}</h1>
+                            <p>{{leccion.descripcion}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-xs-12 left">
+            <info-usuario></info-usuario>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,32 @@
 var rutaApp = 'http://localhost:8080/DuoCode/rest/';
 
-var duocodeApp = angular.module('duocodeApp', ['duocodeProviders']);
+var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute']);
+
+//Creamos el menú de usuarios reusable (como tag): <info-usuario></info-usuario>
+duocodeApp.directive('infoUsuario', function() {
+  return {
+    restrict: 'E',
+    templateUrl: 'parts/info-usuario.html'
+  };
+});
+
+//Le decimos que fragmento insertar a <div ng-view></div> según la ruta
+duocodeApp.config(['$routeProvider',
+  function($routeProvider) {
+    $routeProvider.
+      when('/temas', {
+        templateUrl: 'parts/temas.html',
+      }).
+      when('/temas/:temaID', {
+        templateUrl: 'parts/lecciones.html',
+      }).
+      when('/temas/:temaID/:idLeccion', {
+        templateUrl: 'parts/ejercicios.html',
+      }).
+      otherwise({
+        redirectTo: '/temas'
+      });
+}]);
 
 duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio', 'idiomasSeleccionadosServicio', function ($scope, $http, usuarioServicio, idiomasSeleccionadosServicio) {
 	$scope.usuario = {};
@@ -37,12 +63,18 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
     $scope.cambiarLenguajeSe = function() {
        $scope.lenguajeQueSe = $scope.selectedItem;
        localStorage.setItem(idiomasSeleccionadosServicio.STR_LOCALSTORAGE_IDIOMASE, $scope.selectedItem);
+
+       //Haciendo esto, las siguientes veces que se use idiomasSeleccionadosServicio, tendrá los datos actualizados
+       idiomasSeleccionadosServicio.idiomaQueSe = $scope.selectedItem;
     };
 
     //lo guarda en localstorage para el futuro
     $scope.cambiarLenguajeNOSe = function() {
        $scope.idiomaQueNOSe = $scope.selectedItemNoSe;
        localStorage.setItem(idiomasSeleccionadosServicio.STR_LOCALSTORAGE_IDIOMANOSE, $scope.selectedItemNoSe);
+
+       //Haciendo esto, las siguientes veces que se use idiomasSeleccionadosServicio, tendrá los datos actualizados
+       idiomasSeleccionadosServicio.idiomaQueNOSe = $scope.selectedItemNoSe;
     };
 
     //Ejecuta esto cuando se termina de cargar el get usuarioServicio
@@ -55,7 +87,7 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
     });
 }]);
 
-duocodeApp.controller('TemasController', ['$scope', '$http', 'usuarioServicio', function ($scope, $http, usuarioServicio) {
+duocodeApp.controller('TemasController', ['$scope', '$http', function ($scope, $http) {
 	$scope.temas = [];
 	$scope.predicate = '+orden'; // para ordenar los temas por el campo orden
 
@@ -66,14 +98,76 @@ duocodeApp.controller('TemasController', ['$scope', '$http', 'usuarioServicio', 
 			});
 	    };
 	});
+}]);
 
-    //Usado para prueba de concepto, borrar en algún momento
-    $scope.setEmail = function() {
-    	$scope.usuario.correo = 'correoRaro';
+duocodeApp.controller('LeccionesController', ['$scope', '$http', 'usuarioServicio', '$routeParams', 'idiomasSeleccionadosServicio', 
+    function ($scope, $http, usuarioServicio, $routeParams, idiomasSeleccionadosServicio) {
+
+    $scope.lecciones = [];
+    $scope.predicate = '+orden'; // para ordenar los temas por el campo orden
+    $scope.idTema = $routeParams.temaID;
+
+    var usuario;
+
+    $http.get(rutaApp+'temas/'+$scope.idTema).success(function(data) {
+        var lecciones = data.lecciones;
+        for (var i = 0; i < lecciones.length; i++) {
+            $http.get(lecciones[i]).success(function(dataLecciones) {
+                $scope.lecciones.push(dataLecciones);
+            });
+        };
+    });
+
+    //Ejecuta esto cuando se termina de cargar el get de usuarioServicio, necesario para saber que lecciones ha hecho
+    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+        usuario = dataCuandoLaFuncionSeEjecute.data;
+    });
+
+    //Nos dirá si una lección esta bloqueda, o es accesible para el usuario
+    $scope.leccionBloqueada = function(idLeccion) {
+        if (usuario === null)  return true;
+        else{
+            var bloqueada = true;
+
+            var leccionBuscada = null;
+            var i = 0;
+            while ( i < $scope.lecciones.length && leccionBuscada === null) {
+                if($scope.lecciones[i].id === idLeccion) leccionBuscada = $scope.lecciones[i];
+                else i++;
+            };
+
+            //Tenemos la leccion en la que estamos y las lecciones que necesitas tener terminadas para desbloquearla
+            if (leccionBuscada !== null && leccionBuscada !== undefined){
+                var todasCompletadas = true;
+
+                var i = 0;
+                //Ahora miramos si ha completado las lecciones que le hacen falta
+                while ( i < leccionBuscada.leccionesDesbloqueadoras.length && todasCompletadas) {
+                    if(!($scope.leccionTerminada(leccionBuscada.leccionesDesbloqueadoras[i]))) todasCompletadas = false;
+                    else i++;
+                };
+
+                bloqueada = !todasCompletadas;
+            }
+
+            return bloqueada;
+        }
     };
 
-    //Ejecuta esto cuando se termina de cargar el get de usuarioServicio
-	usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
-    	$scope.usuario = dataCuandoLaFuncionSeEjecute.data;
-    });
+    //Comprueba si una lección está terminada
+    //Habría que comprobar también el lenguaje que estás aprendiendo (y añadirlo a la BD)
+    $scope.leccionTerminada = function(idLeccion) {
+        if (usuario === null)  return false;
+        else{
+            var terminada = false;
+
+            var i = 0;
+            while ( i < usuario.leccionesCompletadas.length && !terminada) {
+                if(usuario.leccionesCompletadas[i] === idLeccion) terminada = true;
+                else i++;
+            };
+
+            return terminada;
+        }
+    };
 }]);
