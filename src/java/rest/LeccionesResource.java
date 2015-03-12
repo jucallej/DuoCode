@@ -98,7 +98,7 @@ public class LeccionesResource {
         int nuevoId = this.leccioneMapper.insert(leccion);
         leccion.setId(nuevoId);
         List<String> ejercicios = leccion.getEjercicios();
-        List<String> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
+        List<Integer> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
         
         if(ejercicios != null){ // Lo insertamos
             if (ejercicios.size() > 0)
@@ -107,8 +107,8 @@ public class LeccionesResource {
         }
         if (leccionesDesbloqueadoras != null){ // Lo insertamos
             if (leccionesDesbloqueadoras.size() > 0)
-                for (String intLecciones : leccionesDesbloqueadoras)
-                    this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), Integer.parseInt(intLecciones)));
+                for (Integer intLecciones : leccionesDesbloqueadoras)
+                    this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), intLecciones));
         }
         return new ErrorYID(nuevoId);
     }
@@ -173,7 +173,7 @@ public class LeccionesResource {
             
             //Estos tienen en ruta tienen int, es un poco extraño, pero funciona, son los que queremos tener
             List<String> ejercicios = leccion.getEjercicios();
-            List<String> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
+            List<Integer> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
             
             //Miramos los que ya estan
             if (leccionExistente.getEjercicios() != null){
@@ -192,8 +192,8 @@ public class LeccionesResource {
             }
             if (leccionesDesbloqueadoras != null){ // Lo insertamos
                 if (leccionesDesbloqueadoras.size() > 0)
-                    for (String intLecciones : leccionesDesbloqueadoras)
-                        this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), Integer.parseInt(intLecciones)));
+                    for (Integer intLecciones : leccionesDesbloqueadoras)
+                        this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), intLecciones));
             }
         }
         
