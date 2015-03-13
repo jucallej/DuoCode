@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS `desbloqueadapor` (
 
 DROP TABLE IF EXISTS `ejercicio`;
 CREATE TABLE IF NOT EXISTS `ejercicio` (
-`ID` int(20) unsigned NOT NULL
+`ID` int(20) unsigned NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 DROP TABLE IF EXISTS `enunciado`;
@@ -102,7 +103,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 DROP TABLE IF EXISTS `usuariocompletaleccion`;
 CREATE TABLE IF NOT EXISTS `usuariocompletaleccion` (
   `idUsuario` int(20) unsigned NOT NULL DEFAULT '0',
-  `idLeccion` int(20) unsigned NOT NULL DEFAULT '0'
+  `idLeccion` int(20) unsigned NOT NULL DEFAULT '0',
+  `lenguaje` varchar(20) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `usuariovotacandidato`;
@@ -147,7 +149,7 @@ ALTER TABLE `usuario`
  ADD PRIMARY KEY (`ID`), ADD UNIQUE KEY `nick` (`nick`,`correo`);
 
 ALTER TABLE `usuariocompletaleccion`
- ADD PRIMARY KEY (`idUsuario`,`idLeccion`), ADD KEY `idLeccion` (`idLeccion`);
+ ADD PRIMARY KEY (`idUsuario`,`idLeccion`,`lenguaje`), ADD KEY `idLeccion` (`idLeccion`), ADD KEY `lenguaje` (`lenguaje`);
 
 ALTER TABLE `usuariovotacandidato`
  ADD PRIMARY KEY (`idUsuario`,`idCandidato`), ADD KEY `idCandidato` (`idCandidato`);
@@ -204,7 +206,8 @@ ADD CONSTRAINT `leccionconstaejercicio_ibfk_2` FOREIGN KEY (`idEjercicio`) REFER
 
 ALTER TABLE `usuariocompletaleccion`
 ADD CONSTRAINT `usuariocompletaleccion_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `usuariocompletaleccion_ibfk_2` FOREIGN KEY (`idLeccion`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD CONSTRAINT `usuariocompletaleccion_ibfk_2` FOREIGN KEY (`idLeccion`) REFERENCES `leccion` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `usuariocompletaleccion_ibfk_3` FOREIGN KEY (`lenguaje`) REFERENCES `lenguaje` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `usuariovotacandidato`
 ADD CONSTRAINT `usuariovotacandidato_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
