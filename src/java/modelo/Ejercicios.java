@@ -26,11 +26,11 @@ public class Ejercicios {
     public Ejercicios() {
     }
 
-    public Ejercicios(List<Integer> ejercicios) {
+    public Ejercicios(List<Ejercicio> ejercicios) {
         this.ejercicios = new ArrayList<>();
         //intEjercicios = new ArrayList<>();
-        for (Integer ejercicio: ejercicios){
-            this.ejercicios.add(DatosFijos.RUTA_EJERCICIOS+ejercicio);
+        for (Ejercicio ejercicio: ejercicios){
+            this.ejercicios.add(DatosFijos.RUTA_EJERCICIOS+ejercicio.getId());
             //this.intEjercicios.add(ejercicio);
         }
     }

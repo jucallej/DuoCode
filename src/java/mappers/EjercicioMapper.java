@@ -8,13 +8,13 @@ package mappers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.sql.DataSource;
-import modelo.Lenguaje;
+import modelo.Ejercicio;
 
 /**
  *
  * @author Julián
  */
-public class EjercicioMapper extends AbstractMapper <Integer, Integer>{
+public class EjercicioMapper extends AbstractMapper <Ejercicio, Integer>{
 
     public EjercicioMapper(DataSource ds) {
         super(ds);
@@ -27,12 +27,12 @@ public class EjercicioMapper extends AbstractMapper <Integer, Integer>{
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"ID"};
+        return new String[] {"ID","nombre"};
     }
 
     @Override
-    protected Object[] serializeObject(Integer object) {
-        return new Object[]{object};
+    protected Object[] serializeObject(Ejercicio object) {
+        return new Object[]{object.getId(), object.getNombre()};
     }
 
     @Override
@@ -46,12 +46,12 @@ public class EjercicioMapper extends AbstractMapper <Integer, Integer>{
     }
 
     @Override
-    protected Integer buildObject(ResultSet rs) throws SQLException {
-        return rs.getInt("ID");
+    protected Ejercicio buildObject(ResultSet rs) throws SQLException {
+        return new Ejercicio(rs.getInt("ID"), rs.getString("nombre"));
     }
 
     @Override
-    protected Integer getKey(Integer object) {
-        return object;
+    protected Integer getKey(Ejercicio object) {
+        return object.getId();
     }
 }

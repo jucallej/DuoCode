@@ -22,6 +22,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.EjercicioMapper;
 import mappers.EnunciadoMapper;
+import modelo.Ejercicio;
 import modelo.Ejercicios;
 import modelo.Enunciados;
 import modelo.ErrorSimple;
@@ -60,8 +61,7 @@ public class EjerciciosResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Ejercicios getEjercicios() {
-        List<Integer> ejercicios = ejercicioMapper.findAll();
-        return new Ejercicios(ejercicios);
+        return new Ejercicios(this.ejercicioMapper.findAll());
     }
     
     /**
@@ -71,10 +71,10 @@ public class EjerciciosResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newEjercicio(){//IDUsuario nombre){
+    public ErrorYID newEjercicio(Ejercicio ejercicio){//IDUsuario nombre){
       int posibleError = -1;
         //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario()))
-            posibleError = ejercicioMapper.insert(0);
+            posibleError = ejercicioMapper.insert(ejercicio);
         return new ErrorYID(posibleError);
     }
     
@@ -85,9 +85,14 @@ public class EjerciciosResource {
     @GET
     @Path("{idEjercicio}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Enunciados getEjercicio(@PathParam("idEjercicio") int idEjercicio) {
-        if (ejercicioMapper.findById(idEjercicio) == null) throw new WebApplicationException(404);
-        return new Enunciados(enunciadoMapper.getEnunciadosDeUnEjercicio(idEjercicio));
+    public Ejercicio getEjercicio(@PathParam("idEjercicio") int idEjercicio) {        
+        Ejercicio ejercicio = ejercicioMapper.findById(idEjercicio);
+        if (ejercicio != null){
+            ejercicio.setEnunciados(this.enunciadoMapper.getEnunciadosDeUnEjercicio(ejercicio.getId()));
+            return ejercicio;
+        }
+        else
+            throw new WebApplicationException(404);
     }
     
     //En principio no hay put
@@ -109,12 +114,9 @@ public class EjerciciosResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public ErrorSimple deleteEjercicio(@PathParam("idEjercicio") int idEjercicio){//, IDUsuario nombre){
         String posibleError = "si";
-
-        //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario())){
-            if(this.ejercicioMapper.delete(idEjercicio))
-                posibleError = "no";
-
-        System.out.println(posibleError);
+        Ejercicio aBorrar = ejercicioMapper.findById(idEjercicio);       
+        if(this.ejercicioMapper.delete(aBorrar))
+            posibleError = "no";     
         return new ErrorSimple(posibleError);
     }
 }
