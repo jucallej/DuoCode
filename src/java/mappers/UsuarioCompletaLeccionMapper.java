@@ -28,17 +28,17 @@ public class UsuarioCompletaLeccionMapper extends AbstractMapper <UsuarioComplet
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"idUsuario", "idLeccion"};
+        return new String[] {"idUsuario", "idLeccion", "lenguaje"};
     }
 
     @Override
     protected Object[] serializeObject(UsuarioCompletaLeccion object) {
-        return new Object[]{object.getIdUsuario(), object.getIdLeccion()};
+        return new Object[]{object.getIdUsuario(), object.getIdLeccion(), object.getLenguaje()};
     }
 
     @Override
     protected String[] getKeyColumnNames() {
-        return new String[] {"idUsuario", "idLeccion"};
+        return new String[] {"idUsuario", "idLeccion", "lenguaje"};
     }
 
     @Override
@@ -48,7 +48,7 @@ public class UsuarioCompletaLeccionMapper extends AbstractMapper <UsuarioComplet
 
     @Override
     protected UsuarioCompletaLeccion buildObject(ResultSet rs) throws SQLException {
-        return new UsuarioCompletaLeccion(rs.getInt("idUsuario"), rs.getInt("idLeccion"));
+        return new UsuarioCompletaLeccion(rs.getInt("idUsuario"), rs.getInt("idLeccion"), rs.getString("lenguaje"));
     }
 
     @Override

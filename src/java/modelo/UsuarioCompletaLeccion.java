@@ -15,15 +15,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UsuarioCompletaLeccion {  
     private int idUsuario;
-    
+    @XmlElement(name="idLeccion")
     private int idLeccion;
-
+    @XmlElement(name="lenguaje")
+    private String lenguaje;
     public UsuarioCompletaLeccion() {
     }
 
-    public UsuarioCompletaLeccion(int idUsuario, int idLeccion) {
+    public UsuarioCompletaLeccion(int idUsuario, int idLeccion, String lenguaje) {
         this.idUsuario = idUsuario;
         this.idLeccion = idLeccion;
+        this.lenguaje = lenguaje;
     }
 
     public int getIdUsuario() {
@@ -32,5 +34,9 @@ public class UsuarioCompletaLeccion {
 
     public int getIdLeccion() {
         return idLeccion;
+    }
+    
+    public String getLenguaje() {
+        return lenguaje;
     }
 }

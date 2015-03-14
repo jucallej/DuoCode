@@ -34,7 +34,7 @@ public class Usuario {
     private short rol;
     
     @XmlElement(name="leccionesCompletadas")
-    private List<Integer> leccionesCompletadas;
+    private List<UsuarioCompletaLeccion> leccionesCompletadas;
     
     @XmlList
     private List<Favorito> favoritos;
@@ -121,9 +121,10 @@ public class Usuario {
     }
 
     public void setLeccionesTerminadas(List<UsuarioCompletaLeccion> usuarioCompletaLeccionDeUnUsuario) {
-        leccionesCompletadas = new ArrayList<>();
+        this.leccionesCompletadas = usuarioCompletaLeccionDeUnUsuario;
+       /* leccionesCompletadas = new ArrayList<>();
         for (UsuarioCompletaLeccion leccion: usuarioCompletaLeccionDeUnUsuario){
             leccionesCompletadas.add(leccion.getIdLeccion());
-        }
+        }*/
     }
 }
