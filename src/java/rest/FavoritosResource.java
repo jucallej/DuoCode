@@ -9,6 +9,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
 import javax.sql.DataSource;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -71,6 +72,18 @@ public class FavoritosResource {
     public ErrorSimple deleteFavorito(Favoritos favorito, @HeaderParam("userID") int usuario){
         boolean error = favoritoMapper.updateFavoritos(favorito, usuario);
         String posibleError = (error==true)? "si":"no";
+        return new ErrorSimple(posibleError);
+    }
+    
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)    
+     public ErrorSimple deleteFavorito(Favorito fav){
+        String posibleError = "si";
+        Favorito aBorrar = favoritoMapper.findById(fav);
+        if(this.favoritoMapper.delete(aBorrar))
+            posibleError = "no";
+
         return new ErrorSimple(posibleError);
     }
 }

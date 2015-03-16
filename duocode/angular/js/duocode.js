@@ -14,6 +14,9 @@ duocodeApp.directive('infoUsuario', function() {
 duocodeApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
+      when('/misfavoritos', {
+        templateUrl: 'parts/misfavoritos.html',
+      }).
       when('/temas', {
         templateUrl: 'parts/temas.html',
       }).
@@ -85,6 +88,7 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
     $http.get(rutaApp+'lenguajes').success(function(data) {
         $scope.lenguajes = data.lenguajes;
     });
+    
 }]);
 
 duocodeApp.controller('TemasController', ['$scope', '$http', function ($scope, $http) {
@@ -170,4 +174,101 @@ duocodeApp.controller('LeccionesController', ['$scope', '$http', 'usuarioServici
             return terminada;
         }
     };
+}]);
+
+duocodeApp.controller('FavoritoController', ['$scope', '$http', 'usuarioServicio', 
+    function ($scope, $http, usuarioServicio) {
+        
+    //Ejecuta esto cuando se termina de cargar el get de usuarioServicio, necesario para saber que lecciones ha hecho
+    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+        $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
+        $scope.ejercicios = [];
+        $scope.enunciados=[];
+        
+        for(var i=0; i < $scope.usuario.favoritos.length; i++){
+            //console.log($scope.usuario.favoritos[i].idEjercicio);
+            var fav = $scope.usuario.favoritos[i];
+            
+            $http.get(rutaApp + 'ejercicios/' + $scope.usuario.favoritos[i].idEjercicio).success(function(dataEjercicios) {
+                //$scope.lecciones.push(dataEjercicios);
+                //console.log($scope.usuario.favoritos[i]);
+                $scope.ejercicios.push( dataEjercicios);
+                //console.log(dataEjercicios.enunciados);
+
+                for(var j = 0; j< dataEjercicios.enunciados.length; j++){
+                    $http.get(dataEjercicios.enunciados[j]).success(function(dataEnunciado){
+                        
+                        if(dataEnunciado.nombreLenguaje == fav.lenguajeOrigen || dataEnunciado.nombreLenguaje == fav.lenguajeDestino)
+                        $scope.enunciados.push(dataEnunciado);
+                      //  console.log($scope.enunciados);
+                    });
+                    
+                }
+
+            });
+            
+        }
+        
+        $scope.nombreEj = function(idejercicio) {
+        if ($scope.ejercicios === null)  return 'cargando';
+        else{
+            var terminada = false;
+            var nombre = 'no encontrado';
+
+            var i = 0;
+           // console.log($scope.ejercicios);
+            while ( i < $scope.ejercicios.length && !terminada) {
+                if($scope.ejercicios[i].id === idejercicio) {
+                    terminada = true;
+                    nombre = $scope.ejercicios[i].nombre;
+                }
+                else i++;
+            };
+
+            return nombre;
+        }
+    };
+        $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
+        if ($scope.enunciados === null)  return {};
+        else{
+            var terminada = false;
+            var nombre = {};
+
+            var i = 0;
+           // console.log($scope.ejercicios);
+            while ( i < $scope.enunciados.length && !terminada) {
+                if($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
+                    terminada = true;
+                    nombre = $scope.enunciados[i];
+                }
+                else i++;
+            };
+//console.log(nombre);
+            return nombre;
+        }
+    };
+        
+        
+    $scope.eliminarFav = function(indiceFav, fav) {
+        $scope.usuario.favoritos.splice(indiceFav,1);
+        console.log($scope.usuario.favoritos + indiceFav);
+        console.log(fav);
+        var req = {
+         method: 'PUT',
+         url: rutaApp + 'favoritos',
+         headers: {
+           'userID': $scope.usuario.id
+         },
+         data: $scope.usuario.favoritos,
+        }
+        $http(req).success(function(posibleError) {
+               console.log(posibleError);
+            });
+    };
+            
+
+    });
+        
+        
+    
 }]);

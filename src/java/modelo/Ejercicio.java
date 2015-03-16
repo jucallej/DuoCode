@@ -55,7 +55,7 @@ public class Ejercicio {
     public void setEnunciados(List<Enunciado> enunciados){
         this.enunciados = new ArrayList<>();
         for (Enunciado enunciado: enunciados){
-            this.enunciados.add(DatosFijos.RUTA_LECCIONES+enunciado.getIdEnunciado());
+            this.enunciados.add(DatosFijos.RUTA_ENUNCIADOS+enunciado.getIdEnunciado());
         }
     }
 }
