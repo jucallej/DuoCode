@@ -5,6 +5,8 @@
  */
 package modelo;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Julián
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Favorito {
     @XmlElement(name="idUsuario")
     private int idUsuario;

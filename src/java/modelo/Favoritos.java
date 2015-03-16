@@ -7,6 +7,8 @@ package modelo;
 
 import java.util.Iterator;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,7 +16,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Johana
  */
-@XmlRootElement
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Favoritos {
     @XmlList
     private List<Favorito> favoritos;
