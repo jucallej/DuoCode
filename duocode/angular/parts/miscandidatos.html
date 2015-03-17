@@ -1,0 +1,41 @@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xs-12 right" ng-controller="CandController">
+                <div class="contenido">
+                    <h1 class="tituloCandidatos">Mis Candidatos</h1>
+
+
+                    <div class="filaFavCand" ng-repeat="cand in usuario.candidatosPropuestos">
+                        <span class="h4">Candidato {{nombreEj(cand.idEjercicio)}}: de {{cand.lenguajeOrigen}} a {{cand.lenguajeDestino}} </span>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{$index}}" aria-expanded="false" aria-controls="collapseExample">
+                            <span class="glyphicon glyphicon-eye-open"></span> Ver
+                        </button>
+                        <div class="collapse" id="collapse{{$index}}">
+                            <div class="well">
+                                <button type="submit" class="btn btn-danger btn-block" ng-click="eliminarCand($index,cand.id)">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar candidato
+                                </button>
+
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-6 col-xs-12">
+                                            <span class="label label-info">{{cand.lenguajeOrigen}}</span>
+                                            <pre><code>{{enunciadoCompleto(cand.idEjercicio, cand.lenguajeOrigen).codigo}}</code></pre>
+                                        </div>
+                                        <div class="col-md-6 col-xs-12">
+                                            <span class="label label-info">{{cand.lenguajeDestino}} (propuesto)</span>
+                                            <pre><code>{{cand.codigo}}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12 left">
+                <info-usuario></info-usuario>
+            </div>
+        </div>
+    </div>

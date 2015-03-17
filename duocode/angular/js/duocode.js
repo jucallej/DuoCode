@@ -17,6 +17,9 @@ duocodeApp.config(['$routeProvider',
       when('/misfavoritos', {
         templateUrl: 'parts/misfavoritos.html',
       }).
+      when('/miscandidatos', {
+        templateUrl: 'parts/miscandidatos.html',
+      }).
       when('/temas', {
         templateUrl: 'parts/temas.html',
       }).
@@ -263,3 +266,83 @@ duocodeApp.controller('FavoritoController', ['$scope', '$http', 'usuarioServicio
 ]);
 
 
+duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
+    
+    
+    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+            $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
+            $scope.ejercicios = [];
+            $scope.enunciados = [];
+
+            for (var i = 0; i < $scope.usuario.candidatosPropuestos.length; i++) {
+                var cand = $scope.usuario.candidatosPropuestos[i];
+
+                $http.get(rutaApp + 'ejercicios/' + $scope.usuario.candidatosPropuestos[i].idEjercicio).success(function(dataEjerciciosCand) {
+                    $scope.ejercicios.push(dataEjerciciosCand);
+
+                    for (var j = 0; j < dataEjerciciosCand.enunciados.length; j++) {
+                        $http.get(dataEjerciciosCand.enunciados[j]).success(function(dataEnunciadoCand) {
+
+                            if (dataEnunciadoCand.nombreLenguaje == cand.lenguajeOrigen)
+                                $scope.enunciados.push(dataEnunciadoCand);
+                        });
+
+                    }
+
+                });
+
+            }
+        });
+
+        $scope.nombreEj = function(idejercicio) {
+            if ($scope.ejercicios === null) return 'cargando';
+            else {
+                var terminada = false;
+                var nombre = 'no encontrado';
+
+                var i = 0;
+                while (i < $scope.ejercicios.length && !terminada) {
+                    if ($scope.ejercicios[i].id === idejercicio) {
+                        terminada = true;
+                        nombre = $scope.ejercicios[i].nombre;
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+
+        $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
+            if ($scope.enunciados === null) return {};
+            else {
+                var terminada = false;
+                var nombre = {};
+
+                var i = 0;
+                while (i < $scope.enunciados.length && !terminada) {
+                    if ($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
+                        terminada = true;
+                        nombre = $scope.enunciados[i];
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+    
+        $scope.eliminarCand = function(indice,idCand) {
+
+            $scope.usuario.candidatosPropuestos.splice(indice, 1);
+           var req = {
+                method: 'DELETE',
+                url: rutaApp + 'candidatos/' + idCand
+            }
+
+            $http(req).success(function(posibleError) {
+                console.log(posibleError);
+            });
+            
+            
+        };
+
+}]);
