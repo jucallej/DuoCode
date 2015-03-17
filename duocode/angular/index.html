@@ -5,30 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
     <link rel="stylesheet" href="css/monokai_sublime.css">
-    <script src="js/highlight.min.js"></script>
+
     <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
     <script src="js/angular.min.js"></script>
     <script src="js/angular-route.js"></script>
+    
+    <script src="js/highlight.min.js"></script>
+    <!-- https://github.com/pc035860/angular-highlightjs -->
+    <script src="js/angular-highlightjs.min.js"></script> 
 
     <script src="js/providers.js"></script>
     <script src="js/duocode.js"></script>
-
-    <script>
-        hljs.initHighlightingOnLoad();
-    </script>
-    <script>
-        $(document).ready(function () {
-            $(".codigoEditable").each(function (i, block) {
-                hljs.highlightBlock(block);
-            });
-        });
-    </script>
 
     <title>Duocode</title>
 </head>

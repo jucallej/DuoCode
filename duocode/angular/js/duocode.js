@@ -1,6 +1,6 @@
 var rutaApp = 'http://localhost:8080/DuoCode/rest/';
 
-var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute']);
+var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute', 'hljs']);
 
 //Creamos el menú de usuarios reusable (como tag): <info-usuario></info-usuario>
 duocodeApp.directive('infoUsuario', function() {
@@ -265,7 +265,13 @@ duocodeApp.controller('FavoritoController', ['$scope', '$http', 'usuarioServicio
     }
 ]);
 
+duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServicio', 'idiomasSeleccionadosServicio', '$routeParams',
+ function($scope, $http, usuarioServicio, idiomasSeleccionadosServicio, $routeParams) {
+ 	$scope.leccion = {};
+ 	$scope.vidas = 3;
+ 	$scope.ejercicios = [];
 
+<<<<<<< HEAD
 duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
     
     
@@ -344,5 +350,86 @@ duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', f
             
             
         };
+=======
+ 	$scope.ejerciciosTotales = 10;
+ 	$scope.ejerciciosRestantes = 10;
+
+	$scope.idLeccion = $routeParams.idLeccion;
+	$scope.idTema = $routeParams.temaID;
+
+	$scope.cargando = true;
+
+    var usuario;
+
+    //Ejecuta esto cuando se termina de cargar el get de usuarioServicio, necesario para saber que lecciones ha hecho
+    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+        usuario = dataCuandoLaFuncionSeEjecute.data;
+    });
+
+    $http.get(rutaApp+'lecciones/'+$scope.idLeccion).success(function(leccion) {
+        $scope.leccion = leccion;
+        $scope.ejerciciosTotales = $scope.leccion.ejercicios.length;
+        $scope.ejerciciosRestantes = $scope.ejerciciosTotales;
+
+        for (var i = 0; i < $scope.leccion.ejercicios.length; i++) {
+        	$http.get($scope.leccion.ejercicios[i]).success(function(ejercicio) {
+        		$scope.ejercicios.push(ejercicio);
+        	});
+        };
+
+        //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+
+        for(var j, x, i = $scope.ejercicios.length; i; j = Math.floor(Math.random() * i), x = $scope.ejercicios[--i], $scope.ejercicios[i] = $scope.ejercicios[j], $scope.ejercicios[j] = x);
+
+        $scope.cargando = false;
+    });
+
+    $scope.EjActual= function() {
+    	return $scope.ejercicios[0];
+    };
+
+    $scope.colorRojoVidas = function(indiceCorazones) {
+    	if ($scope.vidas > indiceCorazones) return 'rojo';
+    	else return '';
+    };
+
+     $scope.porcentajeCompletado = function() {
+     	return 100 - (($scope.ejerciciosRestantes / $scope.ejerciciosTotales) * 100);
+    };
+
+    $scope.saltar = function() {
+    	if ($scope.textoEscrito === undefined || $scope.textoEscrito === '' || $scope.textoEscrito === null) {
+    	//No ha escrito nada, y se lo salta quitandole una vida
+    		$scope.vidas -= 1;
+    	}
+    	else{//Ha escrito algo y se puede corregir
+    		$scope.ejerciciosRestantes -= 1;
+    	}
+    };
+
+    $scope.favorito = function() {
+    	usuario.favoritos.push({
+    		idEjercicio: $scope.ejercicios[0].id,
+    		idUsuario: usuario.ID,
+    		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe,
+    		lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe
+    	});
+        // Estaba mal el id (mayusculas y favoritos es {favoritos: array} no {array} directamente)
+        var req = {
+            method: 'PUT',
+            url: rutaApp + 'favoritos',
+            headers: {
+                'userID': usuario.ID
+            },
+            data: {
+                'favoritos': usuario.favoritos
+            }
+        }
+
+        $http(req).success(function(posibleError) {
+            console.log(posibleError);
+        });
+    };
+>>>>>>> cc1f43796adb420f3be5e2bdb85dc4915ebd28a4
 
 }]);
