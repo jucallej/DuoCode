@@ -270,87 +270,6 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
  	$scope.leccion = {};
  	$scope.vidas = 3;
  	$scope.ejercicios = [];
-
-<<<<<<< HEAD
-duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
-    
-    
-    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
-            $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
-            $scope.ejercicios = [];
-            $scope.enunciados = [];
-
-            for (var i = 0; i < $scope.usuario.candidatosPropuestos.length; i++) {
-                var cand = $scope.usuario.candidatosPropuestos[i];
-
-                $http.get(rutaApp + 'ejercicios/' + $scope.usuario.candidatosPropuestos[i].idEjercicio).success(function(dataEjerciciosCand) {
-                    $scope.ejercicios.push(dataEjerciciosCand);
-
-                    for (var j = 0; j < dataEjerciciosCand.enunciados.length; j++) {
-                        $http.get(dataEjerciciosCand.enunciados[j]).success(function(dataEnunciadoCand) {
-
-                            if (dataEnunciadoCand.nombreLenguaje == cand.lenguajeOrigen)
-                                $scope.enunciados.push(dataEnunciadoCand);
-                        });
-
-                    }
-
-                });
-
-            }
-        });
-
-        $scope.nombreEj = function(idejercicio) {
-            if ($scope.ejercicios === null) return 'cargando';
-            else {
-                var terminada = false;
-                var nombre = 'no encontrado';
-
-                var i = 0;
-                while (i < $scope.ejercicios.length && !terminada) {
-                    if ($scope.ejercicios[i].id === idejercicio) {
-                        terminada = true;
-                        nombre = $scope.ejercicios[i].nombre;
-                    } else i++;
-                };
-
-                return nombre;
-            }
-        };
-
-        $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
-            if ($scope.enunciados === null) return {};
-            else {
-                var terminada = false;
-                var nombre = {};
-
-                var i = 0;
-                while (i < $scope.enunciados.length && !terminada) {
-                    if ($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
-                        terminada = true;
-                        nombre = $scope.enunciados[i];
-                    } else i++;
-                };
-
-                return nombre;
-            }
-        };
-    
-        $scope.eliminarCand = function(indice,idCand) {
-
-            $scope.usuario.candidatosPropuestos.splice(indice, 1);
-           var req = {
-                method: 'DELETE',
-                url: rutaApp + 'candidatos/' + idCand
-            }
-
-            $http(req).success(function(posibleError) {
-                console.log(posibleError);
-            });
-            
-            
-        };
-=======
  	$scope.ejerciciosTotales = 10;
  	$scope.ejerciciosRestantes = 10;
 
@@ -430,6 +349,86 @@ duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', f
             console.log(posibleError);
         });
     };
->>>>>>> cc1f43796adb420f3be5e2bdb85dc4915ebd28a4
 
+}]);
+
+
+duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
+    
+    
+    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+            $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
+            $scope.ejercicios = [];
+            $scope.enunciados = [];
+
+            for (var i = 0; i < $scope.usuario.candidatosPropuestos.length; i++) {
+                var cand = $scope.usuario.candidatosPropuestos[i];
+
+                $http.get(rutaApp + 'ejercicios/' + $scope.usuario.candidatosPropuestos[i].idEjercicio).success(function(dataEjerciciosCand) {
+                    $scope.ejercicios.push(dataEjerciciosCand);
+
+                    for (var j = 0; j < dataEjerciciosCand.enunciados.length; j++) {
+                        $http.get(dataEjerciciosCand.enunciados[j]).success(function(dataEnunciadoCand) {
+
+                            if (dataEnunciadoCand.nombreLenguaje == cand.lenguajeOrigen)
+                                $scope.enunciados.push(dataEnunciadoCand);
+                        });
+
+                    }
+
+                });
+
+            }
+        });
+
+        $scope.nombreEj = function(idejercicio) {
+            if ($scope.ejercicios === null) return 'cargando';
+            else {
+                var terminada = false;
+                var nombre = 'no encontrado';
+
+                var i = 0;
+                while (i < $scope.ejercicios.length && !terminada) {
+                    if ($scope.ejercicios[i].id === idejercicio) {
+                        terminada = true;
+                        nombre = $scope.ejercicios[i].nombre;
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+
+        $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
+            if ($scope.enunciados === null) return {};
+            else {
+                var terminada = false;
+                var nombre = {};
+
+                var i = 0;
+                while (i < $scope.enunciados.length && !terminada) {
+                    if ($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
+                        terminada = true;
+                        nombre = $scope.enunciados[i];
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+    
+        $scope.eliminarCand = function(indice,idCand) {
+
+            $scope.usuario.candidatosPropuestos.splice(indice, 1);
+           var req = {
+                method: 'DELETE',
+                url: rutaApp + 'candidatos/' + idCand
+            }
+
+            $http(req).success(function(posibleError) {
+                console.log(posibleError);
+            });
+            
+            
+        };
 }]);
