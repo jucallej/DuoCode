@@ -359,19 +359,23 @@ duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', f
     usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
             $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
             $scope.ejercicios = [];
-            $scope.enunciados = [];
-
+            $scope.enunciados = []; 
             for (var i = 0; i < $scope.usuario.candidatosPropuestos.length; i++) {
-                var cand = $scope.usuario.candidatosPropuestos[i];
-
                 $http.get(rutaApp + 'ejercicios/' + $scope.usuario.candidatosPropuestos[i].idEjercicio).success(function(dataEjerciciosCand) {
                     $scope.ejercicios.push(dataEjerciciosCand);
-
                     for (var j = 0; j < dataEjerciciosCand.enunciados.length; j++) {
                         $http.get(dataEjerciciosCand.enunciados[j]).success(function(dataEnunciadoCand) {
 
-                            if (dataEnunciadoCand.nombreLenguaje == cand.lenguajeOrigen)
-                                $scope.enunciados.push(dataEnunciadoCand);
+                            var ind = 0;
+                            var encontrado = false;
+                            while(ind < $scope.usuario.candidatosPropuestos.length && !encontrado){
+                                if (dataEnunciadoCand.idDelEjercicioQueResuelve == $scope.usuario.candidatosPropuestos[ind].idEjercicio && dataEnunciadoCand.nombreLenguaje == $scope.usuario.candidatosPropuestos[ind].lenguajeOrigen){
+                                    $scope.enunciados.push(dataEnunciadoCand);
+                                    encontrado = true;
+                                }else
+                                    ind++;
+                            }
+
                         });
 
                     }
