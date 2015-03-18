@@ -270,6 +270,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
  	$scope.leccion = {};
  	$scope.vidas = 3;
  	$scope.ejercicios = [];
+    $scope.enunciados = [];
  	$scope.ejerciciosTotales = 10;
  	$scope.ejerciciosRestantes = 10;
 
@@ -277,6 +278,8 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
 	$scope.idTema = $routeParams.temaID;
 
 	$scope.cargando = true;
+
+    $scope.idiomaQueSe = idiomasSeleccionadosServicio.idiomaQueSe;
 
     var usuario;
 
@@ -293,6 +296,14 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         for (var i = 0; i < $scope.leccion.ejercicios.length; i++) {
         	$http.get($scope.leccion.ejercicios[i]).success(function(ejercicio) {
         		$scope.ejercicios.push(ejercicio);
+                console.log(ejercicio);
+                for (var i = 0; i < ejercicio.enunciados.length; i++) {
+                    $http.get(ejercicio.enunciados[i]).success(function(enunciado) {
+                        //console.log(enunciado);
+                        if (enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueSe || enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueNOSe)
+                            $scope.enunciados.push(enunciado);
+                    });
+                };
         	});
         };
 
@@ -349,6 +360,25 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
             console.log(posibleError);
         });
     };
+
+    $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
+            if ($scope.enunciados === null) return {};
+            else {
+                var terminada = false;
+                var nombre = {};
+
+                var i = 0;
+                while (i < $scope.enunciados.length && !terminada) {
+                    if ($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
+                        terminada = true;
+                        nombre = $scope.enunciados[i];
+                    } else i++;
+                };
+                console.log(nombre);
+
+                return nombre;
+            }
+        };
 
 }]);
 

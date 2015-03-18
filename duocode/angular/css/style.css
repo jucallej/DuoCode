@@ -198,3 +198,7 @@ a:hover{
 .codigoEditable{
     background-color: #23241f;
 }
+
+.visorCodigo .hljs{
+    height: 16.3em;
+}
