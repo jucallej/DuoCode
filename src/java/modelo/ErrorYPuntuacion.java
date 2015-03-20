@@ -21,17 +21,21 @@ public class ErrorYPuntuacion {
     private String error;
     @XmlElement(name="puntuacion")
     private int puntuacion;
+    @XmlElement(name="id")
+    private int id;
 
     public ErrorYPuntuacion() {
     }
 
-    public ErrorYPuntuacion(String error, int puntuacion) {
+    public ErrorYPuntuacion(String error, int puntuacion, int id) {
         this.error = error;
         this.puntuacion = puntuacion;
+        this.id = id;
     }
     
-    public ErrorYPuntuacion(int puntuacion) {
+    public ErrorYPuntuacion(int puntuacion, int id) {
         this.puntuacion = puntuacion;
+        this.id = id;
         if (puntuacion >=0)
             this.error = "no";
         else
@@ -44,5 +48,9 @@ public class ErrorYPuntuacion {
 
     public int getPuntuacion() {
         return puntuacion;
+    }
+
+    public int getId() {
+        return id;
     }
 }

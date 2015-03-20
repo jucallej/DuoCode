@@ -68,11 +68,12 @@ public class EnviosResource {
         envio.setId(0);
         envio.setFecha(new Date());
         Puntuador.puntuar(envio);
-        if (this.envioMapper.insert(envio) == -1)
+        int id = this.envioMapper.insert(envio);
+        if (id == -1)
             envio.setPuntuacion(-1);
         
         //Habría que comprobar si ha completado la leccion
         
-        return new ErrorYPuntuacion(envio.getPuntuacion());
+        return new ErrorYPuntuacion(envio.getPuntuacion(), id);
     }
 }
