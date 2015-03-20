@@ -1,5 +1,76 @@
-<div class="container">
-    <div class="contenido">
-        <h1>Ejercicios sin hacer</h1>
-    </div>
+<div class="container" ng-controller="EjerciciosController">
+    <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="contenido reomvePadding">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-10 col-xs-10">
+                                    <div class="padding">
+
+                                        <ol class="breadcrumb">
+                                            <li><a href="#/temas" class="green">Temas</a>
+                                            </li>
+                                            <li><a href="#/temas/{{idTema}}" class="green">Tema {{idTema}}</a>
+                                            </li>
+                                            <li class="active">Leccion {{idLeccion}}</li>
+                                        </ol>
+
+                                        <div ng-show="cargando">
+                                        	<h2>Cargando</h2>
+                                        </div>
+
+                                        <div ng-hide="cargando">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-8 col-xs-12">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{porcentajeCompletado()}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em;  width: {{porcentajeCompletado()}}%;">
+                                                            {{  porcentajeCompletado() }} %
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-xs-10">
+                                                    <i><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(0);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(1);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(2);" aria-hidden="true"></span> Vidas restantes</i>
+                                                </div>
+                                                <div class="col-md-1 col-xs-2" ng-click="favorito()">
+                                                    <button type="submit" class="btn favorito">
+                                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <p>{{EjActual().nombre}}</p>
+
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-6 col-xs-12">
+                                                    <span class="label label-info">Java</span>
+                                                    <div hljs source="enunciadoCompleto(EjActual().id, idiomaQueSe).codigo" class="visorCodigo"></div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-12">
+                                                    <span class="label label-info">C++</span>
+                                                        <textarea class="form-control codigoEditable" rows="11" placeholder="Escribe tu solución aquí" ng-model="textoEscrito"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-lg btn-primary btn-block boton">
+                                            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Corregir
+                                        </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="right carousel-control" role="button" ng-click="saltar()">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Siguiente</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>

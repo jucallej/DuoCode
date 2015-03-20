@@ -1,6 +1,6 @@
 var rutaApp = 'http://localhost:8080/DuoCode/rest/';
 
-var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute']);
+var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute', 'hljs']);
 
 //Creamos el menú de usuarios reusable (como tag): <info-usuario></info-usuario>
 duocodeApp.directive('infoUsuario', function() {
@@ -16,6 +16,9 @@ duocodeApp.config(['$routeProvider',
     $routeProvider.
       when('/misfavoritos', {
         templateUrl: 'parts/misfavoritos.html',
+      }).
+      when('/miscandidatos', {
+        templateUrl: 'parts/miscandidatos.html',
       }).
       when('/temas', {
         templateUrl: 'parts/temas.html',
@@ -167,7 +170,8 @@ duocodeApp.controller('LeccionesController', ['$scope', '$http', 'usuarioServici
 
             var i = 0;
             while ( i < usuario.leccionesCompletadas.length && !terminada) {
-                if(usuario.leccionesCompletadas[i] === idLeccion) terminada = true;
+                if(usuario.leccionesCompletadas[i].idLeccion === idLeccion 
+                    && usuario.leccionesCompletadas[i].lenguaje === idiomasSeleccionadosServicio.idiomaQueNOSe) terminada = true;
                 else i++;
             };
 
@@ -176,99 +180,289 @@ duocodeApp.controller('LeccionesController', ['$scope', '$http', 'usuarioServici
     };
 }]);
 
-duocodeApp.controller('FavoritoController', ['$scope', '$http', 'usuarioServicio', 
-    function ($scope, $http, usuarioServicio) {
-        
+duocodeApp.controller('FavoritoController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
+
+        //Ejecuta esto cuando se termina de cargar el get de usuarioServicio, necesario para saber que lecciones ha hecho
+        usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+            $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
+            $scope.ejercicios = [];
+            $scope.enunciados = [];
+
+            for (var i = 0; i < $scope.usuario.favoritos.length; i++) {
+                var fav = $scope.usuario.favoritos[i];
+
+                $http.get(rutaApp + 'ejercicios/' + $scope.usuario.favoritos[i].idEjercicio).success(function(dataEjercicios) {
+                    $scope.ejercicios.push(dataEjercicios);
+
+                    for (var j = 0; j < dataEjercicios.enunciados.length; j++) {
+                        $http.get(dataEjercicios.enunciados[j]).success(function(dataEnunciado) {
+
+                            if (dataEnunciado.nombreLenguaje == fav.lenguajeOrigen || dataEnunciado.nombreLenguaje == fav.lenguajeDestino)
+                                $scope.enunciados.push(dataEnunciado);
+                        });
+
+                    }
+
+                });
+
+            }
+        });
+
+        $scope.nombreEj = function(idejercicio) {
+            if ($scope.ejercicios === null) return 'cargando';
+            else {
+                var terminada = false;
+                var nombre = 'no encontrado';
+
+                var i = 0;
+                while (i < $scope.ejercicios.length && !terminada) {
+                    if ($scope.ejercicios[i].id === idejercicio) {
+                        terminada = true;
+                        nombre = $scope.ejercicios[i].nombre;
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+
+        $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
+            if ($scope.enunciados === null) return {};
+            else {
+                var terminada = false;
+                var nombre = {};
+
+                var i = 0;
+                while (i < $scope.enunciados.length && !terminada) {
+                    if ($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
+                        terminada = true;
+                        nombre = $scope.enunciados[i];
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+
+        $scope.eliminarFav = function(indiceFav, fav) {
+            $scope.usuario.favoritos.splice(indiceFav, 1);
+            // Estaba mal el id (mayusculas y favoritos es {favoritos: array} no {array} directamente)
+            var req = {
+                method: 'PUT',
+                url: rutaApp + 'favoritos',
+                headers: {
+                    'userID': $scope.usuario.ID
+                },
+                data: {
+                    'favoritos': $scope.usuario.favoritos
+                }
+            }
+
+            $http(req).success(function(posibleError) {
+                console.log(posibleError);
+            });
+        };
+    }
+]);
+
+duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServicio', 'idiomasSeleccionadosServicio', '$routeParams',
+ function($scope, $http, usuarioServicio, idiomasSeleccionadosServicio, $routeParams) {
+ 	$scope.leccion = {};
+ 	$scope.vidas = 3;
+ 	$scope.ejercicios = [];
+    $scope.enunciados = [];
+ 	$scope.ejerciciosTotales = 10;
+ 	$scope.ejerciciosRestantes = 10;
+
+	$scope.idLeccion = $routeParams.idLeccion;
+	$scope.idTema = $routeParams.temaID;
+
+	$scope.cargando = true;
+
+    $scope.idiomaQueSe = idiomasSeleccionadosServicio.idiomaQueSe;
+
+    var usuario;
+
     //Ejecuta esto cuando se termina de cargar el get de usuarioServicio, necesario para saber que lecciones ha hecho
     usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
-        $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
-        $scope.ejercicios = [];
-        $scope.enunciados=[];
-        
-        for(var i=0; i < $scope.usuario.favoritos.length; i++){
-            //console.log($scope.usuario.favoritos[i].idEjercicio);
-            var fav = $scope.usuario.favoritos[i];
-            
-            $http.get(rutaApp + 'ejercicios/' + $scope.usuario.favoritos[i].idEjercicio).success(function(dataEjercicios) {
-                //$scope.lecciones.push(dataEjercicios);
-                //console.log($scope.usuario.favoritos[i]);
-                $scope.ejercicios.push( dataEjercicios);
-                //console.log(dataEjercicios.enunciados);
-
-                for(var j = 0; j< dataEjercicios.enunciados.length; j++){
-                    $http.get(dataEjercicios.enunciados[j]).success(function(dataEnunciado){
-                        
-                        if(dataEnunciado.nombreLenguaje == fav.lenguajeOrigen || dataEnunciado.nombreLenguaje == fav.lenguajeDestino)
-                        $scope.enunciados.push(dataEnunciado);
-                      //  console.log($scope.enunciados);
-                    });
-                    
-                }
-
-            });
-            
-        }
-        
-        $scope.nombreEj = function(idejercicio) {
-        if ($scope.ejercicios === null)  return 'cargando';
-        else{
-            var terminada = false;
-            var nombre = 'no encontrado';
-
-            var i = 0;
-           // console.log($scope.ejercicios);
-            while ( i < $scope.ejercicios.length && !terminada) {
-                if($scope.ejercicios[i].id === idejercicio) {
-                    terminada = true;
-                    nombre = $scope.ejercicios[i].nombre;
-                }
-                else i++;
-            };
-
-            return nombre;
-        }
-    };
-        $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
-        if ($scope.enunciados === null)  return {};
-        else{
-            var terminada = false;
-            var nombre = {};
-
-            var i = 0;
-           // console.log($scope.ejercicios);
-            while ( i < $scope.enunciados.length && !terminada) {
-                if($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
-                    terminada = true;
-                    nombre = $scope.enunciados[i];
-                }
-                else i++;
-            };
-//console.log(nombre);
-            return nombre;
-        }
-    };
-        
-        
-    $scope.eliminarFav = function(indiceFav, fav) {
-        $scope.usuario.favoritos.splice(indiceFav,1);
-        console.log($scope.usuario.favoritos + indiceFav);
-        console.log(fav);
-        var req = {
-         method: 'PUT',
-         url: rutaApp + 'favoritos',
-         headers: {
-           'userID': $scope.usuario.id
-         },
-         data: $scope.usuario.favoritos,
-        }
-        $http(req).success(function(posibleError) {
-               console.log(posibleError);
-            });
-    };
-            
-
+        usuario = dataCuandoLaFuncionSeEjecute.data;
     });
-        
-        
+
+    $http.get(rutaApp+'lecciones/'+$scope.idLeccion).success(function(leccion) {
+        $scope.leccion = leccion;
+        $scope.ejerciciosTotales = $scope.leccion.ejercicios.length;
+        $scope.ejerciciosRestantes = $scope.ejerciciosTotales;
+
+        for (var i = 0; i < $scope.leccion.ejercicios.length; i++) {
+        	$http.get($scope.leccion.ejercicios[i]).success(function(ejercicio) {
+        		$scope.ejercicios.push(ejercicio);
+                console.log(ejercicio);
+                for (var i = 0; i < ejercicio.enunciados.length; i++) {
+                    $http.get(ejercicio.enunciados[i]).success(function(enunciado) {
+                        //console.log(enunciado);
+                        if (enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueSe || enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueNOSe)
+                            $scope.enunciados.push(enunciado);
+                    });
+                };
+        	});
+        };
+
+        //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+
+        for(var j, x, i = $scope.ejercicios.length; i; j = Math.floor(Math.random() * i), x = $scope.ejercicios[--i], $scope.ejercicios[i] = $scope.ejercicios[j], $scope.ejercicios[j] = x);
+
+        $scope.cargando = false;
+    });
+
+    $scope.EjActual= function() {
+    	return $scope.ejercicios[0];
+    };
+
+    $scope.colorRojoVidas = function(indiceCorazones) {
+    	if ($scope.vidas > indiceCorazones) return 'rojo';
+    	else return '';
+    };
+
+     $scope.porcentajeCompletado = function() {
+     	return 100 - (($scope.ejerciciosRestantes / $scope.ejerciciosTotales) * 100);
+    };
+
+    $scope.saltar = function() {
+    	if ($scope.textoEscrito === undefined || $scope.textoEscrito === '' || $scope.textoEscrito === null) {
+    	//No ha escrito nada, y se lo salta quitandole una vida
+    		$scope.vidas -= 1;
+    	}
+    	else{//Ha escrito algo y se puede corregir
+    		$scope.ejerciciosRestantes -= 1;
+    	}
+    };
+
+    $scope.favorito = function() {
+    	usuario.favoritos.push({
+    		idEjercicio: $scope.ejercicios[0].id,
+    		idUsuario: usuario.ID,
+    		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe,
+    		lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe
+    	});
+        // Estaba mal el id (mayusculas y favoritos es {favoritos: array} no {array} directamente)
+        var req = {
+            method: 'PUT',
+            url: rutaApp + 'favoritos',
+            headers: {
+                'userID': usuario.ID
+            },
+            data: {
+                'favoritos': usuario.favoritos
+            }
+        }
+
+        $http(req).success(function(posibleError) {
+            console.log(posibleError);
+        });
+    };
+
+    $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
+            if ($scope.enunciados === null) return {};
+            else {
+                var terminada = false;
+                var nombre = {};
+
+                var i = 0;
+                while (i < $scope.enunciados.length && !terminada) {
+                    if ($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
+                        terminada = true;
+                        nombre = $scope.enunciados[i];
+                    } else i++;
+                };
+                console.log(nombre);
+
+                return nombre;
+            }
+        };
+
+}]);
+
+
+duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
     
+    
+    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+            $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
+            $scope.ejercicios = [];
+            $scope.enunciados = []; 
+            for (var i = 0; i < $scope.usuario.candidatosPropuestos.length; i++) {
+                $http.get(rutaApp + 'ejercicios/' + $scope.usuario.candidatosPropuestos[i].idEjercicio).success(function(dataEjerciciosCand) {
+                    $scope.ejercicios.push(dataEjerciciosCand);
+                    for (var j = 0; j < dataEjerciciosCand.enunciados.length; j++) {
+                        $http.get(dataEjerciciosCand.enunciados[j]).success(function(dataEnunciadoCand) {
+
+                            var ind = 0;
+                            var encontrado = false;
+                            while(ind < $scope.usuario.candidatosPropuestos.length && !encontrado){
+                                if (dataEnunciadoCand.idDelEjercicioQueResuelve == $scope.usuario.candidatosPropuestos[ind].idEjercicio && dataEnunciadoCand.nombreLenguaje == $scope.usuario.candidatosPropuestos[ind].lenguajeOrigen){
+                                    $scope.enunciados.push(dataEnunciadoCand);
+                                    encontrado = true;
+                                }else
+                                    ind++;
+                            }
+
+                        });
+
+                    }
+
+                });
+
+            }
+        });
+
+        $scope.nombreEj = function(idejercicio) {
+            if ($scope.ejercicios === null) return 'cargando';
+            else {
+                var terminada = false;
+                var nombre = 'no encontrado';
+
+                var i = 0;
+                while (i < $scope.ejercicios.length && !terminada) {
+                    if ($scope.ejercicios[i].id === idejercicio) {
+                        terminada = true;
+                        nombre = $scope.ejercicios[i].nombre;
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+
+        $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
+            if ($scope.enunciados === null) return {};
+            else {
+                var terminada = false;
+                var nombre = {};
+
+                var i = 0;
+                while (i < $scope.enunciados.length && !terminada) {
+                    if ($scope.enunciados[i].idDelEjercicioQueResuelve == idejercicio && $scope.enunciados[i].nombreLenguaje == lenguaje) {
+                        terminada = true;
+                        nombre = $scope.enunciados[i];
+                    } else i++;
+                };
+
+                return nombre;
+            }
+        };
+    
+        $scope.eliminarCand = function(indice,idCand) {
+
+            $scope.usuario.candidatosPropuestos.splice(indice, 1);
+           var req = {
+                method: 'DELETE',
+                url: rutaApp + 'candidatos/' + idCand
+            }
+
+            $http(req).success(function(posibleError) {
+                console.log(posibleError);
+            });
+            
+            
+        };
 }]);
