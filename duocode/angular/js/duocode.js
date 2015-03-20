@@ -1,4 +1,6 @@
 var rutaApp = 'http://localhost:8080/DuoCode/rest/';
+var umbralValido = 7; //sobre 10
+var numeroMaximoEJ = 10;
 
 var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute', 'hljs']);
 
@@ -246,7 +248,6 @@ duocodeApp.controller('FavoritoController', ['$scope', '$http', 'usuarioServicio
 
         $scope.eliminarFav = function(indiceFav, fav) {
             $scope.usuario.favoritos.splice(indiceFav, 1);
-            // Estaba mal el id (mayusculas y favoritos es {favoritos: array} no {array} directamente)
             var req = {
                 method: 'PUT',
                 url: rutaApp + 'favoritos',
@@ -291,12 +292,15 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     $http.get(rutaApp+'lecciones/'+$scope.idLeccion).success(function(leccion) {
         $scope.leccion = leccion;
         $scope.ejerciciosTotales = $scope.leccion.ejercicios.length;
+
+        if ($scope.ejerciciosTotales > numeroMaximoEJ) $scope.ejerciciosTotales = numeroMaximoEJ;
+
         $scope.ejerciciosRestantes = $scope.ejerciciosTotales;
 
         for (var i = 0; i < $scope.leccion.ejercicios.length; i++) {
         	$http.get($scope.leccion.ejercicios[i]).success(function(ejercicio) {
         		$scope.ejercicios.push(ejercicio);
-                console.log(ejercicio);
+                //console.log(ejercicio);
                 for (var i = 0; i < ejercicio.enunciados.length; i++) {
                     $http.get(ejercicio.enunciados[i]).success(function(enunciado) {
                         //console.log(enunciado);
@@ -318,6 +322,77 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     	return $scope.ejercicios[0];
     };
 
+    //Para reutilizar
+    var verSiEjercicioEstaMarcadoComoFavorito = function(idEjercicio){
+        for (var i = 0; i < usuario.favoritos.length; i++) {
+            if (usuario.favoritos[i].idEjercicio === idEjercicio 
+                && usuario.favoritos[i].lenguajeDestino === idiomasSeleccionadosServicio.idiomaQueNOSe 
+                && usuario.favoritos[i].lenguajeOrigen === idiomasSeleccionadosServicio.idiomaQueSe) return i;
+        };
+
+        return -1;
+    }
+
+    var ejCompletado = function(){
+        $scope.ejerciciosRestantes -= 1;
+        $scope.ejercicios.splice(0, 1);
+
+        //Mirar si hemos terminado
+    }
+
+    var ejFallado = function(){
+        $scope.vidas -= 1;
+
+        //Mirar si nos hemos quedado sin vidas
+    }
+
+    var corregirEjercicio = function(idEj, codigo){
+        var req = {
+            method: 'PUT',
+            url: rutaApp + 'envios',
+            data: {
+                'codigo': codigo,
+                'idUsuario': usuario.ID,
+                'idEjercicio':  idEj,
+                'lenguajeOrigen': idiomasSeleccionadosServicio.idiomaQueSe,
+                'lenguajeDestino': idiomasSeleccionadosServicio.idiomaQueNOSe
+            }
+        }
+
+        $http(req).success(function(respuesta) {
+            console.log(respuesta);
+            if (respuesta.error === 'no'){
+                console.log(usuario);
+                var date = new Date();
+                usuario.historialEjercicios.push({
+                    'codigo': codigo,
+                    'fecha': date.toISOString(),
+                    'id': respuesta.id,
+                    'idEjercicio':  idEj,
+                    'idUsuario': usuario.ID,
+                    'lenguajeOrigen': idiomasSeleccionadosServicio.idiomaQueSe,
+                    'lenguajeDestino': idiomasSeleccionadosServicio.idiomaQueNOSe,
+                    'puntuacion': respuesta.puntuacion
+                });
+                console.log(usuario);
+            }
+
+            if (umbralValido <= respuesta.puntuacion){
+                ejCompletado();
+            }
+            else{
+                ejFallado();
+            }
+        });
+    }
+
+    $scope.ejMarcadoFavorito= function(idEjercicio) {
+        if (usuario === undefined) return '';
+        if (verSiEjercicioEstaMarcadoComoFavorito(idEjercicio) != -1) return 'marcado';
+        else return '';
+    };
+
+
     $scope.colorRojoVidas = function(indiceCorazones) {
     	if ($scope.vidas > indiceCorazones) return 'rojo';
     	else return '';
@@ -330,35 +405,54 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     $scope.saltar = function() {
     	if ($scope.textoEscrito === undefined || $scope.textoEscrito === '' || $scope.textoEscrito === null) {
     	//No ha escrito nada, y se lo salta quitandole una vida
-    		$scope.vidas -= 1;
+    		ejFallado();
     	}
     	else{//Ha escrito algo y se puede corregir
-    		$scope.ejerciciosRestantes -= 1;
+            corregirEjercicio($scope.EjActual().id, $scope.textoEscrito);
     	}
     };
 
     $scope.favorito = function() {
-    	usuario.favoritos.push({
-    		idEjercicio: $scope.ejercicios[0].id,
-    		idUsuario: usuario.ID,
-    		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe,
-    		lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe
-    	});
-        // Estaba mal el id (mayusculas y favoritos es {favoritos: array} no {array} directamente)
-        var req = {
-            method: 'PUT',
-            url: rutaApp + 'favoritos',
-            headers: {
-                'userID': usuario.ID
-            },
-            data: {
-                'favoritos': usuario.favoritos
+        var indiceFav = verSiEjercicioEstaMarcadoComoFavorito($scope.ejercicios[0].id);
+        if (indiceFav == -1){
+        	usuario.favoritos.push({
+        		idEjercicio: $scope.ejercicios[0].id,
+        		idUsuario: usuario.ID,
+        		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe,
+        		lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe
+        	});
+            var req = {
+                method: 'PUT',
+                url: rutaApp + 'favoritos',
+                headers: {
+                    'userID': usuario.ID
+                },
+                data: {
+                    'favoritos': usuario.favoritos
+                }
             }
-        }
 
-        $http(req).success(function(posibleError) {
-            console.log(posibleError);
-        });
+            $http(req).success(function(posibleError) {
+                //console.log(posibleError);
+            });
+        }
+        else{
+            usuario.favoritos.splice(indiceFav, 1);
+            var req = {
+                method: 'PUT',
+                url: rutaApp + 'favoritos',
+                headers: {
+                    'userID': usuario.ID
+                },
+                data: {
+                    'favoritos': usuario.favoritos
+                }
+            }
+
+            $http(req).success(function(posibleError) {
+                //console.log(posibleError);
+            });
+        }
     };
 
     $scope.enunciadoCompleto = function(idejercicio, lenguaje) {
@@ -374,11 +468,17 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                         nombre = $scope.enunciados[i];
                     } else i++;
                 };
-                console.log(nombre);
+                //console.log(nombre);
 
                 return nombre;
             }
-        };
+    };
+
+    $scope.botonCorregir = function(){
+        if ($scope.textoEscrito !== undefined && $scope.textoEscrito !== '' && $scope.textoEscrito !== null) {
+            corregirEjercicio($scope.EjActual().id, $scope.textoEscrito);
+        }
+    }
 
 }]);
 

@@ -34,7 +34,7 @@
                                                     <i><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(0);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(1);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(2);" aria-hidden="true"></span> Vidas restantes</i>
                                                 </div>
                                                 <div class="col-md-1 col-xs-2" ng-click="favorito()">
-                                                    <button type="submit" class="btn favorito">
+                                                    <button type="submit" class="btn favorito ng-class: ejMarcadoFavorito(EjActual().id);">
                                                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                                                     </button>
                                                 </div>
@@ -51,12 +51,12 @@
                                                 </div>
                                                 <div class="col-md-6 col-xs-12">
                                                     <span class="label label-info">C++</span>
-                                                        <textarea class="form-control codigoEditable" rows="11" placeholder="Escribe tu solución aquí" ng-model="textoEscrito"></textarea>
+                                                        <textarea class="form-control codigoEditable" rows="11" placeholder="Escribe tu solución aquí" ng-model="textoEscrito" required></textarea>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <button type="submit" class="btn btn-lg btn-primary btn-block boton">
+                                        <button type="submit"class="btn btn-lg btn-primary btn-block boton" ng-click="botonCorregir()">
                                             <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Corregir
                                         </button>
                                         </div>

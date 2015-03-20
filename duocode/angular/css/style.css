@@ -202,3 +202,11 @@ a:hover{
 .visorCodigo .hljs{
     height: 16.3em;
 }
+
+.favorito.focus, .favorito:focus, .favorito:hover {
+  color: inherit;
+}
+
+.marcado.focus, .marcado:focus, .marcado:hover {
+  color: #F92672;
+}
