@@ -526,7 +526,31 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     };
 
     $scope.anhadirCandidato = function(){
-        console.log("sin hacer: añadir candidato");
+        console.log("sin hacer: añadir candidato" + $scope.textoEscrito);
+        usuario.candidatosPropuestos.push({
+        		codigo: $scope.textoEscrito,
+                idUsuario: usuario.ID,
+                idEjercicio: $scope.ejercicios[0].id,
+                lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
+        		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
+        		
+        	});
+            var req = {
+                method: 'POST',
+                url: rutaApp + 'candidatos',
+                data: {
+                    codigo: $scope.textoEscrito,
+                    idUsuario: usuario.ID,
+                    idEjercicio: $scope.ejercicios[0].id,
+                    lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
+                    lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
+                }
+            }
+
+            $http(req).success(function(posibleError) {
+                console.log(posibleError);
+            });
+        
     };
 
 }]);
