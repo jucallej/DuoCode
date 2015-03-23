@@ -279,8 +279,13 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
 	$scope.idTema = $routeParams.temaID;
 
 	$scope.cargando = true;
+    $scope.correcto = false;
+    $scope.incorrecto = false;
+    $scope.sinVidas = false;
+    $scope.terminadoAcertando = false;
 
     $scope.idiomaQueSe = idiomasSeleccionadosServicio.idiomaQueSe;
+    $scope.idiomaQueNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;
 
     var usuario;
 
@@ -289,34 +294,47 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         usuario = dataCuandoLaFuncionSeEjecute.data;
     });
 
-    $http.get(rutaApp+'lecciones/'+$scope.idLeccion).success(function(leccion) {
-        $scope.leccion = leccion;
-        $scope.ejerciciosTotales = $scope.leccion.ejercicios.length;
+    var init = function(){
 
-        if ($scope.ejerciciosTotales > numeroMaximoEJ) $scope.ejerciciosTotales = numeroMaximoEJ;
+        $scope.cargando = true;
+        $scope.correcto = false;
+        $scope.incorrecto = false;
+        $scope.sinVidas = false;
+        $scope.terminadoAcertando = false;
+        $scope.vidas = 3;
 
-        $scope.ejerciciosRestantes = $scope.ejerciciosTotales;
+        $http.get(rutaApp+'lecciones/'+$scope.idLeccion).success(function(leccion) {
+            $scope.leccion = leccion;
+            $scope.ejerciciosTotales = $scope.leccion.ejercicios.length;
 
-        for (var i = 0; i < $scope.leccion.ejercicios.length; i++) {
-        	$http.get($scope.leccion.ejercicios[i]).success(function(ejercicio) {
-        		$scope.ejercicios.push(ejercicio);
-                //console.log(ejercicio);
-                for (var i = 0; i < ejercicio.enunciados.length; i++) {
-                    $http.get(ejercicio.enunciados[i]).success(function(enunciado) {
-                        //console.log(enunciado);
-                        if (enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueSe || enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueNOSe)
-                            $scope.enunciados.push(enunciado);
-                    });
-                };
-        	});
-        };
+            if ($scope.ejerciciosTotales > numeroMaximoEJ) $scope.ejerciciosTotales = numeroMaximoEJ;
 
-        //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+            $scope.ejerciciosRestantes = $scope.ejerciciosTotales;
 
-        for(var j, x, i = $scope.ejercicios.length; i; j = Math.floor(Math.random() * i), x = $scope.ejercicios[--i], $scope.ejercicios[i] = $scope.ejercicios[j], $scope.ejercicios[j] = x);
+            for (var i = 0; i < $scope.leccion.ejercicios.length; i++) {
+            	$http.get($scope.leccion.ejercicios[i]).success(function(ejercicio) {
+            		$scope.ejercicios.push(ejercicio);
+                    //console.log(ejercicio);
+                    for (var i = 0; i < ejercicio.enunciados.length; i++) {
+                        $http.get(ejercicio.enunciados[i]).success(function(enunciado) {
+                            //console.log(enunciado);
+                            if (enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueSe || enunciado.nombreLenguaje === idiomasSeleccionadosServicio.idiomaQueNOSe)
+                                $scope.enunciados.push(enunciado);
+                        });
+                    };
+            	});
+            };
 
-        $scope.cargando = false;
-    });
+            //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+
+            for(var j, x, i = $scope.ejercicios.length; i; j = Math.floor(Math.random() * i), x = $scope.ejercicios[--i], $scope.ejercicios[i] = $scope.ejercicios[j], $scope.ejercicios[j] = x);
+
+            $scope.cargando = false;
+        });
+
+    };
+
+    init();
 
     $scope.EjActual= function() {
     	return $scope.ejercicios[0];
@@ -331,20 +349,13 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         };
 
         return -1;
-    }
+    };
 
-    var ejCompletado = function(){
-        $scope.ejerciciosRestantes -= 1;
-        $scope.ejercicios.splice(0, 1);
-
-        //Mirar si hemos terminado
-    }
-
-    var ejFallado = function(){
+    var ejFallado = function(saltado){ //saltado para ver si mostramos la vista de ej incorrecto
         $scope.vidas -= 1;
-
-        //Mirar si nos hemos quedado sin vidas
-    }
+        if (!saltado)
+            $scope.incorrecto = true;
+    };
 
     var corregirEjercicio = function(idEj, codigo){
         var req = {
@@ -360,11 +371,11 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         }
 
         $http(req).success(function(respuesta) {
-            console.log(respuesta);
+            //console.log(respuesta);
             if (respuesta.error === 'no'){
-                console.log(usuario);
+                //console.log(usuario);
                 var date = new Date();
-                usuario.historialEjercicios.push({
+                var ejercicioCorregido = {
                     'codigo': codigo,
                     'fecha': date.toISOString(),
                     'id': respuesta.id,
@@ -373,18 +384,32 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                     'lenguajeOrigen': idiomasSeleccionadosServicio.idiomaQueSe,
                     'lenguajeDestino': idiomasSeleccionadosServicio.idiomaQueNOSe,
                     'puntuacion': respuesta.puntuacion
-                });
-                console.log(usuario);
+                };
+
+                usuario.historialEjercicios.push(ejercicioCorregido);
+
+                $scope.ultimaRespuesta = ejercicioCorregido;
+                $scope.ultimoEj = $scope.EjActual();
+
+                $scope.ejercicios.splice(0, 1);
+                $scope.textoEscrito = undefined;
+                //console.log($scope.ultimoEj);
+                //console.log(usuario);
             }
 
-            if (umbralValido <= respuesta.puntuacion){
-                ejCompletado();
+            if (umbralValido <= ejercicioCorregido.puntuacion){
+                $scope.ejerciciosRestantes -= 1;
+                $scope.correcto = true;
+
+                if ($scope.ejerciciosRestantes <= 0){
+                    console.log("sin hacer, hay que marcar la lección como terminada");
+                }
             }
             else{
-                ejFallado();
+                ejFallado(false);
             }
         });
-    }
+    };
 
     $scope.ejMarcadoFavorito= function(idEjercicio) {
         if (usuario === undefined) return '';
@@ -403,13 +428,29 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     };
 
     $scope.saltar = function() {
-    	if ($scope.textoEscrito === undefined || $scope.textoEscrito === '' || $scope.textoEscrito === null) {
-    	//No ha escrito nada, y se lo salta quitandole una vida
-    		ejFallado();
-    	}
-    	else{//Ha escrito algo y se puede corregir
-            corregirEjercicio($scope.EjActual().id, $scope.textoEscrito);
-    	}
+        if ($scope.correcto || $scope.incorrecto){//Si estamos mostrando algo de correcto/incorrecto, lo dejamos de mostrar, y el ej ya está "avanzado"
+            $scope.correcto = false;
+            $scope.incorrecto = false;
+            if ($scope.vidas <= 0){
+                $scope.sinVidas = true;
+            }
+            else if ($scope.ejerciciosRestantes <= 0){
+                $scope.terminadoAcertando = true;
+            }
+        }
+        else{
+        	if ($scope.textoEscrito === undefined || $scope.textoEscrito === '' || $scope.textoEscrito === null) {
+        	//No ha escrito nada, y se lo salta quitandole una vida
+                $scope.ejercicios.splice(0, 1);
+        		ejFallado(true);
+                if ($scope.vidas <= 0){
+                    $scope.sinVidas = true;
+                }
+        	}
+        	else{//Ha escrito algo y se puede corregir
+                corregirEjercicio($scope.EjActual().id, $scope.textoEscrito);
+        	}
+        }
     };
 
     $scope.favorito = function() {
@@ -478,7 +519,15 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         if ($scope.textoEscrito !== undefined && $scope.textoEscrito !== '' && $scope.textoEscrito !== null) {
             corregirEjercicio($scope.EjActual().id, $scope.textoEscrito);
         }
-    }
+    };
+
+    $scope.reiniciar = function(){
+        init();
+    };
+
+    $scope.anhadirCandidato = function(){
+        console.log("sin hacer: añadir candidato");
+    };
 
 }]);
 

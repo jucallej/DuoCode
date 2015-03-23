@@ -15,51 +15,121 @@
                                             </li>
                                             <li class="active">Leccion {{idLeccion}}</li>
                                         </ol>
+                                        <div ng-hide="sinVidas || terminadoAcertando">
+	                                        <div ng-show="cargando">
+	                                        	<h2>Cargando</h2>
+	                                        </div>
 
-                                        <div ng-show="cargando">
-                                        	<h2>Cargando</h2>
+	                                        <div ng-hide="cargando">
+	                                        <div class="container-fluid">
+	                                            <div class="row">
+	                                                <div class="col-md-8 col-xs-12">
+	                                                    <div class="progress">
+	                                                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{porcentajeCompletado()}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em;  width: {{porcentajeCompletado()}}%;">
+	                                                            {{  porcentajeCompletado() }} %
+	                                                        </div>
+	                                                    </div>
+	                                                </div>
+	                                                <div class="col-md-3 col-xs-10">
+	                                                    <i><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(0);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(1);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(2);" aria-hidden="true"></span> Vidas restantes</i>
+	                                                </div>
+	                                                <div class="col-md-1 col-xs-2" ng-click="favorito()">
+	                                                    <button type="submit" class="btn favorito ng-class: ejMarcadoFavorito(EjActual().id);">
+	                                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+	                                                    </button>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+
+	                                        <div ng-hide="correcto || incorrecto">
+		                                        <p>{{EjActual().nombre}}</p>
+
+		                                        <div class="container-fluid">
+		                                            <div class="row">
+		                                                <div class="col-md-6 col-xs-12">
+		                                                    <span class="label label-info">{{idiomaQueSe}}</span>
+		                                                    <div hljs source="enunciadoCompleto(EjActual().id, idiomaQueSe).codigo" class="visorCodigo"></div>
+		                                                </div>
+		                                                <div class="col-md-6 col-xs-12">
+		                                                    <span class="label label-info">{{idiomaQueNoSe}}</span>
+		                                                        <textarea class="form-control codigoEditable" rows="11" placeholder="Escribe tu solución aquí" ng-model="textoEscrito" required></textarea>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+
+		                                        <button type="submit"class="btn btn-lg btn-primary btn-block boton" ng-click="botonCorregir()">
+		                                            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Corregir
+		                                        </button>
+	                                        </div>
+	                                        <div ng-show="correcto">
+	                                        	<p>{{ultimoEj.nombre}}</p>
+	                                        	<div class="container-fluid">
+		                                            <div class="row">
+		                                                <div class="col-md-6 col-xs-12">
+		                                                    <span class="label label-info">{{idiomaQueNoSe}} (solución)</span>
+		                                                    <div hljs source="enunciadoCompleto(ultimoEj.id, idiomaQueNoSe).codigo" class="visorCodigo"></div>
+		                                                </div>
+		                                                <div class="col-md-6 col-xs-12">
+		                                                    <span class="label label-info">{{idiomaQueNoSe}}</span>
+		                                                    <div hljs source="ultimaRespuesta.codigo" class="visorCodigo"></div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+
+		                                        <div class="alert text-center" role="alert">
+		                                            <h3><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Correcto, +{{ultimaRespuesta.puntuacion}} puntos!</h3>
+		                                        </div>
+	                                        </div>
+	                                        <div ng-show="incorrecto">
+	                                        	<p>{{ultimoEj.nombre}}</p>
+	                                        	<div class="container-fluid">
+		                                            <div class="row">
+		                                                <div class="col-md-6 col-xs-12">
+		                                                    <span class="label label-info">{{idiomaQueNoSe}} (solución)</span>
+		                                                    <div hljs source="enunciadoCompleto(ultimoEj.id, idiomaQueNoSe).codigo" class="visorCodigo"></div>
+		                                                </div>
+		                                                <div class="col-md-6 col-xs-12">
+		                                                    <span class="label label-info">{{idiomaQueNoSe}} (tu respuesta)</span>
+		                                                    <div hljs source="ultimaRespuesta.codigo" class="visorCodigo"></div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+
+		                                        <div class="alert text-center" role="alert">
+		                                            <h3 class="incorrect"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Incorrecto, has acertado al {{ultimaRespuesta.puntuacion * 10}}% (+{{ultimaRespuesta.puntuacion}} puntos)</h3>
+		                                        </div>
+		                                        <div class="btnEnviarCandidato">
+		                                            <button type="submit" class="btn btn-lg btn-info" ng-click="anhadirCandidato()">
+		                                                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Añadir a Candidatos
+		                                            </button>
+		                                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="right" data-content="Añade a candidatos cuando creas que tu ejercicio está resuelto de manera correcta. De esta forma pasará a un sistema de votaciones para ser una posible solución correcta de este ejercicio.">
+		                                              <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+		                                            </button>
+		                                        </div>
+	                                        </div>
+	                                    </div>
+                                    </div>
+
+                                    <div ng-show="sinVidas">
+                                    	<div class="text-center">
+                                            <i><span class="glyphicon glyphicon-heart" aria-hidden="true"></span><span class="glyphicon glyphicon-heart" aria-hidden="true"></span><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></i>
+                                        </div>
+                                        <div class="alert text-center" role="alert">
+                                            <h3 class="incorrect"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Te has quedado sin vidas</h3>
                                         </div>
 
-                                        <div ng-hide="cargando">
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-md-8 col-xs-12">
-                                                    <div class="progress">
-                                                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{porcentajeCompletado()}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em;  width: {{porcentajeCompletado()}}%;">
-                                                            {{  porcentajeCompletado() }} %
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-xs-10">
-                                                    <i><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(0);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(1);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(2);" aria-hidden="true"></span> Vidas restantes</i>
-                                                </div>
-                                                <div class="col-md-1 col-xs-2" ng-click="favorito()">
-                                                    <button type="submit" class="btn favorito ng-class: ejMarcadoFavorito(EjActual().id);">
-                                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <p>{{EjActual().nombre}}</p>
-
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-md-6 col-xs-12">
-                                                    <span class="label label-info">Java</span>
-                                                    <div hljs source="enunciadoCompleto(EjActual().id, idiomaQueSe).codigo" class="visorCodigo"></div>
-                                                </div>
-                                                <div class="col-md-6 col-xs-12">
-                                                    <span class="label label-info">C++</span>
-                                                        <textarea class="form-control codigoEditable" rows="11" placeholder="Escribe tu solución aquí" ng-model="textoEscrito" required></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <button type="submit"class="btn btn-lg btn-primary btn-block boton" ng-click="botonCorregir()">
-                                            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Corregir
+                                        <button type="submit" class="btn btn-lg btn-warning btn-block" ng-click="reiniciar()">
+                                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Intentar otra vez
                                         </button>
+                                    	
+                                    </div>
+
+                                    <div ng-show="terminadoAcertando">
+                                    	<div class="text-center terminarLeccion">
+                                            <h3><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Has terminado esta lección</h3>
                                         </div>
+
+                                        <a class="btn btn-lg btn-success btn-block" href="#/temas/{{idTema}}"><span class="glyphicon glyphicon-road" aria-hidden="true"></span> Ver lecciones</span></a>
                                     </div>
                                 </div>
                             </div>
