@@ -16,6 +16,12 @@ duocodeApp.directive('infoUsuario', function() {
 duocodeApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
+      when('/', {
+        templateUrl: 'parts/index.html',
+      }).
+      when('/candidatos', {
+        templateUrl: 'parts/candidatos.html',
+      }).
       when('/misfavoritos', {
         templateUrl: 'parts/misfavoritos.html',
       }).
@@ -32,7 +38,7 @@ duocodeApp.config(['$routeProvider',
         templateUrl: 'parts/ejercicios.html',
       }).
       otherwise({
-        redirectTo: '/temas'
+        redirectTo: '/'
       });
 }]);
 
@@ -356,6 +362,9 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         $scope.vidas -= 1;
         if (!saltado)
             $scope.incorrecto = true;
+
+        //hay que resetearlo, sino el botón solo lo puedes pulsar la priera vez
+        $scope.candEnviado = false;
     };
 
     var corregirEjercicio = function(idEj, codigo){
@@ -371,6 +380,8 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
             }
         }
 
+        $scope.corrigiendo = true;
+
         $http(req).success(function(respuesta) {
             //console.log(respuesta);
             if (respuesta.error === 'no'){
@@ -384,7 +395,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                     'idUsuario': usuario.ID,
                     'lenguajeOrigen': idiomasSeleccionadosServicio.idiomaQueSe,
                     'lenguajeDestino': idiomasSeleccionadosServicio.idiomaQueNOSe,
-                    'puntuacion': respuesta.puntuacion
+                    'puntuacion': 2//respuesta.puntuacion
                 };
 
                 usuario.historialEjercicios.push(ejercicioCorregido);
@@ -393,7 +404,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 $scope.ultimoEj = $scope.EjActual();
 
                 $scope.ejercicios.splice(0, 1);
-                $scope.textoEscrito;// = undefined;
+                $scope.textoEscrito = undefined;
                 //console.log($scope.ultimoEj);
                 //console.log(usuario);
             }
@@ -432,6 +443,8 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         if ($scope.correcto || $scope.incorrecto){//Si estamos mostrando algo de correcto/incorrecto, lo dejamos de mostrar, y el ej ya está "avanzado"
             $scope.correcto = false;
             $scope.incorrecto = false;
+            $scope.corrigiendo = false;
+
             if ($scope.vidas <= 0){
                 $scope.sinVidas = true;
             }
@@ -531,24 +544,23 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         console.log($scope.ultimoEj);
         //El id es el del $scope.ultimoEj porque al corregirlo quitamos el primer elemento del array de ejercicios y 
         //guardamos el ejercicio borrado en "ultimoEj" (líneas 392 y 394 de duocode.js)
-        usuario.candidatosPropuestos.push({
-        		codigo: $scope.textoEscrito,
+
+        //Algo similar para el codigo. se pone a undefined  $scope.textoEscrito (linea 407), para que cuando pases al siguiente ej la caja de texto donde escribes
+        //esté vacia, y te ponga el tooltip, sino tine lo que hayas escrito antes y no se "vacía". Por esto se guarda en $scope.ultimaRespuesta.
+        //También resetado en la linea 367 $scope.candEnviado
+        var candidatoAProponer = {
+        		codigo: $scope.ultimaRespuesta.codigo,
                 idUsuario: usuario.ID,
                 idEjercicio: $scope.ultimoEj.id,
                 lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
         		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
         		
-        	});
+        };
+        usuario.candidatosPropuestos.push(candidatoAProponer);
             var req = {
                 method: 'POST',
                 url: rutaApp + 'candidatos',
-                data: {
-                    codigo: $scope.textoEscrito,
-                    idUsuario: usuario.ID,
-                    idEjercicio: $scope.ultimoEj.id,
-                    lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
-                    lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
-                }
+                data: candidatoAProponer
             }
 
             $http(req).success(function(posibleError) {
@@ -642,4 +654,8 @@ duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', f
             
             
         };
+}]);
+
+duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
+    
 }]);
