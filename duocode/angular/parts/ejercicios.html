@@ -98,13 +98,16 @@
 		                                        <div class="alert text-center" role="alert">
 		                                            <h3 class="incorrect"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Incorrecto, has acertado al {{ultimaRespuesta.puntuacion * 10}}% (+{{ultimaRespuesta.puntuacion}} puntos)</h3>
 		                                        </div>
-		                                        <div class="btnEnviarCandidato">
+		                                        <div class="btnEnviarCandidato" ng-show="!candEnviado">
 		                                            <button type="submit" class="btn btn-lg btn-info" ng-click="anhadirCandidato()">
 		                                                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Añadir a Candidatos
 		                                            </button>
 		                                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="right" data-content="Añade a candidatos cuando creas que tu ejercicio está resuelto de manera correcta. De esta forma pasará a un sistema de votaciones para ser una posible solución correcta de este ejercicio.">
 		                                              <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
 		                                            </button>
+		                                        </div>
+                                                <div class="alert text-center" role="alert" ng-show="candEnviado">
+		                                            <h3><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Tu solución ha sido enviada como candidato.</h3>
 		                                        </div>
 	                                        </div>
 	                                    </div>

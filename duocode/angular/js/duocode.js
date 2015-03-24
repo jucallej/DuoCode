@@ -283,6 +283,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     $scope.incorrecto = false;
     $scope.sinVidas = false;
     $scope.terminadoAcertando = false;
+    $scope.candEnviado = false;
 
     $scope.idiomaQueSe = idiomasSeleccionadosServicio.idiomaQueSe;
     $scope.idiomaQueNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;
@@ -553,7 +554,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
             $http(req).success(function(posibleError) {
                 console.log(posibleError);
             });
-        
+        $scope.candEnviado = true;
     };
 
 }]);
