@@ -392,7 +392,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 $scope.ultimoEj = $scope.EjActual();
 
                 $scope.ejercicios.splice(0, 1);
-                $scope.textoEscrito = undefined;
+                $scope.textoEscrito;// = undefined;
                 //console.log($scope.ultimoEj);
                 //console.log(usuario);
             }
@@ -526,11 +526,14 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     };
 
     $scope.anhadirCandidato = function(){
-        console.log("sin hacer: añadir candidato" + $scope.textoEscrito);
+        console.log("sin hacer: añadir candidato   " + $scope.textoEscrito);
+        console.log($scope.ultimoEj);
+        //El id es el del $scope.ultimoEj porque al corregirlo quitamos el primer elemento del array de ejercicios y 
+        //guardamos el ejercicio borrado en "ultimoEj" (líneas 392 y 394 de duocode.js)
         usuario.candidatosPropuestos.push({
         		codigo: $scope.textoEscrito,
                 idUsuario: usuario.ID,
-                idEjercicio: $scope.ejercicios[0].id,
+                idEjercicio: $scope.ultimoEj.id,
                 lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
         		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
         		
@@ -541,7 +544,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 data: {
                     codigo: $scope.textoEscrito,
                     idUsuario: usuario.ID,
-                    idEjercicio: $scope.ejercicios[0].id,
+                    idEjercicio: $scope.ultimoEj.id,
                     lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
                     lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
                 }
