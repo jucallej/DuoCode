@@ -96,7 +96,8 @@ public class CandidatosResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Candidato getCandidato(@PathParam("idCandidato") int id) {
         Candidato candidato = candidatoMapper.findById(id);
-        candidato.setVotos(usuarioVotaCandidatoMapper.getVotosDeUnCandidato(id));
+        candidato.setVotosPos(usuarioVotaCandidatoMapper.getVotosPosDeUnCandidato(id));
+        candidato.setVotosNeg(usuarioVotaCandidatoMapper.getVotosNegDeUnCandidato(id));
         return candidato;
     }
     

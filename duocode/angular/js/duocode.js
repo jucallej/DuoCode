@@ -689,19 +689,25 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     }
 
     $scope.votosPos = function(candidato){
-        return 4;//hacer bien, recorriendo los votos del candidato
+        var votos = 0;
+        if(candidato != undefined)
+            votos = candidato.votosPos.length;
+        return votos;
     }
 
-    $scope.votosNeg = function(candidatos){
-        return 2;//Lo mismo hay que hacerlo bien
+    $scope.votosNeg = function(candidato){
+        var votos = 0;
+        if(candidato != undefined)
+            votos = candidato.votosNeg.length;
+        return votos;
     }
 
     $scope.tantoPorCientoPos = function(candidato){
-        return ($scope.votosPos(candidato) / $scope.votosNeg(candidato)) * 50; //No es así, pero por ahí estarán los tiros
+        return ($scope.votosPos(candidato) / ($scope.votosNeg(candidato)+$scope.votosPos(candidato))) * 100;
     }
 
     $scope.tantoPorCientoNeg = function(candidato){
-        return 100 - $scope.tantoPorCientoPos(candidato);
+        return ($scope.votosNeg(candidato) / ($scope.votosNeg(candidato)+$scope.votosPos(candidato))) * 100;
     }
 
     usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {

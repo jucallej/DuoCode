@@ -48,8 +48,11 @@ public class Candidato {
     @XmlElement(name="lenguajeDestino")
     private String lenguajeDestino;
     
-    @XmlElement(name="votos")
-    private List<Integer> votos;
+    @XmlElement(name="votosPos")
+    private List<Integer> votosPos;
+    
+    @XmlElement(name="votosNeg")
+    private List<Integer> votosNeg;
 
     
      public Candidato() {
@@ -124,12 +127,19 @@ public class Candidato {
         this.estado = estado;
     }
 
-    public void setVotos(List<UsuarioVotaCandidato> votosDeUnCandidato) {
-        this.votos = new ArrayList<>();
+    public void setVotosPos(List<UsuarioVotaCandidato> votosDeUnCandidato) {
+        this.votosPos = new ArrayList<>();
         
         for (UsuarioVotaCandidato voto: votosDeUnCandidato){
-            this.votos.add(voto.getIdUsuario());
+            this.votosPos.add(voto.getIdUsuario());
         }
     }
    
+    public void setVotosNeg(List<UsuarioVotaCandidato> votosDeUnCandidato) {
+        this.votosNeg = new ArrayList<>();
+        
+        for (UsuarioVotaCandidato voto: votosDeUnCandidato){
+            this.votosNeg.add(voto.getIdUsuario());
+        }
+    }
 }

@@ -59,7 +59,11 @@ public class UsuarioVotaCandidatoMapper extends AbstractMapper<UsuarioVotaCandid
         return this.findByConditions(new QueryCondition[]{new QueryCondition("idUsuario", Operator.EQ, idUsuario)});
     }
     
-    public List<UsuarioVotaCandidato> getVotosDeUnCandidato(int idCandidato){
-        return this.findByConditions(new QueryCondition[]{new QueryCondition("idCandidato", Operator.EQ, idCandidato)});
+    public List<UsuarioVotaCandidato> getVotosPosDeUnCandidato(int idCandidato){
+        return this.findByConditions(new QueryCondition[]{new QueryCondition("idCandidato", Operator.EQ, idCandidato), new QueryCondition("voto", Operator.EQ, "1")});
+    }
+    
+    public List<UsuarioVotaCandidato> getVotosNegDeUnCandidato(int idCandidato){
+        return this.findByConditions(new QueryCondition[]{new QueryCondition("idCandidato", Operator.EQ, idCandidato), new QueryCondition("voto", Operator.EQ, "0")});
     }
 }
