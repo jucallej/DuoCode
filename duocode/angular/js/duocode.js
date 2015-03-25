@@ -658,7 +658,7 @@ duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', f
 
 duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
     $scope.candidatos = [];
-    var usuario;
+    var usuario = {};
     var enunciados = [];
     var ejercicios = [];
     $scope.todoEvaluado = false;
@@ -666,7 +666,24 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     var hayQuePuntuarCandidato = function(candidato){
         return true; //ajustar según el candidato y el usuario
     }
+    
+     $scope.votar = function(id, voto){
+         console.log("EY " + id + voto + $scope.usuario.ID);
+         var req = {
+                method: 'PUT',
+                url: rutaApp + 'candidatos/' + id,
+                data: {'voto': voto},
+                headers: {
+                    'idUsuario': $scope.usuario.ID
+                }
+            }
 
+            $http(req).success(function(posibleError) {
+                console.log(posibleError);
+            });
+         
+        return true; //ajustar según el candidato y el usuario
+    }
     $scope.candidatoActual = function(){
         return $scope.candidatos[0];
     }
@@ -709,9 +726,10 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     $scope.tantoPorCientoNeg = function(candidato){
         return ($scope.votosNeg(candidato) / ($scope.votosNeg(candidato)+$scope.votosPos(candidato))) * 100;
     }
+    
 
     usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
-        usuario = dataCuandoLaFuncionSeEjecute.data;
+        $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
         $http.get(rutaApp + "candidatos").success(function(dataCandidatos) {
             for (var i = 0; i < dataCandidatos.candidatos.length; i++) {
                 $http.get(dataCandidatos.candidatos[i]).success(function(dataCandidato) {
