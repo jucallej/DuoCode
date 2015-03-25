@@ -668,13 +668,13 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     }
     
      $scope.votar = function(id, voto){
-         console.log("EY " + id + voto + $scope.usuario.ID);
          var req = {
                 method: 'PUT',
                 url: rutaApp + 'candidatos/' + id,
-                data: {'voto': voto},
-                headers: {
-                    'idUsuario': $scope.usuario.ID
+                data: {
+                    'votar':{ 
+                        'voto': voto,
+                        'idUsuario': $scope.usuario.ID }
                 }
             }
 
