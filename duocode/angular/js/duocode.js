@@ -657,5 +657,74 @@ duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', f
 }]);
 
 duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
+    $scope.candidatos = [];
+    var usuario;
+    var enunciados = [];
+    var ejercicios = [];
+    $scope.todoEvaluado = false;
+
+    var hayQuePuntuarCandidato = function(candidato){
+        return true; //ajustar según el candidato y el usuario
+    }
+
+    $scope.candidatoActual = function(){
+        return $scope.candidatos[0];
+    }
+
+    $scope.enunciado = function(idEj, lenguaje){
+        return enunciados[0];//hacer que recorra enunciados buscando esto
+    }
+
+    $scope.ejercicio = function(idEj){
+        return ejercicios[0];//hacer que recorra ejercicios buscando esto
+    }
+
+    $scope.saltar = function(){       
+        if ($scope.candidatos.length <= 1){
+            $scope.todoEvaluado = true;
+        }
+        else{
+            $scope.candidatos.splice(0, 1);
+        }
+    }
+
+    $scope.votosPos = function(candidato){
+        return 4;//hacer bien, recorriendo los votos del candidato
+    }
+
+    $scope.votosNeg = function(candidatos){
+        return 2;//Lo mismo hay que hacerlo bien
+    }
+
+    $scope.tantoPorCientoPos = function(candidato){
+        return ($scope.votosPos(candidato) / $scope.votosNeg(candidato)) * 50; //No es así, pero por ahí estarán los tiros
+    }
+
+    $scope.tantoPorCientoNeg = function(candidato){
+        return 100 - $scope.tantoPorCientoPos(candidato);
+    }
+
+    usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
+        usuario = dataCuandoLaFuncionSeEjecute.data;
+        $http.get(rutaApp + "candidatos").success(function(dataCandidatos) {
+            for (var i = 0; i < dataCandidatos.candidatos.length; i++) {
+                $http.get(dataCandidatos.candidatos[i]).success(function(dataCandidato) {
+                    if (hayQuePuntuarCandidato(dataCandidato)){
+                        $scope.candidatos.push(dataCandidato);
+                        $http.get(rutaApp + "ejercicios/"+dataCandidato.idEjercicio).success(function(dataEjercicios) {
+                            ejercicios.push(dataEjercicios);
+                            for (var i = 0; i < dataEjercicios.enunciados.length; i++) {
+                                $http.get(dataEjercicios.enunciados[i]).success(function(dataEnunciado) {
+                                    //console.log(dataEnunciado);
+                                    enunciados.push(dataEnunciado);
+                                });
+                            };
+                        });
+                    }
+                    //console.log($scope.candidatos);
+                });
+            };
+        });
+    });
     
 }]);

@@ -1,7 +1,71 @@
 <div class="container" ng-controller="VotarCandidatosController">
    <div class="row">
-	 	<div class="contenido">
-   			<h1>Candidatos</h1>
-   		</div>
+	 	 <div class="contenido reomvePadding">
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-10 col-xs-10">
+                                    <div class="padding">
+
+                                        <h1 class="tituloCandidatos">Candidatos</h1>
+
+                                        <div ng-hide="todoEvaluado">
+
+	                                        <div class="progress">
+	                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{tantoPorCientoPos(candidatoActual())}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;  width: {{tantoPorCientoPos(candidatoActual())}}%;">{{votosPos(candidatoActual())}} votos</div>
+	                                            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{tantoPorCientoNeg(candidatoActual())}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;  width: {{tantoPorCientoNeg(candidatoActual())}}%;">{{votosNeg(candidatoActual())}} votos</div>
+	                                        </div>
+
+
+	                                        <p>{{ejercicio(candidatoActual().idEjercicio).nombre}}</p>
+
+	                                        <div class="container-fluid">
+	                                            <div class="row">
+	                                                <div class="col-md-6 col-xs-12">
+	                                                    <span class="label label-info">{{candidatoActual().lenguajeOrigen}}</span>
+	                                                    <div hljs source="enunciado(candidatoActual().idEjercicio, candidatoActual().lenguajeOrigen).codigo" class="visorCodigo"></div>
+	                                                </div>
+	                                                <div class="col-md-6 col-xs-12">
+	                                                    <span class="label label-info">{{candidatoActual().lenguajeDestino}} (propuesto)</span>
+	                                                    <div hljs source="candidatoActual().codigo" class="visorCodigo"></div>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+
+
+	                                        <div class="container-fluid">
+	                                            <div class="row">
+	                                                <div class="col-md-6 col-xs-12 btnLinks">
+	                                                    <button type="submit" class="btn btn-lg btn-success btn-block">
+	                                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Estoy de acuerdo</button>
+	                                                </div>
+	                                                <div class="col-md-6 col-xs-12 btnLinks">
+	                                                    <button type="submit" class="btn btn-lg btn-danger btn-block">
+	                                                        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> No estoy de acuerdo</button>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+
+                                        </div>
+
+                                        <div ng-show="todoEvaluado">
+	                                        <div class="text-center terminarLeccion">
+	                                            <h3><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Has visto todos los candidatos</h3>
+	                                        </div>
+
+	                                        <a class="btn btn-lg btn-success btn-block" href="#/temas/"><span class="glyphicon glyphicon-road" aria-hidden="true"></span> Ir a aprender</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="right carousel-control" role="button" ng-click="saltar()">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Siguiente</span>
+                        </a>
+                    </div>
+                </div>
    	</div>
 </div>
