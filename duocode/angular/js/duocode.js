@@ -718,13 +718,25 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
             votos = candidato.votosNeg.length;
         return votos;
     }
+    
+    var porcentajePos = function (candidato){
+        var valor = ($scope.votosPos(candidato) / ($scope.votosNeg(candidato)+$scope.votosPos(candidato))) * 100;
+        if(isNaN(valor)){
+         return 50;
+        }
+        else {//Para que no pueda tener más de 92% de width y menos de 8%  (en el html) y siempre se vea algos
+            if (valor > 92) return 92;
+            else if (valor < 8) return 8;
+            return valor;
+        }
+    }
 
     $scope.tantoPorCientoPos = function(candidato){
-        return ($scope.votosPos(candidato) / ($scope.votosNeg(candidato)+$scope.votosPos(candidato))) * 100;
+        return porcentajePos(candidato);
     }
 
     $scope.tantoPorCientoNeg = function(candidato){
-        return ($scope.votosNeg(candidato) / ($scope.votosNeg(candidato)+$scope.votosPos(candidato))) * 100;
+        return 100 - porcentajePos(candidato);
     }
     
 
