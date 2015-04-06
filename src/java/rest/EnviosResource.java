@@ -64,15 +64,13 @@ public class EnviosResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYPuntuacion putEnvio(Envio envio) {
+    public ErrorYPuntuacion putEnvio(Envio envio){
         envio.setId(0);
         envio.setFecha(new Date());
         Puntuador.puntuar(envio);
         int id = this.envioMapper.insert(envio);
         if (id == -1)
             envio.setPuntuacion(-1);
-        
-        //Habría que comprobar si ha completado la leccion
         
         return new ErrorYPuntuacion(envio.getPuntuacion(), id);
     }

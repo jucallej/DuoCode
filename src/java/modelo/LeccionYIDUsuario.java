@@ -12,38 +12,39 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Johana
+ * @author Julián
  */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class UsuarioVotaCandidato {
-    @XmlElement(name="usuario")
+public class LeccionYIDUsuario {
+    @XmlElement(name="idUsuarioCompletaLeccion")
     private int idUsuario;
-    @XmlElement(name="idCandidato")
-    private int idCandidato;
-    @XmlElement(name="voto")
-    private int voto;
     
-    public UsuarioVotaCandidato() {
+    @XmlElement(name="lenguajeCompletadoLeccion")
+    private String lenguajeCompletado;
+    
+    
+    @XmlElement(name="leccion")
+    private Leccion Leccion;
+
+    public LeccionYIDUsuario() {
     }
 
-    public UsuarioVotaCandidato(int idUsuario, int idCandidato, int voto) {
+    public LeccionYIDUsuario(int idUsuario, String lenguajeCompletado, Leccion Leccion) {
         this.idUsuario = idUsuario;
-        this.idCandidato = idCandidato;
-        this.voto = voto;
+        this.lenguajeCompletado = lenguajeCompletado;
+        this.Leccion = Leccion;
     }
 
     public int getIdUsuario() {
         return idUsuario;
     }
-    
-    public int getIdCandidato() {
-        return idCandidato;
+
+    public Leccion getLeccion() {
+        return Leccion;
     }
 
-    public int getVoto() {
-        return voto;
-    }    
+    public String getLenguajeCompletado() {
+        return lenguajeCompletado;
+    } 
 }
-
-

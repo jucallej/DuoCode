@@ -25,6 +25,7 @@ import mappers.EnvioMapper;
 import mappers.FavoritoMapper;
 import mappers.UsuarioCompletaLeccionMapper;
 import mappers.UsuarioMapper;
+import mappers.UsuarioVotaCandidatoMapper;
 import modelo.ErrorSimple;
 import modelo.ErrorYID;
 import modelo.Usuario;
@@ -47,6 +48,7 @@ public class UsuariosResource {
     private CandidatoMapper candidatoMapper;
     private FavoritoMapper favoritoMapper;
     private UsuarioCompletaLeccionMapper usuarioCompletaLeccionMapper;
+    private UsuarioVotaCandidatoMapper usuarioVotaCandidatoMapper;
     
     static private ComboPooledDataSource cpds;
 
@@ -61,6 +63,7 @@ public class UsuariosResource {
         candidatoMapper = new CandidatoMapper(cpds);
         favoritoMapper = new FavoritoMapper(cpds);
         usuarioCompletaLeccionMapper = new UsuarioCompletaLeccionMapper(cpds);
+        usuarioVotaCandidatoMapper = new UsuarioVotaCandidatoMapper(cpds);
     }
     
     @GET
@@ -110,6 +113,7 @@ public class UsuariosResource {
             usuario.setCandidatosPropuestos(this.candidatoMapper.getCandidatosPropuestos(usuario.getId()));
             usuario.setFavoritos(this.favoritoMapper.getEFavoritosDeUnUsuario(usuario.getId()));
             usuario.setLeccionesTerminadas(this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(usuario.getId()));
+            usuario.setVotosCandidatos(usuarioVotaCandidatoMapper.getVotosDeUnUsuario(usuario.getId()));
         }
         return usuario;
     }

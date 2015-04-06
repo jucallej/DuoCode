@@ -21,15 +21,22 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import mappers.EnvioMapper;
 import mappers.LeccionConstaEjerciciosMapper;
 import mappers.LeccionesMapper;
 import mappers.RequisitosLeccionesMapper;
+import mappers.UsuarioCompletaLeccionMapper;
+import mappers.UsuarioMapper;
+import modelo.Envio;
 import modelo.ErrorYID;
 import modelo.IDsLeccionYEjercidio;
 import modelo.IDsLeccionYLeccionDesbloqueadora;
 import modelo.Leccion;
 import modelo.Lecciones;
 import modelo.ErrorSimple;
+import modelo.LeccionYIDUsuario;
+import modelo.Usuario;
+import modelo.UsuarioCompletaLeccion;
 import utilidades.DatosFijos;
 import utilidades.Utilidades;
 
@@ -46,6 +53,8 @@ public class LeccionesResource {
     private LeccionesMapper leccioneMapper;
     private LeccionConstaEjerciciosMapper leccionConstaEjerciciosMapper;
     private RequisitosLeccionesMapper requisitosLeccionesMapper;
+    private UsuarioCompletaLeccionMapper usuarioCompletaLeccionMapper;
+    private EnvioMapper envioMapper;
     
     static private ComboPooledDataSource cpds;
 
@@ -58,6 +67,9 @@ public class LeccionesResource {
         leccioneMapper = new LeccionesMapper(cpds);
         leccionConstaEjerciciosMapper = new LeccionConstaEjerciciosMapper(cpds);
         requisitosLeccionesMapper = new RequisitosLeccionesMapper (cpds);
+        
+        usuarioCompletaLeccionMapper = new UsuarioCompletaLeccionMapper(cpds);
+        envioMapper = new EnvioMapper(cpds);
     }
 
     /*
@@ -152,49 +164,104 @@ public class LeccionesResource {
     @Path("{idLeccion}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID putLeccion(@PathParam("idLeccion") int id, Leccion leccion) { //Un poco más limpio
-        leccion.setId(id);
-
-        Leccion leccionExistente = this.leccioneMapper.findById(id);
+    public ErrorYID putLeccion(@PathParam("idLeccion") int id, LeccionYIDUsuario leccionYIDUsuario) { //Un poco más limpio
+        Leccion leccion = leccionYIDUsuario.getLeccion();
         
-        if (leccionExistente != null){//Exite, y lo podemos actualizar
-            //Sacamos los ej y lecciones existentes
-            List<IDsLeccionYEjercidio> ejerciciosDeLaLeccion = leccionConstaEjerciciosMapper.getIDsLeccionYEjercidioConIDELeccion(leccion.getId());
-            leccionExistente.setEjercicios(ejerciciosDeLaLeccion);
+        if (leccion != null){
+            leccion.setId(id);
+
+            Leccion leccionExistente = this.leccioneMapper.findById(id);
+
+            if (leccionExistente != null){//Exite, y lo podemos actualizar
+                //Sacamos los ej y lecciones existentes
+                List<IDsLeccionYEjercidio> ejerciciosDeLaLeccion = leccionConstaEjerciciosMapper.getIDsLeccionYEjercidioConIDELeccion(leccion.getId());
+                leccionExistente.setEjercicios(ejerciciosDeLaLeccion);
 
 
-            List<IDsLeccionYLeccionDesbloqueadora> requisitos = this.requisitosLeccionesMapper.getIDsLeccionYDesbloqueadorasConIDELeccion(leccion.getId());
-            leccionExistente.setLeccionesDesbloqueadoras(requisitos);
-            
-            //Actualizamos la leccion
-            this.leccioneMapper.update(leccion);
-            //Ahora nos queda mirar los ej y las lecciones que desbloquean
-            //Para no borrar algo que queramos mantener (que igual desencadena borrados en cadena (ej ejercicio resuleto)) vamos a hacerlo poco a poco
-            
-            //Estos tienen en ruta tienen int, es un poco extraño, pero funciona, son los que queremos tener
-            List<String> ejercicios = leccion.getEjercicios();
-            List<Integer> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
-            
-            //Miramos los que ya estan
-            if (leccionExistente.getEjercicios() != null){
-                leccionExistente.quitarLeccionesQueBorramosYEvitarAnhadir(ejercicios, this.leccionConstaEjerciciosMapper);
+                List<IDsLeccionYLeccionDesbloqueadora> requisitos = this.requisitosLeccionesMapper.getIDsLeccionYDesbloqueadorasConIDELeccion(leccion.getId());
+                leccionExistente.setLeccionesDesbloqueadoras(requisitos);
+
+                //Actualizamos la leccion
+                this.leccioneMapper.update(leccion);
+                //Ahora nos queda mirar los ej y las lecciones que desbloquean
+                //Para no borrar algo que queramos mantener (que igual desencadena borrados en cadena (ej ejercicio resuleto)) vamos a hacerlo poco a poco
+
+                //Estos tienen en ruta tienen int, es un poco extraño, pero funciona, son los que queremos tener
+                List<String> ejercicios = leccion.getEjercicios();
+                List<Integer> leccionesDesbloqueadoras = leccion.getLeccionesDesbloqueadoras();
+
+                //Miramos los que ya estan
+                if (leccionExistente.getEjercicios() != null){
+                    leccionExistente.quitarLeccionesQueBorramosYEvitarAnhadir(ejercicios, this.leccionConstaEjerciciosMapper);
+                }
+
+                if (leccionExistente.getLeccionesDesbloqueadoras() != null){
+                    leccionExistente.quitarEjerciciosQueBorramosYEvitarAnhadir(leccionesDesbloqueadoras, this.requisitosLeccionesMapper);
+                }
+
+                //Si llegamos hasta aquí y la leccion que nos han dado sigue teniendo ej entonces esos no estaban antes y los metemos con en el POST
+                if(ejercicios != null){ // Lo insertamos
+                    if (ejercicios.size() > 0)
+                        for (String intEjercicio : ejercicios)
+                            this.leccionConstaEjerciciosMapper.insert(new IDsLeccionYEjercidio(leccion.getId(), Integer.parseInt(intEjercicio)));
+                }
+                if (leccionesDesbloqueadoras != null){ // Lo insertamos
+                    if (leccionesDesbloqueadoras.size() > 0)
+                        for (Integer intLecciones : leccionesDesbloqueadoras)
+                            this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), intLecciones));
+                }
             }
+        }
+        
+        //Nuevo
+        if (leccionYIDUsuario.getIdUsuario() != 0 && leccionYIDUsuario.getLenguajeCompletado() != null){//0 es el valor si no pones nada
+            List<UsuarioCompletaLeccion> usuarioCompletaLeccion = this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(leccionYIDUsuario.getIdUsuario());
+            boolean yaHaCompletadoLaLeccion = false;
             
-            if (leccionExistente.getLeccionesDesbloqueadoras() != null){
-                leccionExistente.quitarEjerciciosQueBorramosYEvitarAnhadir(leccionesDesbloqueadoras, this.requisitosLeccionesMapper);
+            int i = 0;
+            while (!yaHaCompletadoLaLeccion && i < usuarioCompletaLeccion.size()){
+                if (usuarioCompletaLeccion.get(i).getIdLeccion() == id && usuarioCompletaLeccion.get(i).getLenguaje().equals(leccionYIDUsuario.getLenguajeCompletado()))
+                    yaHaCompletadoLaLeccion = true;
+                
+                i++;
             }
-            
-            //Si llegamos hasta aquí y la leccion que nos han dado sigue teniendo ej entonces esos no estaban antes y los metemos con en el POST
-            if(ejercicios != null){ // Lo insertamos
-                if (ejercicios.size() > 0)
-                    for (String intEjercicio : ejercicios)
-                        this.leccionConstaEjerciciosMapper.insert(new IDsLeccionYEjercidio(leccion.getId(), Integer.parseInt(intEjercicio)));
+            if (!yaHaCompletadoLaLeccion){
+                List<Envio> enviosUsuario = this.envioMapper.getHistorialUsuario(leccionYIDUsuario.getIdUsuario());
+                Leccion leccionEncontrada = this.leccioneMapper.findById(id);
+                List<IDsLeccionYEjercidio> iDsLeccionYEjercidio = this.leccionConstaEjerciciosMapper.getIDsLeccionYEjercidioConIDELeccion(id);
+
+                int numEjRequeridos = DatosFijos.NUM_MAX_EJ_POR_LECCION;
+
+                if (iDsLeccionYEjercidio.size() < numEjRequeridos) numEjRequeridos = iDsLeccionYEjercidio.size();
+                
+                int j = 0;
+                boolean leccionCompletada = false;
+                int ejLeccionAcertados = 0;
+                while (j < iDsLeccionYEjercidio.size() && !leccionCompletada){
+                    boolean ejActualAcertado = false;
+                    int z = 0;
+                    while(z<enviosUsuario.size() && !ejActualAcertado){
+                        if (enviosUsuario.get(z).getIdEjercicio() == iDsLeccionYEjercidio.get(j).getIdEjercicio() &&
+                                enviosUsuario.get(z).getLenguajeDestino().equals(leccionYIDUsuario.getLenguajeCompletado()) &&
+                                enviosUsuario.get(z).getPuntuacion() >= DatosFijos.UMBRAL_VALIDO_EJ)
+                            ejActualAcertado = true;
+                        else z++;
+                    }
+                    
+                    if (ejActualAcertado) ejLeccionAcertados++;
+                    
+                    if (ejLeccionAcertados >= numEjRequeridos) leccionCompletada = true;
+                    else j++;
+                }
+                
+
+                if(!leccionCompletada)
+                    id = -1;
+                else{
+                    this.usuarioCompletaLeccionMapper.insert(new UsuarioCompletaLeccion(leccionYIDUsuario.getIdUsuario(), id, leccionYIDUsuario.getLenguajeCompletado()));
+                }
             }
-            if (leccionesDesbloqueadoras != null){ // Lo insertamos
-                if (leccionesDesbloqueadoras.size() > 0)
-                    for (Integer intLecciones : leccionesDesbloqueadoras)
-                        this.requisitosLeccionesMapper.insert(new IDsLeccionYLeccionDesbloqueadora(leccion.getId(), intLecciones));
-            }
+            else id = -1;
         }
         
         return new ErrorYID(id);

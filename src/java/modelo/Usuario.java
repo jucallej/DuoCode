@@ -46,6 +46,9 @@ public class Usuario {
     @XmlList
     private List<Candidato> candidatosPropuestos;
     
+    @XmlList
+    private List<UsuarioVotaCandidato> votosDeUnUsuario;
+    
     public Usuario() {
     }
 
@@ -127,5 +130,13 @@ public class Usuario {
         for (UsuarioCompletaLeccion leccion: usuarioCompletaLeccionDeUnUsuario){
             leccionesCompletadas.add(leccion.getIdLeccion());
         }*/
+    }
+
+    public void setVotosCandidatos(List<UsuarioVotaCandidato> votosDeUnUsuario) {
+        this.votosDeUnUsuario = votosDeUnUsuario;
+    }
+
+    public List<UsuarioVotaCandidato> getVotosDeUnUsuario() {
+        return votosDeUnUsuario;
     }
 }
