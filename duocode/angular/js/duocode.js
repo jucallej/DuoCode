@@ -395,7 +395,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                     'idUsuario': usuario.ID,
                     'lenguajeOrigen': idiomasSeleccionadosServicio.idiomaQueSe,
                     'lenguajeDestino': idiomasSeleccionadosServicio.idiomaQueNOSe,
-                    'puntuacion': 2//respuesta.puntuacion
+                    'puntuacion': 8//respuesta.puntuacion
                 };
 
                 usuario.historialEjercicios.push(ejercicioCorregido);
@@ -414,7 +414,34 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 $scope.correcto = true;
 
                 if ($scope.ejerciciosRestantes <= 0){
-                    console.log("sin hacer, hay que marcar la lección como terminada");
+                    var necesarioMarcarCompletada = true;
+
+                    var i = 0;
+                    while(i < usuario.leccionesCompletadas.length && necesarioMarcarCompletada){
+                    	if (usuario.leccionesCompletadas[i].idLeccion === $scope.idLeccion && usuario.leccionesCompletadas[i].lenguaje == $scope.idiomaQueNoSe)
+                    		necesarioMarcarCompletada = false;
+                    	else i++;
+                    }
+
+                    if (necesarioMarcarCompletada){
+			            var req = {
+			                method: 'PUT',
+			                url: rutaApp + 'lecciones/' + $scope.idLeccion,
+			                data: {
+			                    'idUsuarioCompletaLeccion': usuario.ID,
+			                    'lenguajeCompletadoLeccion': $scope.idiomaQueNoSe
+			                }
+			            }
+
+			            $http(req).success(function(posibleError) {
+			            	usuario.leccionesCompletadas.push({
+			            		'idLeccion': $scope.idLeccion,
+			            		'idUsuario': usuario.ID,
+			            		'lenguaje':$scope.idiomaQueNoSe
+			            	});
+
+			            });
+                    }
                 }
             }
             else{
@@ -658,13 +685,12 @@ duocodeApp.controller('CandController', ['$scope', '$http', 'usuarioServicio', f
 
 duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioServicio', function($scope, $http, usuarioServicio) {
     $scope.candidatos = [];
-    var usuario = {};
     var enunciados = [];
     var ejercicios = [];
     $scope.todoEvaluado = false;
-
+ 
     var hayQuePuntuarCandidato = function(candidato){
-        return true; //ajustar según el candidato y el usuario
+        return true; //Se podría ajustar si queremos que no le vuelvan a aparecer las que ya ha votado
     }
     
      $scope.votar = function(id, voto){
@@ -679,21 +705,85 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
             }
 
             $http(req).success(function(posibleError) {
+                console.log($scope.candidatoActual());
+                console.log($scope.usuario);
                 console.log(posibleError);
+
+                var votoCambiado = false;
+                var i = 0;
+		    	while (votoCambiado === false && i < $scope.usuario.votosDeUnUsuario.length){
+		    		if($scope.usuario.votosDeUnUsuario[i].idCandidato == id){
+		    			if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 1)
+		    				$scope.usuario.votosDeUnUsuario.splice(i, 1);
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 0)
+		    				$scope.usuario.votosDeUnUsuario[i].voto = 0;
+
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 0)
+		    				$scope.usuario.votosDeUnUsuario.splice(i, 1);
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 1)
+		    				$scope.usuario.votosDeUnUsuario[i].voto = 1;
+
+		    			console.log($scope.usuario);
+		    			votoCambiado = true;
+		    		}
+
+		    		else i = i +1;
+		    	};
+
+		    	if (votoCambiado === false){
+		    		$scope.usuario.votosDeUnUsuario.push({
+		    			'idCandidato': id,
+		    			'usuario': $scope.usuario.ID,
+		    			'voto': voto
+		    		});
+		    	};
+
             });
-         
-        return true; //ajustar según el candidato y el usuario
     }
+
     $scope.candidatoActual = function(){
         return $scope.candidatos[0];
     }
 
+    /*
+    Sin hacer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    */
     $scope.enunciado = function(idEj, lenguaje){
         return enunciados[0];//hacer que recorra enunciados buscando esto
     }
 
+    /*
+    Sin hacer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    */
     $scope.ejercicio = function(idEj){
         return ejercicios[0];//hacer que recorra ejercicios buscando esto
+    }
+
+    var votoUsuario = function(usuario, idCandidato){
+    	var voto = null;
+
+    	var i = 0;
+    	while (voto === null && i < usuario.votosDeUnUsuario.length){
+    		if(usuario.votosDeUnUsuario[i].idCandidato == idCandidato) voto = usuario.votosDeUnUsuario[i].voto;
+
+    		else i = i +1;
+    	}
+
+    	return voto;
+    }
+
+    $scope.claseVotoPos = function(){
+    	if ($scope.usuario === undefined || $scope.usuario === null || $scope.candidatoActual() === undefined || $scope.candidatoActual() === null)
+    		return '';
+    	if (votoUsuario($scope.usuario, $scope.candidatoActual().id) == 1) return 'green';
+    	else return '';
+    }
+
+    $scope.claseVotoNeg = function(){
+    	if ($scope.usuario === undefined || $scope.usuario === null || $scope.candidatoActual() === undefined || $scope.candidatoActual() === null)
+    		return '';
+    	if (votoUsuario($scope.usuario, $scope.candidatoActual().id) == 0) return 'rojo';
+    	else return '';
     }
 
     $scope.saltar = function(){       

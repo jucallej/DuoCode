@@ -210,3 +210,7 @@ a:hover{
 .marcado.focus, .marcado:focus, .marcado:hover {
   color: #F92672;
 }
+
+.rojo.focus, .rojo:focus, .rojo:hover {
+  color: red;
+}

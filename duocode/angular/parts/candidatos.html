@@ -37,12 +37,23 @@
 	                                        <div class="container-fluid">
 	                                            <div class="row">
 	                                                <div class="col-md-6 col-xs-12 btnLinks">
-	                                                    <button type="submit" class="btn btn-lg btn-success btn-block" ng-click="(votar(candidatoActual().id,1))">
+	                                                    <button type="submit" class="btn btn-lg btn-success btn-block ng-class: claseVotoPos();" ng-click="(votar(candidatoActual().id,1))">
 	                                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Estoy de acuerdo</button>
 	                                                </div>
 	                                                <div class="col-md-6 col-xs-12 btnLinks">
-	                                                    <button type="submit" class="btn btn-lg btn-danger btn-block" ng-click="(votar(candidatoActual().id,0))">
+	                                                    <button type="submit" class="btn btn-lg btn-danger btn-block ng-class: claseVotoNeg();" ng-click="(votar(candidatoActual().id,0))">
 	                                                        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> No estoy de acuerdo</button>
+	                                                </div>
+	                                            </div>
+
+	                                            <div class="row" ng-show="usuario.rol === 0">
+	                                                <div class="col-md-6 col-xs-12 btnLinks">
+	                                                    <button type="submit" class="btn btn-lg btn-success btn-block">
+	                                                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Aceptar definitivamente</button>
+	                                                </div>
+	                                                <div class="col-md-6 col-xs-12 btnLinks">
+	                                                    <button type="submit" class="btn btn-lg btn-danger btn-block">
+	                                                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Eliminar definitvamente</button>
 	                                                </div>
 	                                            </div>
 	                                        </div>
