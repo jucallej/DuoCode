@@ -745,18 +745,37 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
         return $scope.candidatos[0];
     }
 
-    /*
-    Sin hacer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    */
+
     $scope.enunciado = function(idEj, lenguaje){
-        return enunciados[0];//hacer que recorra enunciados buscando esto
+
+       	var index = 0;
+       	var found = false;
+       	while(index < enunciados.length && !found){
+        	if(enunciados[index].idDelEjercicioQueResuelve === idEj && enunciados[index].nombreLenguaje === lenguaje){
+        		found = true;
+        	}
+        	else
+        		index++;
+    	}
+    	if(found)
+    		return enunciados[index]
+    	else
+    		return null;
     }
 
-    /*
-    Sin hacer!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    */
     $scope.ejercicio = function(idEj){
-        return ejercicios[0];//hacer que recorra ejercicios buscando esto
+        var index = 0;
+        var found = false;
+        while(index < ejercicios.length && !found){
+        	if(ejercicios[index].id === idEj)
+        		found = true;
+        	else
+        		index++;
+        }
+        if(found)
+        	return ejercicios[index];
+    	else
+    		return null;
     }
 
     var votoUsuario = function(usuario, idCandidato){
