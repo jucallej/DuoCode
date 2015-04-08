@@ -139,7 +139,7 @@ public class CandidatosResource {
             Candidato aModificar = candidatoMapper.findById(idCandidato);
             if (aModificar != null){
                 candidato.setId(idCandidato);
-                candidato.setFecha(aModificar.getFecha());
+                //candidato.setFecha(aModificar.getFecha());
                 candidatoMapper.update(candidato);
                 error = "no";
             }
