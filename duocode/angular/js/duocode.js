@@ -713,15 +713,27 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
                 var i = 0;
 		    	while (votoCambiado === false && i < $scope.usuario.votosDeUnUsuario.length){
 		    		if($scope.usuario.votosDeUnUsuario[i].idCandidato == id){
-		    			if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 1)
+		    			if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 1){
 		    				$scope.usuario.votosDeUnUsuario.splice(i, 1);
-		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 0)
+		    				$scope.candidatoActual().votosPos.splice(0, 1);
+		    			}
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 0){
 		    				$scope.usuario.votosDeUnUsuario[i].voto = 0;
+		    				$scope.candidatoActual().votosNeg.push(1);
+		    				$scope.candidatoActual().votosPos.splice(0, 1);
 
-		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 0)
+
+		    			}
+
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 0){
 		    				$scope.usuario.votosDeUnUsuario.splice(i, 1);
-		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 1)
+		    				$scope.candidatoActual().votosNeg.splice(0, 1);
+		    			}
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 1){
 		    				$scope.usuario.votosDeUnUsuario[i].voto = 1;
+		    				$scope.candidatoActual().votosPos.push(1);
+		    				$scope.candidatoActual().votosNeg.splice(0, 1);
+		    			}
 
 		    			console.log($scope.usuario);
 		    			votoCambiado = true;
@@ -736,6 +748,11 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
 		    			'usuario': $scope.usuario.ID,
 		    			'voto': voto
 		    		});
+		    	
+		    	if(voto===1)
+		   			$scope.candidatoActual().votosPos.push(1);
+	 			else
+    				$scope.candidatoActual().votosNeg.push(1);
 		    	};
 
             });
