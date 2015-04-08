@@ -10,7 +10,7 @@
 
                                         <h1 class="tituloCandidatos">Candidatos</h1>
 
-                                        <div ng-hide="todoEvaluado">
+                                        <div ng-hide="todoEvaluado()">
 
 	                                        <div class="progress">
 	                                            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{tantoPorCientoPos(candidatoActual())}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 8%; width: {{tantoPorCientoPos(candidatoActual())}}%;">{{votosPos(candidatoActual())}} votos</div>
@@ -48,11 +48,11 @@
 
 	                                            <div class="row" ng-show="usuario.rol === 0">
 	                                                <div class="col-md-6 col-xs-12 btnLinks">
-	                                                    <button type="submit" class="btn btn-lg btn-success btn-block">
+	                                                    <button type="submit" class="btn btn-lg btn-success btn-block" ng-click="marcarCandidato(candidatoActual().id,1)">
 	                                                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Aceptar definitivamente</button>
 	                                                </div>
 	                                                <div class="col-md-6 col-xs-12 btnLinks">
-	                                                    <button type="submit" class="btn btn-lg btn-danger btn-block">
+	                                                    <button type="submit" class="btn btn-lg btn-danger btn-block" ng-click="marcarCandidato(candidatoActual().id,-1)">
 	                                                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Eliminar definitvamente</button>
 	                                                </div>
 	                                            </div>
@@ -60,7 +60,7 @@
 
                                         </div>
 
-                                        <div ng-show="todoEvaluado">
+                                        <div ng-show="todoEvaluado()">
 	                                        <div class="text-center terminarLeccion">
 	                                            <h3><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Has visto todos los candidatos</h3>
 	                                        </div>

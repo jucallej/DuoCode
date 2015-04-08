@@ -395,7 +395,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                     'idUsuario': usuario.ID,
                     'lenguajeOrigen': idiomasSeleccionadosServicio.idiomaQueSe,
                     'lenguajeDestino': idiomasSeleccionadosServicio.idiomaQueNOSe,
-                    'puntuacion': 8//respuesta.puntuacion
+                    'puntuacion': respuesta.puntuacion
                 };
 
                 usuario.historialEjercicios.push(ejercicioCorregido);
@@ -687,10 +687,9 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     $scope.candidatos = [];
     var enunciados = [];
     var ejercicios = [];
-    $scope.todoEvaluado = false;
  
     var hayQuePuntuarCandidato = function(candidato){
-        return true; //Se podría ajustar si queremos que no le vuelvan a aparecer las que ya ha votado
+        return candidato.estado === 0; //Solamente si no han sido aceptado o rechazado por algun admin
     }
     
      $scope.votar = function(id, voto){
@@ -739,6 +738,29 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
 		    	};
 
             });
+    }
+
+    $scope.marcarCandidato = function(id, estado){
+        var candidato = $scope.candidatoActual();
+        candidato.estado = estado;
+        candidato.gestionadoPor = $scope.usuario.ID;
+
+        //console.log(candidato);
+        var req = {
+            method: 'PUT',
+            url: rutaApp + 'candidatos/' + id,
+            data: {
+                'candidato': candidato
+            }
+        }
+
+
+        $http(req).success(function(posibleError) {
+           // console.log(posibleError);
+
+        });
+
+        $scope.saltar();
     }
 
     $scope.candidatoActual = function(){
@@ -806,10 +828,7 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     }
 
     $scope.saltar = function(){       
-        if ($scope.candidatos.length <= 1){
-            $scope.todoEvaluado = true;
-        }
-        else{
+        if ($scope.candidatos.length >= 1){
             $scope.candidatos.splice(0, 1);
         }
     }
@@ -847,7 +866,10 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     $scope.tantoPorCientoNeg = function(candidato){
         return 100 - porcentajePos(candidato);
     }
-    
+
+    $scope.todoEvaluado = function(){
+        return $scope.candidatos.length === 0;
+    }
 
     usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
         $scope.usuario = dataCuandoLaFuncionSeEjecute.data;
@@ -866,7 +888,6 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
                             };
                         });
                     }
-                    //console.log($scope.candidatos);
                 });
             };
         });
