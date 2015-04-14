@@ -16,6 +16,7 @@ public final class DatosFijos {
     
     public static final int NUM_MAX_EJ_POR_LECCION = 10; 
     public static final int UMBRAL_VALIDO_EJ = 7;
+    public static final int VIDAS = 3;
     
     public static final String RUTA_EJERCICIOS = "http://localhost:8080/DuoCode/rest/ejercicios/";
     public static final String RUTA_TEMAS = "http://localhost:8080/DuoCode/rest/temas/";

@@ -16,7 +16,10 @@ public class Puntuador {
     //Tambien cambia la puntuacion internamente del envio
     public static int puntuar(Envio envio){
         //Aquí se conectaría con el otro grupo
-        int puntuacion = (int) ((Math.random()*10)+0); //Maximo 10 minimo 0
+        int puntuacion = 1;//(int) ((Math.random()*10)+0); //Maximo 10 minimo 0
+        
+        if (envio.getCodigo().contains("pass"))
+            puntuacion = 9;
         
         envio.setPuntuacion(puntuacion);
         

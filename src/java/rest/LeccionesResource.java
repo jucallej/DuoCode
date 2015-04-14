@@ -213,7 +213,7 @@ public class LeccionesResource {
             }
         }
         
-        //Nuevo
+        //Marcar leccion como completada
         if (leccionYIDUsuario.getIdUsuario() != 0 && leccionYIDUsuario.getLenguajeCompletado() != null){//0 es el valor si no pones nada
             List<UsuarioCompletaLeccion> usuarioCompletaLeccion = this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(leccionYIDUsuario.getIdUsuario());
             boolean yaHaCompletadoLaLeccion = false;
@@ -233,6 +233,7 @@ public class LeccionesResource {
                 int numEjRequeridos = DatosFijos.NUM_MAX_EJ_POR_LECCION;
 
                 if (iDsLeccionYEjercidio.size() < numEjRequeridos) numEjRequeridos = iDsLeccionYEjercidio.size();
+                numEjRequeridos -= DatosFijos.VIDAS + 1;
                 
                 int j = 0;
                 boolean leccionCompletada = false;
