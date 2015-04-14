@@ -312,7 +312,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
 
         $http.get(rutaApp+'lecciones/'+$scope.idLeccion).success(function(leccion) {
             $scope.leccion = leccion;
-            $scope.ejerciciosTotales = $scope.leccion.ejercicios.length;
+            $scope.ejerciciosTotales = $scope.leccion.ejercicios.length - $scope.vidas + 1; //Porque siempre te tienes que quedar con una vida
 
             if ($scope.ejerciciosTotales > numeroMaximoEJ) $scope.ejerciciosTotales = numeroMaximoEJ;
 
@@ -409,7 +409,12 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 //console.log(usuario);
             }
 
-            if (umbralValido <= ejercicioCorregido.puntuacion){
+            
+            if (umbralValido > ejercicioCorregido.puntuacion){
+                $scope.correcto = false;
+                ejFallado(false);
+            }
+            else{
                 $scope.ejerciciosRestantes -= 1;
                 $scope.correcto = true;
 
@@ -418,34 +423,31 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
 
                     var i = 0;
                     while(i < usuario.leccionesCompletadas.length && necesarioMarcarCompletada){
-                    	if (usuario.leccionesCompletadas[i].idLeccion === $scope.idLeccion && usuario.leccionesCompletadas[i].lenguaje == $scope.idiomaQueNoSe)
-                    		necesarioMarcarCompletada = false;
-                    	else i++;
+                        if (usuario.leccionesCompletadas[i].idLeccion === $scope.idLeccion && usuario.leccionesCompletadas[i].lenguaje == $scope.idiomaQueNoSe)
+                            necesarioMarcarCompletada = false;
+                        else i++;
                     }
 
                     if (necesarioMarcarCompletada){
-			            var req = {
-			                method: 'PUT',
-			                url: rutaApp + 'lecciones/' + $scope.idLeccion,
-			                data: {
-			                    'idUsuarioCompletaLeccion': usuario.ID,
-			                    'lenguajeCompletadoLeccion': $scope.idiomaQueNoSe
-			                }
-			            }
+                        var req = {
+                            method: 'PUT',
+                            url: rutaApp + 'lecciones/' + $scope.idLeccion,
+                            data: {
+                                'idUsuarioCompletaLeccion': usuario.ID,
+                                'lenguajeCompletadoLeccion': $scope.idiomaQueNoSe
+                            }
+                        }
 
-			            $http(req).success(function(posibleError) {
-			            	usuario.leccionesCompletadas.push({
-			            		'idLeccion': $scope.idLeccion,
-			            		'idUsuario': usuario.ID,
-			            		'lenguaje':$scope.idiomaQueNoSe
-			            	});
+                        $http(req).success(function(posibleError) {
+                            usuario.leccionesCompletadas.push({
+                                'idLeccion': parseInt($scope.idLeccion),
+                                'idUsuario': usuario.ID,
+                                'lenguaje':$scope.idiomaQueNoSe
+                            });
 
-			            });
+                        });
                     }
-                }
             }
-            else{
-                ejFallado(false);
             }
         });
     };

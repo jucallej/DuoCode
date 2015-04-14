@@ -12,9 +12,11 @@
                         </button>
                         <div class="collapse" id="collapse{{$index}}">
                             <div class="well">
-                                <button type="submit" class="btn btn-danger btn-block" ng-click="eliminarCand($index,cand.id)">
+                                <button type="submit" class="btn btn-danger btn-block" ng-click="eliminarCand($index,cand.id)" ng-show="cand.estado === 0">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar candidato
                                 </button>
+                                <div ng-show="cand.estado === 1"><p>Aceptado</p></div>
+                                <div ng-show="cand.estado === -1"><p>Rechazado</p></div>
 
                                 <div class="container-fluid">
                                     <div class="row">
