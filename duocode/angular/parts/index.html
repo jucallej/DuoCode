@@ -2,6 +2,44 @@
 	<div class="row">
 	 	<div class="contenido">
    			<h1>Portada</h1>
+            <!-- SI NO ESTA LA SESIÓN INICIADA-->
+            <span id="signinButton">
+              <span
+                class="g-signin"
+                data-callback="signinCallback"
+                data-clientid="710081552703-qu3qtm0m6j01n6kim5bu01crj1et20aj"
+                data-cookiepolicy="single_host_origin"
+                data-requestvisibleactions="http://schemas.google.com/AddActivity"
+                data-scope="https://www.googleapis.com/auth/plus.login">
+              </span>
+            </span>
    		</div>
    	</div>
 </div>
+
+
+<!-- Coloca este JavaScript asíncrono justo delante de la etiqueta </body> -->
+    <script type="text/javascript">
+      (function() {
+       var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+       po.src = 'https://apis.google.com/js/client:plusone.js';
+       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+     })();
+    </script>
+
+<script type="text/javascript">
+    function signinCallback(authResult) {
+      if (authResult['access_token']) {
+        // Autorizado correctamente
+        // Oculta el botón de inicio de sesión ahora que el usuario está autorizado, por ejemplo:
+        document.getElementById('signinButton').setAttribute('style', 'display: none');
+      } else if (authResult['error']) {
+        // Se ha producido un error.
+        // Posibles códigos de error:
+        //   "access_denied": el usuario ha denegado el acceso a la aplicación.
+        //   "immediate_failed": no se ha podido dar acceso al usuario de forma automática.
+        // console.log('There was an error: ' + authResult['error']);
+      }
+    }
+</script>
+
