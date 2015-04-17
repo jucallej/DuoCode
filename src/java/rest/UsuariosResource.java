@@ -8,6 +8,8 @@ package rest;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.sql.DataSource;
 import javax.ws.rs.core.Context;
@@ -17,6 +19,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -106,8 +109,14 @@ public class UsuariosResource {
     @GET
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuario getUsuario1(@PathParam("idUsuario") int idUsuario){
-        Usuario usuario = usuarioMapper.findById(idUsuario);
+    public Usuario getUsuario(@PathParam("idUsuario") BigInteger idUsuario, @HeaderParam("token") String headerToken, @HeaderParam("idUsuario") BigInteger headerIdUsuario){
+        System.out.println("getUsuario");
+        System.out.println("token: "+headerToken);
+        System.out.println("idUsuario: "+headerIdUsuario);
+        
+        int usuarioTempABorrar = 1;
+        
+        Usuario usuario = usuarioMapper.findById(usuarioTempABorrar);
         if(usuario!=null){//si el usuario existe nos ponemos a completarlo, si no existe devuelve null
             usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));
             usuario.setCandidatosPropuestos(this.candidatoMapper.getCandidatosPropuestos(usuario.getId()));
