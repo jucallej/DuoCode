@@ -4,6 +4,10 @@ var numeroMaximoEJ = 10;
 
 var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute', 'hljs']);
 
+hello.init({ 
+    google   : '398307879249-lqhc6e32u90qqfpldnfmbme8rfhqh8hp.apps.googleusercontent.com'
+});
+
 //Creamos el menú de usuarios reusable (como tag): <info-usuario></info-usuario>
 duocodeApp.directive('infoUsuario', function() {
   return {
@@ -42,7 +46,8 @@ duocodeApp.config(['$routeProvider',
       });
 }]);
 
-duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio', 'idiomasSeleccionadosServicio', function ($scope, $http, usuarioServicio, idiomasSeleccionadosServicio) {
+duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio', 'idiomasSeleccionadosServicio', '$window', 
+    function ($scope, $http, usuarioServicio, idiomasSeleccionadosServicio, $window) {
 	$scope.usuario = {};
     $scope.lenguajes = [];
     $scope.lenguajeQueSe = idiomasSeleccionadosServicio.idiomaQueSe;
@@ -50,7 +55,30 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
 
     //Si no se ponen sale una opcion en blanco en el select
     $scope.selectedItem = idiomasSeleccionadosServicio.idiomaQueSe;
-    $scope.selectedItemNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;    
+    $scope.selectedItemNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;  
+
+    $scope.logIn = function() {
+        hello( "google" ).login().then( function(json){
+            hello( "google" ).api("me").then(function(json){
+                localStorage.setItem("idUser", json.id);
+                $window.location.reload();
+            }, function(e){
+                console.log("Whoops! " + e.error.message );
+            });
+
+        }, function( e ){
+            console.log("Signout error: " + e.error.message );
+        });
+    }; 
+
+    $scope.logOut = function() {
+        hello( "google" ).logout().then( function(){
+            localStorage.removeItem("idUser");
+            $window.location.reload();
+        }, function( e ){
+            console.log("Signout error: " + e.error.message );
+        });
+    }; 
 
 	$scope.puntuacion = function() {
 	 if ($scope.usuario.historialEjercicios === undefined) return 'cargando';

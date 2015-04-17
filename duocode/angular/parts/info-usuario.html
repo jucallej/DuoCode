@@ -1,13 +1,17 @@
 <div class="contenido container1" ng-controller="UsuarioController">
     <div class="container-fluid">
         <div class="row">
+            <a class="btn btn-info btn-block btnLinks" ng-click="logIn()" ng-show="usuario.rol === -1">Log in</a>
+            <a class="btn btn-info btn-block btnLinks" ng-click="logOut()" ng-show="usuario.rol !== -1">Log out</a>
+        </div>
+
+        <div class="row" ng-show="usuario.rol !== -1">
             <div class="col-md-12 col-xs-12">
                 <h3>Información de usuario</h3>
             </div>
 
             <div class="col-lg-4 col-md-12">
-                <img class="logo img-rounded img-responsive" src="img/user-icon1.png">
-
+                <img class="logo img-rounded img-responsive" src="img/user-icon1.png" ng-hide="usuario.picture">
             </div>
 
             <div class="col-lg-8 col-md-12 emailPuntos">
