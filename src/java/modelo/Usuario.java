@@ -21,15 +21,12 @@ public class Usuario {
     
     @XmlElement(name="ID")
     private int id;
-    
-    @XmlElement(name="nick")
-    private String nick;
-    
+    ////////////////////////////////////////////////////////////////////////////
+    @XmlElement(name="IDGoogle")
+    private String idGoogle;
+    ////////////////////////////////////////////////////////////////////////////
     @XmlElement(name="correo")
     private String correo;
-    
-    @XmlElement(name="pass")
-    private String pass;
     
     @XmlElement(name="rol")
     private short rol;
@@ -52,11 +49,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int id, String nick, String correo, String pass, short rol) {
+    public Usuario(int id, String idGoogle, String correo, short rol) {
         this.id = id;
-        this.nick = nick;
+        this.idGoogle = idGoogle;
         this.correo = correo;
-        this.pass = pass;
         this.rol = rol;
     }
 
@@ -67,13 +63,9 @@ public class Usuario {
     public void setId(int id) {
         this.id = id;
     }
-
-    public String getNick() {
-        return nick;
-    }
-
-    public void setNick(String nick) {
-        this.nick = nick;
+    
+    public String getIdGoogle(){
+        return this.idGoogle;
     }
 
     public String getCorreo() {
@@ -82,14 +74,6 @@ public class Usuario {
 
     public void setCorreo(String correo) {
         this.correo = correo;
-    }
-
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
     }
 
     public short getRol() {

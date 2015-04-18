@@ -27,12 +27,12 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer>{
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"ID", "nick", "correo","pass", "rol"};
+        return new String[] {"ID", "IDGoogle", "correo", "rol"};
     }
 
     @Override
     protected Object[] serializeObject(Usuario object) {
-        return new Object[]{object.getId(), object.getNick(), object.getCorreo(), object.getPass(), object.getRol()};
+        return new Object[]{object.getId(), object.getIdGoogle(), object.getCorreo(), object.getRol()};
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer>{
 
     @Override
     protected Usuario buildObject(ResultSet rs) throws SQLException {
-        return new Usuario(rs.getInt("ID"), rs.getString("nick"), rs.getString("correo"), rs.getString("pass"), rs.getShort("rol"));
+        return new Usuario(rs.getInt("ID"), rs.getString("IDGoogle"), rs.getString("correo"), rs.getShort("rol"));
     }
     
     @Override
