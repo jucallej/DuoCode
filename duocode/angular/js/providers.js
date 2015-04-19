@@ -50,8 +50,6 @@ duocodeProviders.factory('usuarioServicio', ['$http', '$q', '$window', function 
 
     usuarioData.token = getAuthResponse.access_token;
     usuarioData.idUsuario = localStorage.getItem("idUser");
-    
-    console.log(usuarioData);
 
     $http.defaults.headers.common.token = usuarioData.token;
     $http.defaults.headers.common.idUsuario = usuarioData.idUsuario;

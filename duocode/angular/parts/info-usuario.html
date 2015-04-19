@@ -11,11 +11,11 @@
             </div>
 
             <div class="col-lg-4 col-md-12">
-                <img class="logo img-rounded img-responsive" src="img/user-icon1.png" ng-hide="usuario.picture">
+                <img class="logo img-rounded img-responsive" ng-src="{{usuario.picture}}" ng-show="usuario.picture">
             </div>
 
             <div class="col-lg-8 col-md-12 emailPuntos">
-                <p>{{usuario.correo}}</p>
+                <p>{{usuario.name}}</p>
                 <p>Puntuación Total: {{puntuacion()}}</p>
             </div>
         </div>

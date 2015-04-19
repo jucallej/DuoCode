@@ -150,7 +150,7 @@ duocodeApp.controller('LeccionesController', ['$scope', '$http', 'usuarioServici
     $scope.predicate = '+orden'; // para ordenar los temas por el campo orden
     $scope.idTema = $routeParams.temaID;
 
-    var usuario;
+    var usuario = null;
 
     $http.get(rutaApp+'temas/'+$scope.idTema).success(function(data) {
         var lecciones = data.lecciones;
@@ -610,7 +610,8 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 idUsuario: usuario.ID,
                 idEjercicio: $scope.ultimoEj.id,
                 lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
-        		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
+        		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe,
+                estado: 0
         		
         };
         usuario.candidatosPropuestos.push(candidatoAProponer);
