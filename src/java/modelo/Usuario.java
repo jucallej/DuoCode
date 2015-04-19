@@ -24,12 +24,15 @@ public class Usuario {
     ////////////////////////////////////////////////////////////////////////////
     @XmlElement(name="IDGoogle")
     private String idGoogle;
-    ////////////////////////////////////////////////////////////////////////////
-    @XmlElement(name="correo")
-    private String correo;
     
     @XmlElement(name="rol")
     private short rol;
+    
+    @XmlElement(name="picture")
+    private String picture;
+    
+    @XmlElement(name="name")
+    private String name;
     
     @XmlElement(name="leccionesCompletadas")
     private List<UsuarioCompletaLeccion> leccionesCompletadas;
@@ -49,10 +52,9 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int id, String idGoogle, String correo, short rol) {
+    public Usuario(int id, String idGoogle, short rol) {
         this.id = id;
         this.idGoogle = idGoogle;
-        this.correo = correo;
         this.rol = rol;
     }
 
@@ -66,14 +68,6 @@ public class Usuario {
     
     public String getIdGoogle(){
         return this.idGoogle;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public short getRol() {
@@ -123,4 +117,22 @@ public class Usuario {
     public List<UsuarioVotaCandidato> getVotosDeUnUsuario() {
         return votosDeUnUsuario;
     }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    
 }

@@ -7,6 +7,7 @@ package mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import modelo.Usuario;
 
@@ -27,12 +28,12 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer>{
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"ID", "IDGoogle", "correo", "rol"};
+        return new String[] {"ID", "IDGoogle", "rol"};
     }
 
     @Override
     protected Object[] serializeObject(Usuario object) {
-        return new Object[]{object.getId(), object.getIdGoogle(), object.getCorreo(), object.getRol()};
+        return new Object[]{object.getId(), object.getIdGoogle(), object.getRol()};
     }
 
     @Override
@@ -47,12 +48,21 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer>{
 
     @Override
     protected Usuario buildObject(ResultSet rs) throws SQLException {
-        return new Usuario(rs.getInt("ID"), rs.getString("IDGoogle"), rs.getString("correo"), rs.getShort("rol"));
+        return new Usuario(rs.getInt("ID"), rs.getString("IDGoogle"), rs.getShort("rol"));
     }
     
     @Override
     protected Integer getKey(Usuario object) {
         return object.getId();
+    }
+    
+    public Usuario findUsuarioIDGoogle(String IDGoogle){
+        
+        List <Usuario> usuarioIDGoogle = this.findByConditions(new QueryCondition[]{new QueryCondition("IDGoogle", Operator.EQ, IDGoogle)});
+        Usuario usuarioBuscado = null;
+        if (usuarioIDGoogle.size() == 1) usuarioBuscado = usuarioIDGoogle.get(0);
+        
+        return usuarioBuscado;
     }
 
 }

@@ -6,6 +6,8 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import google.ComprobadorGoogle;
+import google.GoogleResponse;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.CandidatoMapper;
 import mappers.EnvioMapper;
@@ -71,7 +74,8 @@ public class UsuariosResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuarios getUsuario() {
+    public Usuarios getUsuario(@HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
+        Usuario usuario = ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         List<Usuario> usuarios = usuarioMapper.findAll();
         return new Usuarios(usuarios);
     }
@@ -91,7 +95,7 @@ public class UsuariosResource {
             id = hola2.get(0).getId();
         return new ErrorYID(id);
     }*/
-    
+    /*
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -101,7 +105,8 @@ public class UsuariosResource {
         int nuevoID = usuarioMapper.insert(usuario);
         return new ErrorYID(nuevoID);
     }
-    
+    */
+    //Realmente no hace falta, ya lo hace el get
     
     ////////////////////////////////idUsuario/////////////////////////////////
     
@@ -109,14 +114,9 @@ public class UsuariosResource {
     @GET
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuario getUsuario(@PathParam("idUsuario") BigInteger idUsuario, @HeaderParam("token") String headerToken, @HeaderParam("idUsuario") BigInteger headerIdUsuario){
-        System.out.println("getUsuario");
-        System.out.println("token: "+headerToken);
-        System.out.println("idUsuario: "+headerIdUsuario);
-        
-        int usuarioTempABorrar = 1;
-        
-        Usuario usuario = usuarioMapper.findById(usuarioTempABorrar);
+    public Usuario getUsuario(@PathParam("idUsuario") String idUsuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
+        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper);
+
         if(usuario!=null){//si el usuario existe nos ponemos a completarlo, si no existe devuelve null
             usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));
             usuario.setCandidatosPropuestos(this.candidatoMapper.getCandidatosPropuestos(usuario.getId()));
@@ -124,6 +124,7 @@ public class UsuariosResource {
             usuario.setLeccionesTerminadas(this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(usuario.getId()));
             usuario.setVotosCandidatos(usuarioVotaCandidatoMapper.getVotosDeUnUsuario(usuario.getId()));
         }
+        
         return usuario;
     }
     
@@ -131,12 +132,14 @@ public class UsuariosResource {
     @DELETE
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteUsuario(@PathParam("idUsuario") int id){
+    public ErrorSimple deleteUsuario(@PathParam("idUsuario") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
         String posibleError = "si";
-        Usuario aBorrar = usuarioMapper.findById(id);
-        if(this.usuarioMapper.delete(aBorrar))
-            posibleError = "no";
-
+        
+        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper);
+        if (usuario.getId() == id){
+            if(this.usuarioMapper.delete(usuario))
+                posibleError = "no";
+        }
         return new ErrorSimple(posibleError);
     }
 }

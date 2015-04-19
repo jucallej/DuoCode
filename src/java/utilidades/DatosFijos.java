@@ -18,15 +18,18 @@ public final class DatosFijos {
     public static final int UMBRAL_VALIDO_EJ = 7;
     public static final int VIDAS = 3;
     
-    public static final String RUTA_EJERCICIOS = "http://localhost:8080/DuoCode/rest/ejercicios/";
-    public static final String RUTA_TEMAS = "http://localhost:8080/DuoCode/rest/temas/";
-    public static final String RUTA_ENUNCIADOS = "http://localhost:8080/DuoCode/rest/enunciados/";
-    public static final String RUTA_LECCIONES = "http://localhost:8080/DuoCode/rest/lecciones/";
-    public static final String RUTA_USUARIOS = "http://localhost:8080/DuoCode/rest/usuarios/";
-    public static final String RUTA_CANDIDATOS = "http://localhost:8080/DuoCode/rest/candidatos/";
+    private static final String RUTA_ROOT = "http://localhost:8080/DuoCode/rest/";
+    public static final String RUTA_EJERCICIOS = RUTA_ROOT+"ejercicios/";
+    public static final String RUTA_TEMAS = RUTA_ROOT+"temas/";
+    public static final String RUTA_ENUNCIADOS = RUTA_ROOT+"enunciados/";
+    public static final String RUTA_LECCIONES = RUTA_ROOT+"lecciones/";
+    public static final String RUTA_USUARIOS = RUTA_ROOT+"usuarios/";
+    public static final String RUTA_CANDIDATOS = RUTA_ROOT+"candidatos/";
     
     public static final int AcquireRetryAttempts = 1;
     public static final int AcquireRetryDelay = 1;
     
     public static final boolean BreakAfterAcquireFailure = false;
+    
+    public static final String URL_COMPROBADOR_GOOGLE = "https://www.googleapis.com/userinfo/v2/me";
 }
