@@ -1,0 +1,196 @@
+body{
+	background-color: #272822;
+	margin: 0;
+	padding: 0;
+	font-family: Verdana;
+	color: #fff;
+}
+
+.contenido, .lenguaje1{
+    margin: 90px auto;
+}
+
+.contenido, .lenguaje1, .lenguaje2{
+	position: relative;
+	background-color: #171814;
+	box-shadow: 6px 6px 9px 0px rgba(0, 0, 0, 0.8);
+  	padding: 2em;
+    padding-top: 1em;
+  	margin-bottom: 2em;
+}
+
+.left{
+	float: left;
+}
+
+.right{
+	float: right;
+}
+
+.header{
+	z-index: 1000;
+	position: fixed;
+	width: 100%;
+	height: 70px; 
+	background-color: #171814;
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+.header img{
+	height: 1.5em;
+	width: auto;
+}
+
+.top{
+	margin: -0.2em auto 0 1em;
+    float: left;
+}
+
+.topMenu{
+	padding: 0.3em;
+	margin: 0 auto;
+    color: #F92672;
+}
+
+.navbar-toggle{
+    margin: 1em 3em 1em auto;
+    height: 3em;
+}
+
+.collapsing, .collapse.in, .breadcrumb, .collapse > div, .collapsing > div{
+    background-color: #171814;
+}
+
+.clear{
+	clear: both;
+}
+
+.rojo{
+	color: red;
+}
+
+.boton{
+	margin-top: 2em;
+}
+
+.green{
+    color: #A6E22E !important;
+}
+
+.label{
+    margin: 1em;
+}
+
+pre, .codigoEditable{
+    margin-top: 0.5em;
+}
+
+.reomvePadding{
+    padding: 0em;
+}
+
+.padding{
+    padding: 2em;
+}
+
+.alert{
+    color: #A6E22E;
+}
+
+.favorito{
+    background-color: #FD971F;
+    margin-top: -0.3em;
+}
+
+.marcado{
+    color: #F92672;
+}
+
+.container1{
+    color: #F92672;
+}
+
+.tituloCandidatos{
+    color: #F92672;
+}
+
+h3 {
+    color: #A6E22E;
+}
+
+.incorrect{
+    color: red !important;
+}
+
+.logo{
+    max-height: 8em;
+}
+
+.comenzar{
+    min-width: 20%;
+    display: block;
+    margin: 0 auto 2em auto;
+    
+}
+
+.selectIdiomas{
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.emailPuntos{
+    margin-top: 1em;
+    color: white;
+}
+
+.btnLinks{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+@media (min-width: 992px) {
+	.container1{
+		position: fixed;
+		max-width: 25%;
+	}	
+	.container{
+		width: 80%;
+	}
+    
+    .lenguaje1, .lenguaje2{
+        margin: 180px auto 50px auto;    
+    }
+}
+
+
+a {
+    color: #66D9EF;
+    text-decoration: none;
+}
+
+a:hover{
+    color: #3d828f;
+    text-decoration-color: #3d828f;
+}
+
+.btnEnviarCandidato .btn-info{
+    width: 93%;
+}
+
+.popover-content{
+    color: black;
+}
+
+.filaFavCand{
+    margin-bottom: 2em;
+}
+
+.terminarLeccion{
+    margin-bottom: 4em;
+}
+
+.ventajas{
+    color: white;
+    margin-top: 2em;
+}
