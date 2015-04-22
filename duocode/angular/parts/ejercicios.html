@@ -6,7 +6,11 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-10 col-xs-10">
-                                    <div class="padding">
+                                	<div class="padding" ng-show="usuario.rol === -1">
+                                		<h2>Has de loguearte.</h2>
+                                		<a class="btn btn-info btn-block btnLinks" ng-click="logIn()">Log in</a>
+                                	</div>
+                                    <div class="padding" ng-hide="usuario.rol === -1">
 
                                         <ol class="breadcrumb">
                                             <li><a href="#/temas" class="green">Temas</a>

@@ -323,10 +323,12 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     $scope.idiomaQueNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;
 
     var usuario;
+    $scope.usuario = usuario;
 
     //Ejecuta esto cuando se termina de cargar el get de usuarioServicio, necesario para saber que lecciones ha hecho
     usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
         usuario = dataCuandoLaFuncionSeEjecute.data;
+        $scope.usuario = usuario;
     });
 
     var init = function(){

@@ -34,7 +34,7 @@
 	                                        </div>
 
 
-	                                        <div class="container-fluid">
+	                                        <div class="container-fluid" ng-show="usuario.rol >= 0">
 	                                            <div class="row">
 	                                                <div class="col-md-6 col-xs-12 btnLinks">
 	                                                    <button type="submit" class="btn btn-lg btn-success btn-block ng-class: claseVotoPos();" ng-click="(votar(candidatoActual().id,1))">
@@ -46,7 +46,7 @@
 	                                                </div>
 	                                            </div>
 
-	                                            <div class="row" ng-show="usuario.rol === 0">
+	                                            <div class="row" ng-show="usuario.rol > 0">
 	                                                <div class="col-md-6 col-xs-12 btnLinks">
 	                                                    <button type="submit" class="btn btn-lg btn-success btn-block" ng-click="marcarCandidato(candidatoActual().id,1)">
 	                                                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Aceptar definitivamente</button>
