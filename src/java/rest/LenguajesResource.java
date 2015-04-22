@@ -6,6 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import google.ComprobadorGoogle;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -14,10 +15,12 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import mappers.LenguajeMapper;
+import mappers.UsuarioMapper;
 import modelo.ErrorYNombreConfirmacion;
 import modelo.Lenguaje;
 import modelo.Lenguajes;
@@ -35,6 +38,7 @@ public class LenguajesResource {
     @Context
     private UriInfo context;
     private LenguajeMapper lenguajeMapper;
+    private UsuarioMapper usuarioMapper;
     
     static private ComboPooledDataSource cpds;
 
@@ -43,6 +47,7 @@ public class LenguajesResource {
      */
     public LenguajesResource() {
         cpds = Utilidades.checkPoolNull(cpds);
+        usuarioMapper = new UsuarioMapper(cpds);
 
         lenguajeMapper = new LenguajeMapper(cpds);
     }
@@ -61,7 +66,8 @@ public class LenguajesResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYNombreConfirmacion newLenguaje(Lenguaje lenguaje){
+    public ErrorYNombreConfirmacion newLenguaje(Lenguaje lenguaje, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ){
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         int posibleError = lenguajeMapper.insert(lenguaje.getNombre());
         return new ErrorYNombreConfirmacion(posibleError, lenguaje.getNombre());
     }

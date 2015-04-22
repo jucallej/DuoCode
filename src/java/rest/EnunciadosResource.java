@@ -6,6 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import google.ComprobadorGoogle;
 import java.beans.PropertyVetoException;
 import java.util.Date;
 import javax.sql.DataSource;
@@ -17,11 +18,13 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.EnunciadoMapper;
+import mappers.UsuarioMapper;
 import modelo.Enunciado;
 import modelo.Enunciados;
 import modelo.ErrorSimple;
@@ -40,6 +43,7 @@ public class EnunciadosResource {
     @Context
     private UriInfo context;
     private EnunciadoMapper enunciadoMapper;
+    private UsuarioMapper usuarioMapper;
     
     static private ComboPooledDataSource cpds;
 
@@ -50,6 +54,7 @@ public class EnunciadosResource {
         cpds = Utilidades.checkPoolNull(cpds);
 
         enunciadoMapper = new EnunciadoMapper(cpds);
+        usuarioMapper = new UsuarioMapper(cpds);
     }
 
     @GET
@@ -63,7 +68,8 @@ public class EnunciadosResource {
     @Produces(MediaType.APPLICATION_JSON)
     // {"nombreLenguaje": "Java", "codigo": "codigo del enunciado", "idUsuario": "1", "idDelEjercicioQueResuelve": "3"}
     // hay que tener en la bd al usuario y ej creados
-    public ErrorYID newEnunciado(Enunciado enunciado){
+    public ErrorYID newEnunciado(Enunciado enunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         enunciado.setEnunciado(0);
         enunciado.setFechaCreacion(new Date());
         int nuevoID = enunciadoMapper.insert(enunciado);
@@ -90,7 +96,8 @@ public class EnunciadosResource {
     @Path("{idEnunciado}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ErrorSimple putEnunciado(@PathParam("idEnunciado") int idEnunciado, Enunciado enunciado) {
+    public ErrorSimple putEnunciado(@PathParam("idEnunciado") int idEnunciado, Enunciado enunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         Enunciado aModificar = enunciadoMapper.findById(idEnunciado);
         String error = "si";
         if (aModificar != null){
@@ -107,7 +114,8 @@ public class EnunciadosResource {
     @Path("{idEnunciado}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteEnunciado(@PathParam("idEnunciado") int idEnunciado){
+    public ErrorSimple deleteEnunciado(@PathParam("idEnunciado") int idEnunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Enunciado aBorrar = enunciadoMapper.findById(idEnunciado);
         if(this.enunciadoMapper.delete(aBorrar))

@@ -6,6 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import google.ComprobadorGoogle;
 import java.beans.PropertyVetoException;
 import java.util.Date;
 import javax.sql.DataSource;
@@ -17,8 +18,10 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.CandidatoMapper;
 import mappers.CandidatoMapperSinGestionadoPor;
@@ -75,7 +78,9 @@ public class CandidatosResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newCandidato(Candidato candidato){
+    public ErrorYID newCandidato(Candidato candidato, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
+        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+        if (usuario.getId() != candidato.getIdUsuario()) throw new WebApplicationException(401);
         candidato.setId(0);
         candidato.setFecha(new Date());
         candidato.setEstado(0);
@@ -107,13 +112,16 @@ public class CandidatosResource {
     @Consumes(MediaType.APPLICATION_JSON)
     //Poner en raw el id del usuario: {"idUsuario":1}
     //poner en la url /candidatos/3/1  (3 es el idCandidato y 1 es voto positivo, 0 es negativo)
-    public ErrorSimple putCandidato(@PathParam("idCandidato") int idCandidato, IDUsuarioYVotoYCandidato iDUsuarioYVotoYCandidato) {
+    public ErrorSimple putCandidato(@PathParam("idCandidato") int idCandidato, IDUsuarioYVotoYCandidato iDUsuarioYVotoYCandidato, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
         IDUsuarioYVoto idUsuario = iDUsuarioYVotoYCandidato.getiDUsuarioYVoto(); 
         Candidato candidato = iDUsuarioYVotoYCandidato.getCandidato();
         String error = "si";
         
         if (idUsuario != null){
-        int posNeg = idUsuario.getVoto();
+            Usuario usuarioAut = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+            if (usuarioAut.getId() != idUsuario.getIdUsuario()) throw new WebApplicationException(401);
+            
+             int posNeg = idUsuario.getVoto();
             Candidato aModificar = candidatoMapper.findById(idCandidato);
             Usuario usuario = usuarioMapper.findById(idUsuario.getIdUsuario());
                 
@@ -136,6 +144,7 @@ public class CandidatosResource {
         }
         
         if (candidato != null){
+            ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
             Candidato aModificar = candidatoMapper.findById(idCandidato);
             if (aModificar != null){
                 candidato.setId(idCandidato);
@@ -177,9 +186,11 @@ public class CandidatosResource {
     @Path("{idCandidato}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteCandidato(@PathParam("idCandidato") int id){
+    public ErrorSimple deleteCandidato(@PathParam("idCandidato") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
         String posibleError = "si";
         Candidato aBorrar = candidatoMapper.findById(id);
+        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+        if (usuario.getId() != aBorrar.getIdUsuario()) throw new WebApplicationException(401);
         
         if(this.candidatoMapper.delete(aBorrar))
             posibleError = "no";

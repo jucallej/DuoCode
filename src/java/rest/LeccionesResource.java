@@ -6,6 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import google.ComprobadorGoogle;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -17,6 +18,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -55,6 +57,7 @@ public class LeccionesResource {
     private RequisitosLeccionesMapper requisitosLeccionesMapper;
     private UsuarioCompletaLeccionMapper usuarioCompletaLeccionMapper;
     private EnvioMapper envioMapper;
+    private UsuarioMapper usuarioMapper;
     
     static private ComboPooledDataSource cpds;
 
@@ -69,6 +72,7 @@ public class LeccionesResource {
         requisitosLeccionesMapper = new RequisitosLeccionesMapper (cpds);
         
         usuarioCompletaLeccionMapper = new UsuarioCompletaLeccionMapper(cpds);
+        usuarioMapper = new UsuarioMapper(cpds);
         envioMapper = new EnvioMapper(cpds);
     }
 
@@ -105,7 +109,8 @@ public class LeccionesResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newLeccion(Leccion leccion) {
+    public ErrorYID newLeccion(Leccion leccion, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ) {
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         leccion.setId(0);
         int nuevoId = this.leccioneMapper.insert(leccion);
         leccion.setId(nuevoId);
@@ -164,10 +169,11 @@ public class LeccionesResource {
     @Path("{idLeccion}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID putLeccion(@PathParam("idLeccion") int id, LeccionYIDUsuario leccionYIDUsuario) { //Un poco más limpio
+    public ErrorYID putLeccion(@PathParam("idLeccion") int id, LeccionYIDUsuario leccionYIDUsuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ) { //Un poco más limpio
         Leccion leccion = leccionYIDUsuario.getLeccion();
         
         if (leccion != null){
+            ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
             leccion.setId(id);
 
             Leccion leccionExistente = this.leccioneMapper.findById(id);
@@ -215,6 +221,8 @@ public class LeccionesResource {
         
         //Marcar leccion como completada
         if (leccionYIDUsuario.getIdUsuario() != 0 && leccionYIDUsuario.getLenguajeCompletado() != null){//0 es el valor si no pones nada
+            Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+            if (usuario.getId() != leccionYIDUsuario.getIdUsuario()) throw new WebApplicationException(401);
             List<UsuarioCompletaLeccion> usuarioCompletaLeccion = this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(leccionYIDUsuario.getIdUsuario());
             boolean yaHaCompletadoLaLeccion = false;
             
@@ -272,7 +280,8 @@ public class LeccionesResource {
     @Path("{idLeccion}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteTema(@PathParam("idLeccion") int id){ //Habría que comprobar la identidad de alguna manera, al igual que en los post y put
+    public ErrorSimple deleteTema(@PathParam("idLeccion") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ){ //Habría que comprobar la identidad de alguna manera, al igual que en los post y put
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Leccion aBorrar = leccioneMapper.findById(id);
             if(this.leccioneMapper.delete(aBorrar))

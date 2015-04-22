@@ -6,6 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import google.ComprobadorGoogle;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -16,12 +17,14 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import mappers.EjercicioMapper;
 import mappers.EnunciadoMapper;
+import mappers.UsuarioMapper;
 import modelo.Ejercicio;
 import modelo.Ejercicios;
 import modelo.Enunciados;
@@ -44,6 +47,7 @@ public class EjerciciosResource {
     private UriInfo context;
     private EjercicioMapper ejercicioMapper;
     private EnunciadoMapper enunciadoMapper;
+    private UsuarioMapper usuarioMapper;
     
     static private ComboPooledDataSource cpds;
 
@@ -55,6 +59,7 @@ public class EjerciciosResource {
 
         ejercicioMapper = new EjercicioMapper(cpds);
         enunciadoMapper = new EnunciadoMapper(cpds);
+        usuarioMapper = new UsuarioMapper(cpds);
     }
     
     //Mas o menos, no es igual a los requisitos
@@ -71,8 +76,9 @@ public class EjerciciosResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newEjercicio(Ejercicio ejercicio){//IDUsuario nombre){
-      int posibleError = -1;
+    public ErrorYID newEjercicio(Ejercicio ejercicio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){//IDUsuario nombre){
+      ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+        int posibleError = -1;
         //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario()))
             posibleError = ejercicioMapper.insert(ejercicio);
         return new ErrorYID(posibleError);
@@ -112,7 +118,8 @@ public class EjerciciosResource {
     @Path("{idEjercicio}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteEjercicio(@PathParam("idEjercicio") int idEjercicio){//, IDUsuario nombre){
+    public ErrorSimple deleteEjercicio(@PathParam("idEjercicio") int idEjercicio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){//, IDUsuario nombre){
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Ejercicio aBorrar = ejercicioMapper.findById(idEjercicio);       
         if(this.ejercicioMapper.delete(aBorrar))

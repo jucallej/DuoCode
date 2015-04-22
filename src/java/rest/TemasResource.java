@@ -6,6 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import google.ComprobadorGoogle;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -17,6 +18,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -24,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import mappers.LeccionesMapper;
 import modelo.Tema;
 import mappers.TemaMapper;
+import mappers.UsuarioMapper;
 import modelo.ErrorSimple;
 import modelo.ErrorYID;
 import modelo.Temas;
@@ -42,6 +45,7 @@ public class TemasResource {
     private UriInfo context;
     private TemaMapper temaMapper;
     private LeccionesMapper leccioneMapper;
+    private UsuarioMapper usuarioMapper;
     
     static private ComboPooledDataSource cpds;
 
@@ -53,6 +57,7 @@ public class TemasResource {
         
         temaMapper = new TemaMapper(cpds);
         leccioneMapper = new LeccionesMapper(cpds);
+        usuarioMapper = new UsuarioMapper(cpds);
     }
 
     /**
@@ -80,7 +85,8 @@ public class TemasResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newTema(Tema tema) {
+    public ErrorYID newTema(Tema tema, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         tema.setId(0);
         if(tema.getOrden() == 0 || temaMapper.getTemasConOrden(tema.getOrden()).size()>0)//0 es el int cuando no se le pasa en json
             return new ErrorYID(-1);
@@ -122,7 +128,8 @@ public class TemasResource {
     @Path("{idTema}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple putTema(@PathParam("idTema") int id, Tema tema) {
+    public ErrorSimple putTema(@PathParam("idTema") int id, Tema tema, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         Tema aModificar = temaMapper.findById(id);
         String error = "si";
         if (aModificar != null){
@@ -137,7 +144,8 @@ public class TemasResource {
     @Path("{idTema}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteTema(@PathParam("idTema") int id){
+    public ErrorSimple deleteTema(@PathParam("idTema") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
+        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Tema aBorrar = temaMapper.findById(id);
             if(this.temaMapper.delete(aBorrar))
