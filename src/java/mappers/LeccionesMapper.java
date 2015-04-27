@@ -24,12 +24,12 @@ public class LeccionesMapper extends AbstractMapper <Leccion, Integer>{
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"ID", "orden", "titulo","descripcion", "idTema"};
+        return new String[] {"ID", "orden", "titulo","descripcion","explicacion", "idTema"};
     }
 
     @Override
     protected Object[] serializeObject(Leccion object) {
-        return new Object[]{object.getId(), object.getOrden(), object.getTitulo(), object.getDescripcion(), object.getIdTema()};
+        return new Object[]{object.getId(), object.getOrden(), object.getTitulo(), object.getDescripcion(), object.getExplicacion(), object.getIdTema()};
     }
 
     @Override
@@ -44,7 +44,7 @@ public class LeccionesMapper extends AbstractMapper <Leccion, Integer>{
 
     @Override
     protected Leccion buildObject(ResultSet rs) throws SQLException {
-        return new Leccion(rs.getInt("ID"), rs.getString("titulo"), rs.getString("descripcion"), rs.getInt("orden"), rs.getInt("idTema"));
+        return new Leccion(rs.getInt("ID"), rs.getString("titulo"), rs.getString("descripcion"), rs.getString("explicacion"), rs.getInt("orden"), rs.getInt("idTema"));
     }
     
     @Override

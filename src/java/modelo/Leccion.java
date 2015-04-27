@@ -30,6 +30,9 @@ public class Leccion {
     @XmlElement(name="descripcion")
     private String descripcion;
     
+    @XmlElement(name="explicacion")
+    private String explicacion;
+    
     @XmlElement(name="orden")
     private int orden;
     
@@ -51,18 +54,20 @@ public class Leccion {
     public Leccion() {
     }
 
-    public Leccion(int id, String titulo, String descripcion, int orden, int idTema) {
+    public Leccion(int id, String titulo, String descripcion, String explicacion, int orden, int idTema) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.explicacion = explicacion;
         this.orden = orden;
         this.idTema = idTema;
     }
 
-    public Leccion(int id, String titulo, String descripcion, int orden, int idTema, List<String> ejercicios) {
+    public Leccion(int id, String titulo, String descripcion, String explicacion, int orden, int idTema, List<String> ejercicios) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.explicacion = explicacion;
         this.orden = orden;
         this.idTema = idTema;
         this.ejercicios = ejercicios;
@@ -79,6 +84,10 @@ public class Leccion {
 
     public String getDescripcion() {
         return descripcion;
+    }
+    
+    public String getExplicacion() {
+        return explicacion;
     }
 
     public int getOrden() {
