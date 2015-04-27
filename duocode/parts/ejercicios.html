@@ -27,14 +27,14 @@
 	                                        <div ng-hide="cargando">
 	                                        <div class="container-fluid">
 	                                            <div class="row">
-	                                                <div class="col-md-8 col-xs-12">
+	                                                <div class="col-md-7 col-xs-12">
 	                                                    <div class="progress">
 	                                                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="{{porcentajeCompletado()}}" aria-valuemin="0" aria-valuemax="100" style="min-width: 4em;  width: {{porcentajeCompletado()}}%;">
 	                                                            {{  porcentajeCompletado() }} %
 	                                                        </div>
 	                                                    </div>
 	                                                </div>
-	                                                <div class="col-md-3 col-xs-10">
+	                                                <div class="col-md-3 col-xs-8">
 	                                                    <i><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(0);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(1);" aria-hidden="true"></span><span class="glyphicon glyphicon-heart ng-class: colorRojoVidas(2);" aria-hidden="true"></span> Vidas restantes</i>
 	                                                </div>
 	                                                <div class="col-md-1 col-xs-2" ng-click="favorito()">
@@ -42,6 +42,27 @@
 	                                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
 	                                                    </button>
 	                                                </div>
+	                                                <div class="col-md-1 col-xs-2">
+		                                                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+														  <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+														</button>
+														<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+														  <div class="modal-dialog">
+														    <div class="modal-content">
+														      <div class="modal-header">
+														        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														        <h4 class="modal-title" id="myModalLabel">Explicación de {{leccion.titulo}}</h4>
+														      </div>
+														      <div class="modal-body">
+														        {{leccion.explicacion}}
+														      </div>
+														      <div class="modal-footer">
+														        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+														      </div>
+														    </div>
+														  </div>
+														</div>
+													</div>
 	                                            </div>
 	                                        </div>
 
@@ -161,4 +182,9 @@
     $(function () {
       $('[data-toggle="popover"]').popover()
     })
+
+	$(document).ready(function(){
+		$("#myModal").modal('show');
+	});
+
 </script>

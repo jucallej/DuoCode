@@ -23,6 +23,9 @@ duocodeApp.config(['$routeProvider',
       when('/', {
         templateUrl: 'parts/index.html',
       }).
+      when('/lenguajes', {
+        templateUrl: 'parts/lenguajes.html',
+      }).
       when('/candidatos', {
         templateUrl: 'parts/candidatos.html',
       }).
@@ -109,6 +112,18 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
        //Haciendo esto, las siguientes veces que se use idiomasSeleccionadosServicio, tendrá los datos actualizados
        idiomasSeleccionadosServicio.idiomaQueSe = $scope.selectedItem;
     };
+
+    $scope.select1 = function(lenguaje) {
+      $scope.selected1 = lenguaje;
+      $scope.selectedItem = lenguaje;
+    };
+
+    $scope.select2 = function(lenguaje) {
+      $scope.selected2 = lenguaje;
+      $scope.selectedItemNoSe = lenguaje;
+    };
+
+
 
     //lo guarda en localstorage para el futuro
     $scope.cambiarLenguajeNOSe = function() {
@@ -944,3 +959,6 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     });
     
 }]);
+
+
+

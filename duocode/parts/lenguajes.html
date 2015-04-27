@@ -1,0 +1,25 @@
+    <div class="container" ng-controller="UsuarioController">
+        <div class="row">
+            <div class="col-md-6 col-xs-12 left">
+                <div class="lenguaje1">
+                    <h3>Lenguaje que sabes</h3>
+                    <div class="list-group">
+                        <a class="list-group-item" ng-model="selectedItem" ng-click="select1(lenguaje)" ng-class="{active:lenguaje == selected1}" ng-repeat="lenguaje in lenguajes" value="{{lenguaje}}" ng-selected="lenguaje === lenguajeQueSe">{{lenguaje}}</a>
+                    </div>
+                </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12 right">
+                <div class="lenguaje2">
+                    <h3>Lenguaje que quieres aprender</h3>
+                    <div class="list-group">
+                        <a class="list-group-item" ng-model="selectedItemNoSe" ng-click='select2(lenguaje)' ng-class='{active:lenguaje == selected2 && selected1!=selected2}' ng-repeat="lenguaje in lenguajes" value="{{lenguaje}}" ng-selected="lenguaje === idiomaQueNOSe">{{lenguaje}}</a>
+                    </div>
+                </select>
+                </div>
+            </div>
+            <a href="#/temas" ng-click="cambiarLenguajeSe(); cambiarLenguajeNOSe()">
+                <button class="btn btn-lg btn-info comenzar">¡Comenzar!</button>
+            </a>
+        </div>
+    </div>

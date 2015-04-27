@@ -100,7 +100,6 @@ pre, .codigoEditable{
 
 .favorito{
     background-color: #FD971F;
-    margin-top: -0.3em;
 }
 
 .marcado{
@@ -213,4 +212,9 @@ a:hover{
 
 .rojo.focus, .rojo:focus, .rojo:hover {
   color: red;
+}
+
+
+.modal-title, .modal-body{
+    color: black;
 }
