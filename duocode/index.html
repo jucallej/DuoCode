@@ -23,9 +23,7 @@
 
     <script src="js/providers.js"></script>
     <script src="js/duocode.js"></script>
-    <link rel="icon" 
-      type="image/png" 
-      href="img/favicon.png">
+    <link rel="icon" type="image/png" href="img/favicon.png">
 
     <title>Duocode</title>
 </head>
@@ -42,17 +40,17 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#/temas"><h1 class="top"><img src="./img/duocode.png"></h1></a>
+                    <a class="navbar-brand" href="#/"><h1 class="top"><img src="./img/duocode.png"></h1></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="menuSuperior">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#/lenguajes"><h3 class="topMenu">Lenguajes</h3></a>
+                        <li><a href="#/temas"><h3 class="topMenu" ng-class="{green: aprenderURL()}">Aprender</h3></a>
                         </li>
-                        <li><a href="#/temas"><h3 class="topMenu">Aprender</h3></a>
+                        <li><a href="#/candidatos"><h3 class="topMenu" ng-class="{green: candidatosURL()}">Candidatos</h3></a>
                         </li>
-                        <li><a href="#/candidatos"><h3 class="topMenu">Candidatos</h3></a>
+                        <li><a href="#/lenguajes"><h3 class="topMenu" ng-class="{green: lenguajeURL()}">Lenguajes</h3></a>
                         </li>
                     </ul>
                 </div>

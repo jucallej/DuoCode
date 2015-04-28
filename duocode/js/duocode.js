@@ -106,11 +106,17 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
 
     //lo guarda en localstorage para el futuro
     $scope.cambiarLenguajeSe = function() {
+       var lenguajeTemp = $scope.lenguajeQueSe;
        $scope.lenguajeQueSe = $scope.selectedItem;
        localStorage.setItem(idiomasSeleccionadosServicio.STR_LOCALSTORAGE_IDIOMASE, $scope.selectedItem);
 
        //Haciendo esto, las siguientes veces que se use idiomasSeleccionadosServicio, tendrá los datos actualizados
        idiomasSeleccionadosServicio.idiomaQueSe = $scope.selectedItem;
+
+       if ($scope.idiomaQueNOSe === $scope.lenguajeQueSe){
+            $scope.selectedItemNoSe = lenguajeTemp;
+            $scope.cambiarLenguajeNOSe ();
+       }
     };
 
     $scope.select1 = function(lenguaje) {
@@ -127,11 +133,17 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
 
     //lo guarda en localstorage para el futuro
     $scope.cambiarLenguajeNOSe = function() {
+       var lenguajeTemp = $scope.idiomaQueNOSe;
        $scope.idiomaQueNOSe = $scope.selectedItemNoSe;
        localStorage.setItem(idiomasSeleccionadosServicio.STR_LOCALSTORAGE_IDIOMANOSE, $scope.selectedItemNoSe);
 
        //Haciendo esto, las siguientes veces que se use idiomasSeleccionadosServicio, tendrá los datos actualizados
        idiomasSeleccionadosServicio.idiomaQueNOSe = $scope.selectedItemNoSe;
+
+       if ($scope.idiomaQueNOSe === $scope.lenguajeQueSe){
+            $scope.selectedItem = lenguajeTemp;
+            $scope.cambiarLenguajeSe ();
+       }
     };
 
     //Ejecuta esto cuando se termina de cargar el get usuarioServicio
@@ -960,5 +972,21 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
     
 }]);
 
-
-
+duocodeApp.controller('menuSuperior', ['$scope', '$route', function ($scope, $route) {
+    $scope.aprenderURL = function(){
+        if ($route.current !== undefined && ($route.current.templateUrl === 'parts/temas.html' ||
+            $route.current.templateUrl === 'parts/misfavoritos.html'||
+            $route.current.templateUrl === 'parts/miscandidatos.html'||
+            $route.current.templateUrl === 'parts/lecciones.html'||
+            $route.current.templateUrl === 'parts/ejercicios.html')) return true;
+        return false;
+    };
+    $scope.candidatosURL = function(){
+        if ($route.current !== undefined && ($route.current.templateUrl === 'parts/candidatos.html')) return true;
+        return false;
+    };
+    $scope.lenguajeURL = function(){
+        if ($route.current !== undefined && ($route.current.templateUrl === 'parts/lenguajes.html')) return true;
+        return false;
+    };
+}]);
