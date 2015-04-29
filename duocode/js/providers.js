@@ -15,10 +15,12 @@ duocodeProviders.factory('usuarioServicio', ['$http', '$q', '$window', function 
   usuarioData.idUsuario = -1;
   usuarioData.token = -1;
 
-  var getAuthResponse = hello( "google" ).getAuthResponse();
+  var getAuthResponseGoogle = hello( "google" ).getAuthResponse();
+
+  var getAuthResponseFacebook = hello( "facebook" ).getAuthResponse();
 
   //https://docs.angularjs.org/api/ng/service/$q
-  if(getAuthResponse === null){
+  if(getAuthResponseGoogle === null && getAuthResponseFacebook === null){
     return $q(function(resolve, reject) {
       resolve({
         data:{
@@ -38,11 +40,18 @@ duocodeProviders.factory('usuarioServicio', ['$http', '$q', '$window', function 
   }
 
   else {
-    hello( "google" ).api("me").then(function(json){
+    var servicio = 'google';
+    var getAuthResponse = getAuthResponseGoogle;
+    if (getAuthResponseFacebook !== null){
+      servicio = 'facebook';
+      getAuthResponse = getAuthResponseFacebook;
+    } 
+
+    hello( servicio ).api("me").then(function(json){
         //Todo bien, podemos seguir haciendo peticiones
     }, function(e){ 
     //hay algun fallo con el token
-      hello( "google" ).logout();
+      hello( servicio ).logout();
       localStorage.removeItem("idUser");
       console.log("Whoops! " + e.error.message );
       $window.location.reload();
@@ -53,6 +62,7 @@ duocodeProviders.factory('usuarioServicio', ['$http', '$q', '$window', function 
 
     $http.defaults.headers.common.token = usuarioData.token;
     $http.defaults.headers.common.idUsuario = usuarioData.idUsuario;
+    $http.defaults.headers.common.network = getAuthResponse.network;
 
     return $http.get(rutaApp+'usuarios/' + usuarioData.idUsuario);
   }

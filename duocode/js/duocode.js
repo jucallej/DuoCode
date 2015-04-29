@@ -5,7 +5,8 @@ var numeroMaximoEJ = 10;
 var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute', 'hljs']);
 
 hello.init({ 
-    google   : '398307879249-lqhc6e32u90qqfpldnfmbme8rfhqh8hp.apps.googleusercontent.com'
+    google   : '824624758061-2bbju89hsnn7hibdf1oku2jdvqnrfrq4.apps.googleusercontent.com',
+    facebook: '1428669747439400'
 });
 
 //Creamos el menú de usuarios reusable (como tag): <info-usuario></info-usuario>
@@ -60,9 +61,9 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
     $scope.selectedItem = idiomasSeleccionadosServicio.idiomaQueSe;
     $scope.selectedItemNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;  
 
-    $scope.logIn = function() {
-        hello( "google" ).login().then( function(json){
-            hello( "google" ).api("me").then(function(json){
+    $scope.logIn = function(servicio) {
+        hello( servicio ).login().then( function(json){
+            hello( servicio ).api("me").then(function(json){
                 localStorage.setItem("idUser", json.id);
                 $window.location.reload();
             }, function(e){
@@ -76,6 +77,13 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
 
     $scope.logOut = function() {
         hello( "google" ).logout().then( function(){
+            localStorage.removeItem("idUser");
+            $window.location.reload();
+        }, function( e ){
+            console.log("Signout error: " + e.error.message );
+        });
+
+        hello( "facebook" ).logout().then( function(){
             localStorage.removeItem("idUser");
             $window.location.reload();
         }, function( e ){
