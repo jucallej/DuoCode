@@ -28,12 +28,12 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer>{
 
     @Override
     protected String[] getColumnNames() {
-        return new String[] {"ID", "IDGoogle", "rol"};
+        return new String[] {"ID", "IDGoogle", "IDFacebook", "rol"};
     }
 
     @Override
     protected Object[] serializeObject(Usuario object) {
-        return new Object[]{object.getId(), object.getIdGoogle(), object.getRol()};
+        return new Object[]{object.getId(), object.getIdGoogle(), object.getIdFacebook(), object.getRol()};
     }
 
     @Override
@@ -48,7 +48,7 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer>{
 
     @Override
     protected Usuario buildObject(ResultSet rs) throws SQLException {
-        return new Usuario(rs.getInt("ID"), rs.getString("IDGoogle"), rs.getShort("rol"));
+        return new Usuario(rs.getInt("ID"), rs.getString("IDGoogle"), rs.getString("IDFacebook"), rs.getShort("rol"));
     }
     
     @Override
@@ -59,6 +59,15 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer>{
     public Usuario findUsuarioIDGoogle(String IDGoogle){
         
         List <Usuario> usuarioIDGoogle = this.findByConditions(new QueryCondition[]{new QueryCondition("IDGoogle", Operator.EQ, IDGoogle)});
+        Usuario usuarioBuscado = null;
+        if (usuarioIDGoogle.size() == 1) usuarioBuscado = usuarioIDGoogle.get(0);
+        
+        return usuarioBuscado;
+    }
+    
+    public Usuario findUsuarioIDFacebook(String IDFacebook){
+        
+        List <Usuario> usuarioIDGoogle = this.findByConditions(new QueryCondition[]{new QueryCondition("IDFacebook", Operator.EQ, IDFacebook)});
         Usuario usuarioBuscado = null;
         if (usuarioIDGoogle.size() == 1) usuarioBuscado = usuarioIDGoogle.get(0);
         

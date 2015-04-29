@@ -6,7 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
+import autentificacion.ComprobadorAutenticidad;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -85,8 +85,8 @@ public class TemasResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newTema(Tema tema, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorYID newTema(Tema tema, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) {
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         tema.setId(0);
         if(tema.getOrden() == 0 || temaMapper.getTemasConOrden(tema.getOrden()).size()>0)//0 es el int cuando no se le pasa en json
             return new ErrorYID(-1);
@@ -128,8 +128,8 @@ public class TemasResource {
     @Path("{idTema}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple putTema(@PathParam("idTema") int id, Tema tema, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple putTema(@PathParam("idTema") int id, Tema tema, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) {
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         Tema aModificar = temaMapper.findById(id);
         String error = "si";
         if (aModificar != null){
@@ -144,8 +144,8 @@ public class TemasResource {
     @Path("{idTema}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteTema(@PathParam("idTema") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple deleteTema(@PathParam("idTema") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Tema aBorrar = temaMapper.findById(id);
             if(this.temaMapper.delete(aBorrar))

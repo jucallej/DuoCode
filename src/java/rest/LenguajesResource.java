@@ -6,7 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
+import autentificacion.ComprobadorAutenticidad;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -66,8 +66,8 @@ public class LenguajesResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYNombreConfirmacion newLenguaje(Lenguaje lenguaje, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ){
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorYNombreConfirmacion newLenguaje(Lenguaje lenguaje, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         int posibleError = lenguajeMapper.insert(lenguaje.getNombre());
         return new ErrorYNombreConfirmacion(posibleError, lenguaje.getNombre());
     }

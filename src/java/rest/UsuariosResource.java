@@ -6,8 +6,8 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
-import google.GoogleResponse;
+import autentificacion.ComprobadorAutenticidad;
+import autentificacion.GoogleResponse;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -74,8 +74,8 @@ public class UsuariosResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuarios getUsuario(@HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
-        Usuario usuario = ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public Usuarios getUsuario(@HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) {
+        Usuario usuario = ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         List<Usuario> usuarios = usuarioMapper.findAll();
         return new Usuarios(usuarios);
     }
@@ -114,8 +114,8 @@ public class UsuariosResource {
     @GET
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuario getUsuario(@PathParam("idUsuario") String idUsuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper);
+    public Usuario getUsuario(@PathParam("idUsuario") String idUsuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        Usuario usuario = ComprobadorAutenticidad.getUsuario(idUsuarioServicio, token, usuarioMapper, network);
 
         if(usuario!=null){//si el usuario existe nos ponemos a completarlo, si no existe devuelve null
             usuario.setHistorialEjercicios(this.envioMapper.getHistorialUsuario(usuario.getId()));
@@ -132,10 +132,10 @@ public class UsuariosResource {
     @DELETE
     @Path("{idUsuario}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteUsuario(@PathParam("idUsuario") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
+    public ErrorSimple deleteUsuario(@PathParam("idUsuario") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
         String posibleError = "si";
         
-        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper);
+        Usuario usuario = ComprobadorAutenticidad.getUsuario(idUsuarioServicio, token, usuarioMapper, network);
         if (usuario.getId() == id){
             if(this.usuarioMapper.delete(usuario))
                 posibleError = "no";

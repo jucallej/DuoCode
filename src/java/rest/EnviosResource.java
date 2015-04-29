@@ -7,7 +7,7 @@ package rest;
 
 import puntuador.*;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
+import autentificacion.ComprobadorAutenticidad;
 import java.beans.PropertyVetoException;
 import java.util.Date;
 import javax.sql.DataSource;
@@ -59,8 +59,8 @@ public class EnviosResource {
      
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Envios getEnvios(@HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public Envios getEnvios(@HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) {
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         return new Envios(this.envioMapper.findAll());
     }
     
@@ -72,8 +72,8 @@ public class EnviosResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYPuntuacion putEnvio(Envio envio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorYPuntuacion putEnvio(Envio envio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        Usuario usuario = ComprobadorAutenticidad.getUsuario(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         if (usuario.getId() != envio.getIdUsuario()) throw new WebApplicationException(401);
         envio.setId(0);
         envio.setFecha(new Date());

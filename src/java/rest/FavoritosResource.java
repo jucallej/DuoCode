@@ -6,7 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
+import autentificacion.ComprobadorAutenticidad;
 import java.beans.PropertyVetoException;
 import javax.sql.DataSource;
 import javax.ws.rs.Consumes;
@@ -57,16 +57,16 @@ public class FavoritosResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Favoritos getFavoritos(@HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public Favoritos getFavoritos(@HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) {
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         return new Favoritos(this.favoritoMapper.findAll());
     }
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple newFavorito(Favorito favorito, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple newFavorito(Favorito favorito, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        Usuario usuario = ComprobadorAutenticidad.getUsuario(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         if (usuario.getId() != favorito.getIdUsuario()) throw new WebApplicationException(401);
         int posibleError = favoritoMapper.insert(favorito);
         String error = (posibleError<0)? "si":"no";
@@ -78,8 +78,8 @@ public class FavoritosResource {
     @Consumes(MediaType.APPLICATION_JSON)
     //En Header Form = "userID", "1"
     //En Payload(RAW) {"favoritos":[{"idUsuario":1,"idEjercicio":4,"lenguajeOrigen":"C++","lenguajeDestino":"C++"},{"idUsuario":1,"idEjercicio":4,"lenguajeOrigen":"Java","lenguajeDestino":"C++"}]} 
-    public ErrorSimple deleteFavorito(Favoritos favorito, @HeaderParam("userID") int usuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        Usuario usuarioAut = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple deleteFavorito(Favoritos favorito, @HeaderParam("userID") int usuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        Usuario usuarioAut = ComprobadorAutenticidad.getUsuario(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         for(Favorito fav: favorito.getFavoritos()){
             if (usuarioAut.getId() != fav.getIdUsuario()) throw new WebApplicationException(401);
         }
@@ -92,8 +92,8 @@ public class FavoritosResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)    
-     public ErrorSimple deleteFavorito(Favorito fav, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+     public ErrorSimple deleteFavorito(Favorito fav, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        Usuario usuario = ComprobadorAutenticidad.getUsuario(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         if (usuario.getId() != fav.getIdUsuario()) throw new WebApplicationException(401);
         String posibleError = "si";
         Favorito aBorrar = favoritoMapper.findById(fav);

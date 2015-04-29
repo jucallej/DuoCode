@@ -32,4 +32,5 @@ public final class DatosFijos {
     public static final boolean BreakAfterAcquireFailure = false;
     
     public static final String URL_COMPROBADOR_GOOGLE = "https://www.googleapis.com/userinfo/v2/me";
+    public static String URL_COMPROBADOR_FACEBOOK = "https://graph.facebook.com/v2.3/me/?fields=id,name,picture";
 }

@@ -6,7 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
+import autentificacion.ComprobadorAutenticidad;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -109,8 +109,8 @@ public class LeccionesResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newLeccion(Leccion leccion, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ) {
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorYID newLeccion(Leccion leccion, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) {
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         leccion.setId(0);
         int nuevoId = this.leccioneMapper.insert(leccion);
         leccion.setId(nuevoId);
@@ -169,11 +169,11 @@ public class LeccionesResource {
     @Path("{idLeccion}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID putLeccion(@PathParam("idLeccion") int id, LeccionYIDUsuario leccionYIDUsuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ) { //Un poco más limpio
+    public ErrorYID putLeccion(@PathParam("idLeccion") int id, LeccionYIDUsuario leccionYIDUsuario, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) { //Un poco más limpio
         Leccion leccion = leccionYIDUsuario.getLeccion();
         
         if (leccion != null){
-            ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+            ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
             leccion.setId(id);
 
             Leccion leccionExistente = this.leccioneMapper.findById(id);
@@ -221,7 +221,7 @@ public class LeccionesResource {
         
         //Marcar leccion como completada
         if (leccionYIDUsuario.getIdUsuario() != 0 && leccionYIDUsuario.getLenguajeCompletado() != null){//0 es el valor si no pones nada
-            Usuario usuario = ComprobadorGoogle.getUsuario(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+            Usuario usuario = ComprobadorAutenticidad.getUsuario(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
             if (usuario.getId() != leccionYIDUsuario.getIdUsuario()) throw new WebApplicationException(401);
             List<UsuarioCompletaLeccion> usuarioCompletaLeccion = this.usuarioCompletaLeccionMapper.getUsuarioCompletaLeccionDeUnUsuario(leccionYIDUsuario.getIdUsuario());
             boolean yaHaCompletadoLaLeccion = false;
@@ -280,8 +280,8 @@ public class LeccionesResource {
     @Path("{idLeccion}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteTema(@PathParam("idLeccion") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle ){ //Habría que comprobar la identidad de alguna manera, al igual que en los post y put
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple deleteTema(@PathParam("idLeccion") int id, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){ //Habría que comprobar la identidad de alguna manera, al igual que en los post y put
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Leccion aBorrar = leccioneMapper.findById(id);
             if(this.leccioneMapper.delete(aBorrar))

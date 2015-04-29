@@ -6,7 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
+import autentificacion.ComprobadorAutenticidad;
 import java.beans.PropertyVetoException;
 import java.util.Date;
 import javax.sql.DataSource;
@@ -68,8 +68,8 @@ public class EnunciadosResource {
     @Produces(MediaType.APPLICATION_JSON)
     // {"nombreLenguaje": "Java", "codigo": "codigo del enunciado", "idUsuario": "1", "idDelEjercicioQueResuelve": "3"}
     // hay que tener en la bd al usuario y ej creados
-    public ErrorYID newEnunciado(Enunciado enunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorYID newEnunciado(Enunciado enunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         enunciado.setEnunciado(0);
         enunciado.setFechaCreacion(new Date());
         int nuevoID = enunciadoMapper.insert(enunciado);
@@ -96,8 +96,8 @@ public class EnunciadosResource {
     @Path("{idEnunciado}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ErrorSimple putEnunciado(@PathParam("idEnunciado") int idEnunciado, Enunciado enunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle) {
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple putEnunciado(@PathParam("idEnunciado") int idEnunciado, Enunciado enunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network) {
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         Enunciado aModificar = enunciadoMapper.findById(idEnunciado);
         String error = "si";
         if (aModificar != null){
@@ -114,8 +114,8 @@ public class EnunciadosResource {
     @Path("{idEnunciado}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteEnunciado(@PathParam("idEnunciado") int idEnunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple deleteEnunciado(@PathParam("idEnunciado") int idEnunciado, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Enunciado aBorrar = enunciadoMapper.findById(idEnunciado);
         if(this.enunciadoMapper.delete(aBorrar))

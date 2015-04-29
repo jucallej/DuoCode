@@ -25,6 +25,9 @@ public class Usuario {
     @XmlElement(name="IDGoogle")
     private String idGoogle;
     
+    @XmlElement(name="IDFacebook")
+    private String idFacebook;
+    
     @XmlElement(name="rol")
     private short rol;
     
@@ -52,9 +55,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int id, String idGoogle, short rol) {
+    public Usuario(int id, String idGoogle, String idFacebook, short rol) {
         this.id = id;
         this.idGoogle = idGoogle;
+        this.idFacebook = idFacebook;
         this.rol = rol;
     }
 
@@ -76,6 +80,14 @@ public class Usuario {
 
     public void setRol(short rol) {
         this.rol = rol;
+    }
+
+    public String getIdFacebook() {
+        return idFacebook;
+    }
+
+    public void setIdFacebook(String idFacebook) {
+        this.idFacebook = idFacebook;
     }
 
     public List<Envio> getHistorialEjercicios() {

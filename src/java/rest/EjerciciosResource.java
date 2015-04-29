@@ -6,7 +6,7 @@
 package rest;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import google.ComprobadorGoogle;
+import autentificacion.ComprobadorAutenticidad;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import javax.sql.DataSource;
@@ -76,8 +76,8 @@ public class EjerciciosResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorYID newEjercicio(Ejercicio ejercicio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){//IDUsuario nombre){
-      ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorYID newEjercicio(Ejercicio ejercicio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){//IDUsuario nombre){
+      ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         int posibleError = -1;
         //if (Comprobadores.UsuarioEsAdmin(nombre.getIdUsuario()))
             posibleError = ejercicioMapper.insert(ejercicio);
@@ -118,8 +118,8 @@ public class EjerciciosResource {
     @Path("{idEjercicio}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public ErrorSimple deleteEjercicio(@PathParam("idEjercicio") int idEjercicio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioGoogle){//, IDUsuario nombre){
-        ComprobadorGoogle.getUsuarioAdmin(idUsuarioGoogle, token, usuarioMapper); //Si no es admin ya lanza una expcepcion
+    public ErrorSimple deleteEjercicio(@PathParam("idEjercicio") int idEjercicio, @HeaderParam("token") String token, @HeaderParam("idUsuario") String idUsuarioServicio, @HeaderParam("network") String network){//, IDUsuario nombre){
+        ComprobadorAutenticidad.getUsuarioAdmin(idUsuarioServicio, token, usuarioMapper, network); //Si no es admin ya lanza una expcepcion
         String posibleError = "si";
         Ejercicio aBorrar = ejercicioMapper.findById(idEjercicio);       
         if(this.ejercicioMapper.delete(aBorrar))

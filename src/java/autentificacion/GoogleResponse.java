@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package google;
+package autentificacion;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class GoogleResponse {
+public class GoogleResponse implements RespuestaServiciosLogin{
     @XmlElement(name="id")
     private String id;
     @XmlElement(name="name")
@@ -111,6 +111,11 @@ public class GoogleResponse {
 
     public void setLocale(String locale) {
         this.locale = locale;
+    }
+
+    @Override
+    public String getPictureURL() {
+        return this.picture;
     }
     
 }
