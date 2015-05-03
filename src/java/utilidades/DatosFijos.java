@@ -18,7 +18,7 @@ public final class DatosFijos {
     public static final int UMBRAL_VALIDO_EJ = 7;
     public static final int VIDAS = 3;
     
-    private static final String RUTA_ROOT = "http://localhost:8080/DuoCode/rest/";
+    private static final String RUTA_ROOT = "https://localhost:8443/DuoCode/rest/";
     public static final String RUTA_EJERCICIOS = RUTA_ROOT+"ejercicios/";
     public static final String RUTA_TEMAS = RUTA_ROOT+"temas/";
     public static final String RUTA_ENUNCIADOS = RUTA_ROOT+"enunciados/";

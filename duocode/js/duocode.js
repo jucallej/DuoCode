@@ -1,4 +1,4 @@
-var rutaApp = 'http://localhost:8080/DuoCode/rest/';
+var rutaApp = 'https://localhost:8443/DuoCode/rest/';
 var umbralValido = 7; //sobre 10
 var numeroMaximoEJ = 10;
 
