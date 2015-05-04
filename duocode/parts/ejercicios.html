@@ -158,8 +158,11 @@
 
                                     <div ng-show="terminadoAcertando">
                                     	<div class="text-center terminarLeccion">
-                                            <h3><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Has terminado esta lección</h3>
+                                    	<meta property="og:title" content="Your title here" />
+<meta property="og:description" content="your description here" />
+                                            <h3><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Has terminado esta lección <button class="btn btn-lg btn-info" ng-click="compartir(leccion.titulo, leccion.descripcion)">Compartir</button></h3>
                                         </div>
+
 
                                         <a class="btn btn-lg btn-success btn-block" href="#/temas/{{idTema}}"><span class="glyphicon glyphicon-road" aria-hidden="true"> Ver lecciones</span></a>
                                     </div>
@@ -188,3 +191,21 @@
 	});
 
 </script>
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1428669747439400',
+          xfbml      : true,
+          version    : 'v2.3'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>

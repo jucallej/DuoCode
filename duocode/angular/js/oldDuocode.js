@@ -1,13 +1,8 @@
-var rutaApp = 'https://localhost:8443/DuoCode/rest/';
+var rutaApp = 'http://localhost:8080/DuoCode/rest/';
 var umbralValido = 7; //sobre 10
 var numeroMaximoEJ = 10;
 
 var duocodeApp = angular.module('duocodeApp', ['duocodeProviders', 'ngRoute', 'hljs']);
-
-hello.init({ 
-    google   : '824624758061-2bbju89hsnn7hibdf1oku2jdvqnrfrq4.apps.googleusercontent.com',
-    facebook: '1428669747439400'
-});
 
 //Creamos el menú de usuarios reusable (como tag): <info-usuario></info-usuario>
 duocodeApp.directive('infoUsuario', function() {
@@ -22,10 +17,7 @@ duocodeApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/', {
-        templateUrl: 'parts/lenguajes.html',
-      }).
-      when('/lenguajes', {
-        templateUrl: 'parts/lenguajes.html',
+        templateUrl: 'parts/index.html',
       }).
       when('/candidatos', {
         templateUrl: 'parts/candidatos.html',
@@ -50,8 +42,7 @@ duocodeApp.config(['$routeProvider',
       });
 }]);
 
-duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio', 'idiomasSeleccionadosServicio', '$window', 
-    function ($scope, $http, usuarioServicio, idiomasSeleccionadosServicio, $window) {
+duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio', 'idiomasSeleccionadosServicio', function ($scope, $http, usuarioServicio, idiomasSeleccionadosServicio) {
 	$scope.usuario = {};
     $scope.lenguajes = [];
     $scope.lenguajeQueSe = idiomasSeleccionadosServicio.idiomaQueSe;
@@ -59,37 +50,7 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
 
     //Si no se ponen sale una opcion en blanco en el select
     $scope.selectedItem = idiomasSeleccionadosServicio.idiomaQueSe;
-    $scope.selectedItemNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;  
-
-    $scope.logIn = function(servicio) {
-        hello( servicio ).login({scope: 'publish'}).then( function(json){
-            hello( servicio ).api("me").then(function(json){
-                localStorage.setItem("idUser", json.id);
-                $window.location.reload();
-            }, function(e){
-                console.log("Whoops! " + e.error.message );
-            });
-
-        }, function( e ){
-            console.log("Signout error: " + e.error.message );
-        });
-    }; 
-
-    $scope.logOut = function() {
-        hello( "google" ).logout().then( function(){
-            localStorage.removeItem("idUser");
-            $window.location.reload();
-        }, function( e ){
-            console.log("Signout error: " + e.error.message );
-        });
-
-        hello( "facebook" ).logout().then( function(){
-            localStorage.removeItem("idUser");
-            $window.location.reload();
-        }, function( e ){
-            console.log("Signout error: " + e.error.message );
-        });
-    }; 
+    $scope.selectedItemNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;    
 
 	$scope.puntuacion = function() {
 	 if ($scope.usuario.historialEjercicios === undefined) return 'cargando';
@@ -114,44 +75,20 @@ duocodeApp.controller('UsuarioController', ['$scope', '$http', 'usuarioServicio'
 
     //lo guarda en localstorage para el futuro
     $scope.cambiarLenguajeSe = function() {
-       var lenguajeTemp = $scope.lenguajeQueSe;
        $scope.lenguajeQueSe = $scope.selectedItem;
        localStorage.setItem(idiomasSeleccionadosServicio.STR_LOCALSTORAGE_IDIOMASE, $scope.selectedItem);
 
        //Haciendo esto, las siguientes veces que se use idiomasSeleccionadosServicio, tendrá los datos actualizados
        idiomasSeleccionadosServicio.idiomaQueSe = $scope.selectedItem;
-
-       if ($scope.idiomaQueNOSe === $scope.lenguajeQueSe){
-            $scope.selectedItemNoSe = lenguajeTemp;
-            $scope.cambiarLenguajeNOSe ();
-       }
     };
-
-    $scope.select1 = function(lenguaje) {
-      $scope.selected1 = lenguaje;
-      $scope.selectedItem = lenguaje;
-    };
-
-    $scope.select2 = function(lenguaje) {
-      $scope.selected2 = lenguaje;
-      $scope.selectedItemNoSe = lenguaje;
-    };
-
-
 
     //lo guarda en localstorage para el futuro
     $scope.cambiarLenguajeNOSe = function() {
-       var lenguajeTemp = $scope.idiomaQueNOSe;
        $scope.idiomaQueNOSe = $scope.selectedItemNoSe;
        localStorage.setItem(idiomasSeleccionadosServicio.STR_LOCALSTORAGE_IDIOMANOSE, $scope.selectedItemNoSe);
 
        //Haciendo esto, las siguientes veces que se use idiomasSeleccionadosServicio, tendrá los datos actualizados
        idiomasSeleccionadosServicio.idiomaQueNOSe = $scope.selectedItemNoSe;
-
-       if ($scope.idiomaQueNOSe === $scope.lenguajeQueSe){
-            $scope.selectedItem = lenguajeTemp;
-            $scope.cambiarLenguajeSe ();
-       }
     };
 
     //Ejecuta esto cuando se termina de cargar el get usuarioServicio
@@ -185,7 +122,7 @@ duocodeApp.controller('LeccionesController', ['$scope', '$http', 'usuarioServici
     $scope.predicate = '+orden'; // para ordenar los temas por el campo orden
     $scope.idTema = $routeParams.temaID;
 
-    var usuario = null;
+    var usuario;
 
     $http.get(rutaApp+'temas/'+$scope.idTema).success(function(data) {
         var lecciones = data.lecciones;
@@ -358,12 +295,10 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     $scope.idiomaQueNoSe = idiomasSeleccionadosServicio.idiomaQueNOSe;
 
     var usuario;
-    $scope.usuario = usuario;
 
     //Ejecuta esto cuando se termina de cargar el get de usuarioServicio, necesario para saber que lecciones ha hecho
     usuarioServicio.then(function(dataCuandoLaFuncionSeEjecute) {
         usuario = dataCuandoLaFuncionSeEjecute.data;
-        $scope.usuario = usuario;
     });
 
     var init = function(){
@@ -377,7 +312,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
 
         $http.get(rutaApp+'lecciones/'+$scope.idLeccion).success(function(leccion) {
             $scope.leccion = leccion;
-            $scope.ejerciciosTotales = $scope.leccion.ejercicios.length - $scope.vidas + 1; //Porque siempre te tienes que quedar con una vida
+            $scope.ejerciciosTotales = $scope.leccion.ejercicios.length;
 
             if ($scope.ejerciciosTotales > numeroMaximoEJ) $scope.ejerciciosTotales = numeroMaximoEJ;
 
@@ -474,12 +409,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 //console.log(usuario);
             }
 
-            
-            if (umbralValido > ejercicioCorregido.puntuacion){
-                $scope.correcto = false;
-                ejFallado(false);
-            }
-            else{
+            if (umbralValido <= ejercicioCorregido.puntuacion){
                 $scope.ejerciciosRestantes -= 1;
                 $scope.correcto = true;
 
@@ -488,31 +418,34 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
 
                     var i = 0;
                     while(i < usuario.leccionesCompletadas.length && necesarioMarcarCompletada){
-                        if (usuario.leccionesCompletadas[i].idLeccion === $scope.idLeccion && usuario.leccionesCompletadas[i].lenguaje == $scope.idiomaQueNoSe)
-                            necesarioMarcarCompletada = false;
-                        else i++;
+                    	if (usuario.leccionesCompletadas[i].idLeccion === $scope.idLeccion && usuario.leccionesCompletadas[i].lenguaje == $scope.idiomaQueNoSe)
+                    		necesarioMarcarCompletada = false;
+                    	else i++;
                     }
 
                     if (necesarioMarcarCompletada){
-                        var req = {
-                            method: 'PUT',
-                            url: rutaApp + 'lecciones/' + $scope.idLeccion,
-                            data: {
-                                'idUsuarioCompletaLeccion': usuario.ID,
-                                'lenguajeCompletadoLeccion': $scope.idiomaQueNoSe
-                            }
-                        }
+			            var req = {
+			                method: 'PUT',
+			                url: rutaApp + 'lecciones/' + $scope.idLeccion,
+			                data: {
+			                    'idUsuarioCompletaLeccion': usuario.ID,
+			                    'lenguajeCompletadoLeccion': $scope.idiomaQueNoSe
+			                }
+			            }
 
-                        $http(req).success(function(posibleError) {
-                            usuario.leccionesCompletadas.push({
-                                'idLeccion': parseInt($scope.idLeccion),
-                                'idUsuario': usuario.ID,
-                                'lenguaje':$scope.idiomaQueNoSe
-                            });
+			            $http(req).success(function(posibleError) {
+			            	usuario.leccionesCompletadas.push({
+			            		'idLeccion': $scope.idLeccion,
+			            		'idUsuario': usuario.ID,
+			            		'lenguaje':$scope.idiomaQueNoSe
+			            	});
 
-                        });
+			            });
                     }
+                }
             }
+            else{
+                ejFallado(false);
             }
         });
     };
@@ -633,17 +566,6 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
         init();
     };
 
-    $scope.compartir = function(leccion, descripcion){
-        FB.ui({
-          method: 'feed',
-          link: 'https://developers.facebook.com/docs/',
-          caption: 'By DuoCode',
-          description: descripcion,
-          name: 'Leccion ' + leccion + ' completada',
-          picture: 'https://raw.githubusercontent.com/jucallej/DuoCode/master/duocode/img/icono3j.jpg'
-        }, function(response){});
-    };
-
     $scope.anhadirCandidato = function(){
         console.log("sin hacer: añadir candidato   " + $scope.textoEscrito);
         console.log($scope.ultimoEj);
@@ -658,8 +580,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
                 idUsuario: usuario.ID,
                 idEjercicio: $scope.ultimoEj.id,
                 lenguajeOrigen: idiomasSeleccionadosServicio.idiomaQueSe,
-        		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe,
-                estado: 0
+        		lenguajeDestino: idiomasSeleccionadosServicio.idiomaQueNOSe
         		
         };
         usuario.candidatosPropuestos.push(candidatoAProponer);
@@ -791,27 +712,15 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
                 var i = 0;
 		    	while (votoCambiado === false && i < $scope.usuario.votosDeUnUsuario.length){
 		    		if($scope.usuario.votosDeUnUsuario[i].idCandidato == id){
-		    			if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 1){
+		    			if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 1)
 		    				$scope.usuario.votosDeUnUsuario.splice(i, 1);
-		    				$scope.candidatoActual().votosPos.splice(0, 1);
-		    			}
-		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 0){
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 1 && voto == 0)
 		    				$scope.usuario.votosDeUnUsuario[i].voto = 0;
-		    				$scope.candidatoActual().votosNeg.push(1);
-		    				$scope.candidatoActual().votosPos.splice(0, 1);
 
-
-		    			}
-
-		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 0){
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 0)
 		    				$scope.usuario.votosDeUnUsuario.splice(i, 1);
-		    				$scope.candidatoActual().votosNeg.splice(0, 1);
-		    			}
-		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 1){
+		    			else if ($scope.usuario.votosDeUnUsuario[i].voto == 0 && voto == 1)
 		    				$scope.usuario.votosDeUnUsuario[i].voto = 1;
-		    				$scope.candidatoActual().votosPos.push(1);
-		    				$scope.candidatoActual().votosNeg.splice(0, 1);
-		    			}
 
 		    			console.log($scope.usuario);
 		    			votoCambiado = true;
@@ -826,11 +735,6 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
 		    			'usuario': $scope.usuario.ID,
 		    			'voto': voto
 		    		});
-		    	
-		    	if(voto===1)
-		   			$scope.candidatoActual().votosPos.push(1);
-	 			else
-    				$scope.candidatoActual().votosNeg.push(1);
 		    	};
 
             });
@@ -989,23 +893,4 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
         });
     });
     
-}]);
-
-duocodeApp.controller('menuSuperior', ['$scope', '$route', function ($scope, $route) {
-    $scope.aprenderURL = function(){
-        if ($route.current !== undefined && ($route.current.templateUrl === 'parts/temas.html' ||
-            $route.current.templateUrl === 'parts/misfavoritos.html'||
-            $route.current.templateUrl === 'parts/miscandidatos.html'||
-            $route.current.templateUrl === 'parts/lecciones.html'||
-            $route.current.templateUrl === 'parts/ejercicios.html')) return true;
-        return false;
-    };
-    $scope.candidatosURL = function(){
-        if ($route.current !== undefined && ($route.current.templateUrl === 'parts/candidatos.html')) return true;
-        return false;
-    };
-    $scope.lenguajeURL = function(){
-        if ($route.current !== undefined && ($route.current.templateUrl === 'parts/lenguajes.html')) return true;
-        return false;
-    };
 }]);
