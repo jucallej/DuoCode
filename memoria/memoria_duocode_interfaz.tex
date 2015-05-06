@@ -1,0 +1,191 @@
+\documentclass[11pt,a4paper]{article}
+%\documentclass[a4paper]{book}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage[leqno]{amsmath}
+\usepackage{url}
+\usepackage{alltt}
+\usepackage{hyperref}
+\usepackage{verbatim}
+\usepackage{listings}
+
+% Para rotar
+\usepackage{rotating}
+
+\lstset{
+  literate={ñ}{{\~n}}1
+           {á}{{\'a}}1
+           {é}{{\'e}}1
+           {í}{{\'i}}1
+           {ó}{{\'o}}1
+           {ú}{{\'u}}1
+}
+
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+%\usepackage[usenames]{color}
+%\usepackage{xypic}
+%\usepackage{pst-all}
+\usepackage{indentfirst}
+\usepackage[verbose]{geometry}
+\geometry{a4paper}
+%\geometry{twosideshift=0pt}
+\geometry{top=3cm,bottom=3cm,left=3cm,right=3cm,headsep=1cm}
+
+% Punto decimal spanish
+\makeatletter
+\def\es@decimal{{.}}
+\makeatother
+
+\newtheorem{definicion}{Definición}
+
+\newcommand{\codesize}{\small}
+
+%todo
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+
+\newtheorem{example}{Ejemplo}
+
+\graphicspath{{images/}}
+\begin{document}
+
+\newcommand\frontmatter{%
+    \cleardoublepage
+  %\@mainmatterfalse
+  \pagenumbering{roman}}
+
+\begin{frontmatter}
+\thispagestyle{empty}
+
+\begin{huge}
+\mbox{ }
+\vfill
+\newlength{\longTitulo}
+\settowidth{\longTitulo}{%
+Desarrollo de un front-end para DuoCode}
+\begin{center}
+%\rule{\longTitulo}{.5mm}\\
+\vskip 1cm
+\textbf{Desarrollo de un front-end para DuoCode}
+\vskip 0.7cm
+\scalebox{.6}{
+\textbf{Julián F. Calleja da Silva}
+}\\
+\scalebox{.6}{
+\textbf{Johana Gabriela Ferreira Yagua}
+}\\
+\scalebox{.6}{
+\textbf{ José Carlos Valera Villalba}
+}
+\vskip 0.2cm
+\scalebox{.7}{
+\textbf{Grado en Ingeniería Informática}
+}\\
+\scalebox{.7}{
+\textbf{Facultad de Informática}
+}\\
+\scalebox{.7}{
+\textbf{Departamento de Sistemas Informáticos y Computación}
+}
+%\rule{\longTitulo}{.5mm}\\
+\end{center}
+\end{huge}
+
+\vfill
+
+
+  \begin{center}
+%       {\scalebox{.3}{\includegraphics{complutense3}}}
+%       {\scalebox{.9}{\includegraphics{complutense2}}}
+       {\scalebox{.3}{\includegraphics{images/complutense}}}
+%      {\scalebox{.2}{\escudo}}
+  \end{center}
+
+\vfill
+
+\begin{center}
+  {\Large \textbf{Trabajo fin de grado}}
+\end{center}
+
+\vfill
+
+\begin{large}
+\begin{center}
+{Dirigida por}  \\ [0.3em]
+\textbf{Enrique Martín}\\[0.3em]
+\textbf{Adrián Riesco}
+\begin{large}
+\begin{center}
+\vspace{3ex}
+%\text{Departamento de Sistemas
+%               Informáticos y Computación}\\[0.2em]
+%\text{Facultad de Informática}\\[0.2em]
+%\text{Universidad Complutense de Madrid}\\[1em]
+\text{Madrid, 2015}
+\end{center}
+\end{large}
+\end{center}
+
+\vfill
+
+\end{large}
+
+\newpage
+
+\thispagestyle{empty}
+\mbox{ }
+
+\clearpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+%\newpage
+%\mbox{}\vfill
+
+\end{frontmatter}
+
+%\chapter*{Acknowledgments}
+%\input{ack}
+%\newpage
+
+%\section*{Abstract}
+%\input{abs}
+
+%\newpage
+
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\clearpage
+\thispagestyle{empty}
+\tableofcontents
+
+%\listoffigures
+
+\newpage
+
+% New pagestyle
+%\pagestyle{fancy}
+% New numbering
+\pagenumbering{arabic}
+
+\section{Introducci\'on}
+\input{intro}
+
+{\small
+\bibliographystyle{abbrv}
+\bibliography{tfg_bib}
+}
+
+
+\newpage
+\appendix
+
+\section{Primera sección del apéndice}
+
+%\input{divide_y_venceras}
+
+\end{document}
