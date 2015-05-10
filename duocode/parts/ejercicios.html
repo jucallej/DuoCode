@@ -6,9 +6,9 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-10 col-xs-10">
-                                	<div class="padding" ng-show="usuario.rol === -1">
-                                		<h2>Has de loguearte.</h2>
-                                		<a class="btn btn-info btn-block btnLinks" ng-click="logIn()">Log in</a>
+                                	<div align=center class="padding" ng-show="usuario.rol === -1">
+                                		<h2>Es necesario iniciar sesión para empezar con las lecciones.</h2>
+                                		<a href="#/temas"class="btn btn-info btn-block btnLinks" ng-click="logIn()">Atrás</a>
                                 	</div>
                                     <div class="padding" ng-hide="usuario.rol === -1">
 
@@ -160,7 +160,7 @@
                                     	<div class="text-center terminarLeccion">
                                     	<meta property="og:title" content="Your title here" />
 <meta property="og:description" content="your description here" />
-                                            <h3><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Has terminado esta lección <button class="btn btn-lg btn-info" ng-click="compartir(leccion.titulo, leccion.descripcion)">Compartir</button></h3>
+                                            <h3><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Has terminado esta lección <button class="btn btn-lg btn-info" ng-click="compartir(leccion.titulo, leccion.descripcion)" ng-hide="usuario.IDFacebook===NULL">Compartir en FB</button></h3>
                                         </div>
 
 

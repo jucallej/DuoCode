@@ -530,7 +530,7 @@ duocodeApp.controller('EjerciciosController', ['$scope', '$http', 'usuarioServic
     };
 
      $scope.porcentajeCompletado = function() {
-     	return 100 - (($scope.ejerciciosRestantes / $scope.ejerciciosTotales) * 100);
+        return 100 - parseFloat(Math.round((($scope.ejerciciosRestantes / $scope.ejerciciosTotales) * 100) * 100) / 100).toFixed(0);
     };
 
     $scope.saltar = function() {
@@ -951,7 +951,7 @@ duocodeApp.controller('VotarCandidatosController', ['$scope', '$http', 'usuarioS
         else {//Para que no pueda tener más de 92% de width y menos de 8%  (en el html) y siempre se vea algos
             if (valor > 92) return 92;
             else if (valor < 8) return 8;
-            return valor;
+            return parseFloat(Math.round(valor * 100) / 100).toFixed(0);;
         }
     }
 
