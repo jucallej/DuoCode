@@ -4,61 +4,67 @@ Este proyecto empezó con el objetivo de permitir a los alumnos que lo desarroll
 
 \subsection{Investigación de campos\label{subsec:introduction}}
 
-Antes de delimitar aspectos más técnicos, debatimos sobre donde podríamos centrar nuestros esfuerzos. Nos dimos cuenta de que la educación podría se un área muy interesante. Esta es algo que siempre ha estado presente en nuestra sociedad y la actual crisis no hace sino acentuar esto. Ante la falta de empleo o la perspectiva de que esto pueda suceder, las personas naturalmente quieren mejorar sus capacidades. Y mejorar la formación propia es una de las maneras más habituales de hacerlo. Nos planteamos el hecho de que las tasas universitarias han subido y que esto puede producir que las personas busquen métodos alternativos de enseñanza más baratos, como pueden ser sistemas de aprendizaje online. Por todo ello, por ser un campo en auge y a la vez muy estable, decidimos centrarnos en el 'E-learning', o sector educativo a través de tecnologías digitales, para desarrollar nuestro proyecto.
+Antes de delimitar aspectos más técnicos, debatimos sobre dónde podríamos centrar nuestros esfuerzos. Nos dimos cuenta de que la educación podría se un área muy interesante, es algo que siempre ha estado presente en nuestra sociedad y la actual crisis no hace sino acentuar esto. Ante la falta de empleo o la perspectiva de que esto pueda suceder, las personas naturalmente quieren mejorar sus capacidades y mejorar la formación propia es una de las maneras más habituales de hacerlo. Nos planteamos el hecho de que las tasas universitarias han subido y que esto puede producir que las personas busquen métodos alternativos de enseñanza más baratos, como pueden ser sistemas de aprendizaje online. Por todo ello, por ser un campo en auge y a la vez muy estable, decidimos centrarnos en el 'E-learning', o sector educativo a través de tecnologías digitales, para desarrollar nuestro proyecto.
 
 \subsection{Revisión del estado del arte\label{subsec:introduction}}
 
-En la actualidad hay numerosas maneras de aprender online. Para empezar existen recursos típicos, donde el que quiere aprender lee y realiza poca interacción. El líder por antonomasia de esta modalidad es Wikipedia\cite{wiki} (o libros/bibliotecas de manera presencial). Ante dudas concretas hay sitios de preguntas y respuestas como el archiconocido para los programadores Stack Overflow\cite{stack}. En las universidades y otros centros educativos también se aprende y  muchas cuentan con plataformas digitales como Moodle\cite{moodle}, que se suelen usar para publicar apuntes de las diferentes asignaturas. También existen cursos online, los llamados MOOC (acrónimo en inglés de massive open online course) donde puedes aprender a distancia temas nuevos. Estos requieren muchos recursos, y que se suba mucho material (vídeos, explicaciones detalladas, etc.) y suelen estar enfocados a la obtención de algún tipo de diploma o certificación. Por tanto requieren un esfuerzo constante y duradero. 
+En la actualidad hay numerosas maneras de aprender online. Para empezar, existen recursos típicos donde el que quiere aprender lee y realiza poca interacción. El líder por antonomasia de esta modalidad es Wikipedia\cite{wiki} (o libros/bibliotecas de manera presencial). Ante dudas concretas hay sitios de preguntas y respuestas como el archiconocido para los programadores Stack Overflow\cite{stack}. En las universidades y otros centros educativos también se aprende y  muchas cuentan con plataformas digitales como Moodle\cite{moodle}, que se suelen usar para publicar apuntes de las diferentes asignaturas. También existen cursos online, los llamados MOOC (acrónimo en inglés de Massive Open Online Course) donde puedes aprender a distancia temas nuevos. Estos requieren muchos recursos, y que se suba mucho material (vídeos, explicaciones detalladas, etc.) y suelen estar enfocados a la obtención de algún tipo de diploma o certificación. Por tanto requieren un esfuerzo constante y duradero. 
+\vspace{1em}
 
-Otra manera de enfocar la enseñanza, sobre todo cuando quieres ampliar algo sobre la que ya tienes una base, es a base de ejercicios rápidos. Durante bastantes años se han usado los \emph{jueces online} o \emph{correctores automáticos}. Hay un gran análisis sobre este tema y como poder evolucionarlo en el informe titulado 'Estudio de viabilidad de un entorno de aprendizaje colaborativo de lenguajes de programación'\cite{pimcdDuoCode14}, realizado por profesores de esta misma universidad. En el se explica como normalmente este tipo de sistemas, aplicados a lenguajes de programación, se basan en la ejecución de unos casos de prueba. Esto exige que los instructores desarrollen previamente estas pruebas, tarea muchas veces poco grata. 
+Otra manera de enfocar la enseñanza, sobre todo cuando quieres ampliar algo sobre la que ya tienes una base, es a base de ejercicios rápidos. Durante bastantes años se han usado los \emph{jueces online} o \emph{correctores automáticos}. Hay un gran análisis sobre este tema y cómo poder evolucionarlo en el informe titulado 'Estudio de viabilidad de un entorno de aprendizaje colaborativo de lenguajes de programación'\cite{pimcdDuoCode14}, realizado por profesores de esta misma universidad. En él se explica cómo normalmente este tipo de sistemas, aplicados a lenguajes de programación, se basan en la ejecución de unos casos de prueba. Esto exige que los instructores desarrollen previamente estas pruebas, tarea muchas veces poco grata. 
+\vspace{1em}
 
-Saliendonos del mundo de la programación, hay otros ejemplos, como el de Duolingo\cite{duolingo} que permiten aprender un idioma a partir de otro que ya sabes previamente. Sus características son muy interesantes, y destacan:
+Saliéndonos del mundo de la programación, hay otros ejemplos, como el de Duolingo\cite{duolingo} que permiten aprender un idioma a partir de otro que ya sabes previamente. Sus características son muy interesantes, y destacan:
 
 \begin{itemize}
 \item
-Plantear el aprendizaje como un juego haciendo que el usuarios gane puntos y experiencia según va avanzando. Además incluye vidas, que hacen centrar la atención en la tarea presente, para no tener que reiniciar el nivel.
+Plantear el aprendizaje como un juego haciendo que el usuarios gane puntos y experiencia según va avanzando. Además, incluye vidas, que hacen centrar la atención en la tarea presente para no tener que reiniciar el nivel.
 
 \item
-Guarda información sobre los fallos del usuario, para intentar repetir esas preguntas y que aprenda los concepto de manera definitiva.
+Guarda información sobre los fallos del usuario para intentar repetir esas preguntas y que aprenda los concepto de manera definitiva.
 
 \item
-Incluye prácticas con tiempo, y la posibilidad de certificar el nivel del idioma mediante tests online.
+Incluye prácticas con tiempo y la posibilidad de certificar el nivel del idioma mediante tests online.
 \end{itemize}
 
 Hay otras alternativas como Bussu\cite{bussu}, donde los usuarios hacen simultáneamente de alumnos y profesores e interactúan entre ellos en una red social con el objetivo de aprender otro idioma.
 
 \subsection{Influencias tecnológicas\label{subsec:introduction}}
 
-Antes de definir como llevar a la práctica este proyecto quisimos ver desde alto nivel, que tipo de sistema queríamos desarrollar. Durante la carrera hemos aprendido entre otras cosas lenguajes de programación que nos permiten hacer software ejecutable en ordenadores de sobremesa, en asignaturas como FP\cite{FP}, o TP\cite{TP}. Aunque este podría haber sido un enfoque válido, no era el que queríamos seguir. Nos parece que podríamos hacer algo mucho más rápido de probar y usar por primera vez, sin la necesidad de instalar pesado software adicional.
+Antes de definir cómo llevar a la práctica este proyecto, quisimos ver desde alto nivel qué tipo de sistema queríamos desarrollar. Durante la carrera hemos aprendido, entre otras cosas, lenguajes de programación que nos permiten hacer software ejecutable en ordenadores de sobremesa, en asignaturas como FP\cite{FP}, o TP\cite{TP}. Aunque éste podría haber sido un enfoque válido, no era el que queríamos seguir. Nos parece que podríamos hacer algo mucho más rápido de probar y usar por primera vez, sin la necesidad de instalar pesado software adicional.
+\vspace{1em}
 
-En otras asignaturas como SC\cite{SC} aprendimos a montar y configurar un CMS (Content Management System, es decir sistemas de gestión de contenidos) y con ello montamos una Web. Esta encuadre nos gusta más, pues permite a cualquiera que tenga un navegador de Internet acceder a nuestra plataforma. Sin embargo los CMS actuales no permiten hacer cosas tan concretas y específicas como lo que queríamos hacer. Además, dejaríamos sin usar la mayoría de las características de estos, y pensamos que no usaríamos todo el potencial que ofrecen estas plataformas.
+En otras asignaturas como SC\cite{SC} aprendimos a montar y configurar un CMS (Content Management System, es decir, sistemas de gestión de contenidos) y con ello montamos una Web. Este encuadre nos gusta más, pues permite a cualquiera que tenga un navegador de Internet acceder a nuestra plataforma. Sin embargo, los CMS actuales no permiten hacer cosas tan concretas y específicas como lo que queríamos hacer. Además, dejaríamos sin usar la mayoría de las características de estos y pensamos que no usaríamos todo el potencial que ofrecen estas plataformas.
+\vspace{1em}
 
-También cursamos AW\cite{AW}, donde aprendíamos a desarrollar una Web desde el principio. Realizar un desarrollo de este tipo nos parecía sumamente interesante, pues nos permitiría un alto grado de flexibilidad con la manera en que queremos realizar el proyecto, y permitiría a los potenciales usuarios probar y usar la plataforma de manera rápida. En esta asignatura también nos apoyábamos en conocimientos adquiridos en otras como BD\cite{BD} y ABD\cite{ABD}, donde aprendimos a montar bases de datos y a consumirlas desde las aplicaciones. Con todos estos conocimientos podemos montar un sitio Web interactivo y que guarde una gran variedad de datos. 
+También cursamos AW\cite{AW}, donde aprendimos a desarrollar una Web desde el principio. Realizar un desarrollo de este tipo nos parecía sumamente interesante, pues nos permitiría un alto grado de flexibilidad con la manera en que queremos realizar el proyecto, y permitiría a los potenciales usuarios probar y usar la plataforma de manera rápida. En esta asignatura también nos apoyábamos en conocimientos adquiridos en otras como BD\cite{BD} y ABD\cite{ABD}, donde aprendimos a montar bases de datos y a consumirlas desde las aplicaciones. Con todos estos conocimientos podemos montar un sitio Web interactivo y que guarde una gran variedad de datos. 
+\vspace{1em}
 
 También sentíamos particular inclinación por hacer que el contenido estuviera disponible en dispositivos móviles, bien sea adaptando la Web o a través de una aplicación móvil. Algunos estábamos matriculados en el curso de realización de la asignatura en PAD\cite{PAD}, y vimos una oportunidad para poner de manifiesto lo que se podría aprender en esa asignatura.
 
 \subsection{Propuestas y objetivos\label{subsec:introduction}}
 
 Gracias a la investigación de todo lo expuesto anteriormente, fijamos nuestras ideas. Nos decidimos a hacer un \emph{front-end} para una herramienta que se iba a basar en el informe anteriormente citado\cite{pimcdDuoCode14}. Esto es, hacer un proyecto colaborativo para aprender lenguajes de programación, similar a Duolingo\cite{duolingo}. Como iba a estar centrado en código de programación, decidimos llamarlo DuoCode, pues aprenderás lenguajes de programación nuevos a partir de otros que ya sabes. 
+\vspace{1em}
 
-Para realizar este sistema, pensamos que sería importante separar la parte puramente Web de la que se conecta con la base de datos. De esta manera la aplicación será mucho más modular, y podría ser realizadas aplicaciones móviles que usen los mismos datos. Pensamos en realizar una Web con una interfaz limpia, y a ser posible que sea \emph{Responsive}, es decir que tenga un diseño adaptable a distintos dispositivos. Las principales características que queríamos que tuviese disponibles el usuario son:
+Para realizar este sistema, pensamos que sería importante separar la parte puramente Web de la que se conecta con la base de datos. De esta manera, la aplicación sería mucho más modular y podrían ser realizadas aplicaciones móviles que usen los mismos datos. Pensamos en realizar una Web con una interfaz limpia y, a ser posible, que sea \emph{Responsive}, es decir que tenga un diseño adaptable a distintos dispositivos. Las principales características que queríamos que tuviese disponibles el usuario son:
 
 \begin{itemize}
 \item
 Poder seleccionar el idioma de programación que sabes y el que quieres aprender. El sistema te mostrará código en el lenguaje que dominas y te pedirá rellenarlo en el que no.
 
 \item
-Habrá una clara organización, con código agrupado por temas.
+Habrá una clara organización con código agrupado por temas.
 
 \item
-El usuario tendrá una puntuación que irá aumentando según avance. Además los ejercicios estarán agrupados, y tendrá una serie de vidas para completarlos. Esto favorecerá  que el usuario se fidelice con la aplicación.
+El usuario tendrá una puntuación que irá aumentando según avance. Además, los ejercicios estarán agrupados y tendrá una serie de vidas para completarlos. Esto favorecerá  que el usuario se fidelice con la aplicación.
 
 \item
-Cuando el usuario falle un ejercicio pero no esté de acuerdo, podrá proponerlo como candidato a valido. Con la ayuda de la comunidad y de moderadores, estos se podrán incorporar como soluciones en un lenguaje de programación determinado.
+Cuando el usuario falle un ejercicio pero no esté de acuerdo, podrá proponerlo como candidato a válido. Con la ayuda de la comunidad y de moderadores, estos se podrán incorporar como soluciones en un lenguaje de programación determinado.
 
 \item
 Se podrá guardar ejercicios favoritos para poder consultarlos de nuevo.
 
 \item
-Habrá una interacción con las redes sociales. Se podrá hacer login con alguna de ellas, y compartir tus hazañas en esta.
+Habrá una interacción con las redes sociales. Se podrá hacer login con alguna de ellas y compartir tus hazañas en esta.
 \end{itemize}
