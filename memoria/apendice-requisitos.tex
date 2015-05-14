@@ -1,0 +1,467 @@
+%!TEX root = memoria_duocode_interfaz.tex
+
+\subsection{localhost/duocode/rest/temas}
+\textbf{REQ01 - GET:} No hace falta enviarle ninguna información. Devuelve la lista de todos los temas existentes en modo URL.
+
+\begin{itemize}
+\item[•] Response:
+\{'temas": ['localhost/duocode/rest/temas/1 ', 'localhost/duocode/rest/temas/2 ']\}
+\end{itemize}
+
+\textbf{REQ02 – POST:} Con el post creamos un tema nuevo. Por una parte le pasamos por Payload la información del tema que queremos crear (título, descripción y orden en el que queremos que se muestre): 
+\begin{itemize}
+\item[•]Payload: 
+\{'titulo': 'Bucles', 'descripcion': 'En este tema veremos bucles while y for…', 'orden': '2'\} \vspace{1em}
+
+Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+\item[•]Header:
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error” e “id”, si la respuesta en el campo “error” es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente, en este caso el id será “-1” ya que no ha sido asignado ninguno; si es negativa todo ha ido correctamente y el id será el asignado a este nuevo recurso. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]Response:
+\{'error': 'no', 'id': '4'\}
+\{'error': 'si', 'id': '-1'\}
+
+\end{itemize}
+
+\subsection{localhost/duocode/rest/temas/idTema}
+
+En estos requisitos obtenemos el ID del tema mediante la URL.
+\vspace{1em}
+
+\textbf{REQ03 – POST:} Nos devuelve los datos y las lecciones que tiene el tema.
+
+\begin{itemize}
+\item[•]Response:
+\{'titulo': 'Bucles', 'descripcion': 'En este tema veremos bucles while y for…', 'fechaCreacion': '17/11/2014', 'lecciones': ['localhost/duocode/rest/lecciones/1', 'localhost/duocode/rest/lecciones/2'], 'orden': '2'\}
+\end{itemize}
+
+\textbf{REQ04 – PUT:} Modificamos el tema en su totalidad.
+\begin{itemize}
+\item[•]Payload:
+\{'titulo': 'tituloTema', 'descripcion': 'descripcionTema', 'orden': 'int con el orden en el que lo quieres mostrar'\}
+\vspace{1em}
+
+Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+
+\item[•]Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\textbf{REQ05 – DELETE:} Borramos el tema completamente. Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+\begin{itemize}
+\item[•]Header:
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/lecciones/}
+\textbf{REQ06 – GET:} No hace falta enviarle ninguna información. Devuelve la lista de todas las lecciones existentes en modo URL. 
+\begin{itemize}
+\item[•]Response:
+\{'lecciones': ['localhost/duocode/rest/lecciones/1', 'localhost/duocode/rest/lecciones/2']\}
+\end{itemize}
+
+\textbf{REQ07 – POST:} Con el post creamos una nueva lección. Por una parte le pasamos por Payload la información de la lección que queremos crear (título, descripción, explicación que aparecerá al inicio de ésta, orden en el que queremos que se muestre, ID del tema al que pertenecerá, un array de ejercicios que compondrán la lección y otro array de lecciones de las que depende para ser desbloqueada):
+
+\begin{itemize}
+\item[•]Payload: 
+\{'titulo': 'tituloLeccion', 'descripcion': 'descripcionLeccion', 'explicacion': 'explicacion detallada', 'orden': '4', 'idTema': '1', 'idEjercicios': ['8', '14'], 'leccionesDesbloqueadoras': ['1', '2']\}
+\vspace{1em}
+
+Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+\item[•]Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error” e “id”, si la respuesta en el campo “error” es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente, en este caso el id será “-1” ya que no ha sido asignado ninguno; si es negativa todo ha ido correctamente y el id será el asignado a esta nueva lección. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]Response: 
+\{'error': 'no', 'id': '3'\}
+\{'error': 'si', 'id': '-1'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/lecciones/idLeccion}
+En estos requisitos obtenemos el ID del candidato mediante la URL.
+\vspace{1em}
+
+
+\textbf{REQ08 – GET:} Nos devuelve los datos de la lección, y los ejercicios que tiene la lección.
+\begin{itemize}
+
+\item[•]Response:
+\{ 'titulo': 'título de la lección (ej. Bucles fácil)', 'descripcion': 'descripción de la lección (ej. primeros bucles para practicar)', 'explicacion': 'explicación detallada', 'fechaCreacion': '17/11/2014', 'ejercicios': ['localhost/duocode/rest/ejercicios/2', 'localhost/duocode/ejercicios/3'], 'leccionesDesbloqueadoras': ['1', '2'], 'orden': '3'\}
+\end{itemize}
+
+\textbf{REQ09 – PUT:} Modificamos una lección. Aparte de cambiar los datos de una lección, en este método también podremos marcar como completada la lección para un usuario en un determinado lenguaje por lo que tenemos dos posibles Payloads:
+
+\begin{itemize}
+\item[•]Payload para modificar lección:
+\{'leccion' : \{'titulo': 'tituloLeccion', 'descripcion': 'descripcionLeccion', 'explicacion':'explicacion detallada', 'idEjercicios': ['1', '2'], 'leccionesDesbloqueadoras': ['2', '3'], 'orden': '2', 'idTema': '1'\} \}
+
+\item[•]
+Payload para marcar como lección completada para un usuario:
+\{'idUsuarioCompletaLeccion' : '3', 'lenguajeCompletadoLeccion' : 'Java', 'leccion' : \{'titulo': ' tituloLeccion ', 'descripcion': ' descripcionLeccion', 'explicacion':'explicacion detallada', 'idEjercicios': ['1', '2'], 'leccionesDesbloqueadoras': ['2', '3'], 'orden': '2', 'idTema': '1'\} \}
+
+\vspace{1em}
+Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+
+\item[•]Header:
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\textbf{REQ10 – DELETE:} Borramos la leccion completamente.Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+\begin{itemize}
+
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+
+\item[•] 
+Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/ejercicios}
+\textbf{REQ11 – GET:} No hace falta enviarle ninguna información. Devuelve la lista de todos los ejercicios existentes en modo URL.
+
+\begin{itemize}
+\item[•]
+Response: 
+\{'ejercicios': ['localhost/duocode/rest/temas/ejercicios/1', 'localhost/duocode/rest/ejercicios/2']\}
+\end{itemize}
+
+\textbf{REQ12 – POST:} Creamos un ejercicio nuevo. Por una parte le pasamos el nombre y los enunciados (un mismo ejercicio puede tener varios enunciados porque cada uno corresponde a distintos lenguajes de programación)
+
+\begin{itemize}
+\item[•]
+Payload: 
+\{'nombre': 'nombreDelEjercicio', 'enunciados': [“1”, “2”]\}
+\vspace{1em}
+Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+
+\vspace{1em}
+La respuesta que obtenemos está conformada por “error” e “id”, si la respuesta en el campo “error” es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente, en este caso el id será “-1” ya que no ha sido asignado ninguno; si es negativa todo ha ido correctamente y el id será el asignado a este nuevo recurso. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+
+\item[•]
+Response: 
+\{'error': 'no', 'id': '4'\}
+\{'error': 'si', 'id': '-1'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/ejercicios/idEjercicio}
+En estos requisitos obtenemos el ID del ejercicio mediante la URL.
+El get nos devuelve los datos del ejercicio, y los enunciados que tiene el ejercicio (con el id de los lenguajes asociados)
+\vspace{1em}
+
+\textbf{REQ13 – GET:} Nos devuelve los datos del ejercicio, los enunciados que tiene y el nombre del lenguaje asociado a cada uno.
+
+\begin{itemize}
+\item[•]
+Response: \{'nombre': 'nombreDelEjercicio', 'fechaCreacion': '17/11/2014', 'enunciados': [\{'enunciado':'localhost/duocode/rest/enunciados/5', 'nombreLenguaje': 'Java'\}, \{'enunciado':'localhost/duocode/rest/enunciados/8', 'nombreLenguaje': 'C++'\}]\}
+
+\vspace{1em}
+Con el delete borramos un ejercicio completamente
+\end{itemize}
+
+\textbf{REQ14 – DELETE:} Borramos un ejercicio completamente. Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+
+\begin{itemize}
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]
+Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/enunciados}
+\textbf{REQ15 – GET:} No hace falta enviarle ninguna información. Devuelve la lista de todos los enunciados existentes en modo URL. 
+
+\begin{itemize}
+\item[•]
+Response:
+\{'enunciados': [\{'enunciado':'localhost/duocode/rest/enunciados/1', 'nombreLenguaje': 'Java'\}, \{'enunciado':'localhost/duocode/rest/enunciados/2', 'nombreLenguaje': 'C++'\}]\}
+\vspace{1em}
+
+\end{itemize}
+
+\textbf{REQ16 – POST:} Creamos un enunciado nuevo. Por una parte le pasamos el lenguaje, el código y el ID del ejercicio correspondiente:
+
+\begin{itemize}
+\item[•]
+Payload: 
+\{'nombreLenguaje': 'Java', 'codigo': 'codigo del enunciado', 'idDelEjercicioQueResuelve': '1'\}
+\vspace{1em}
+
+Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error” e “id”, si la respuesta en el campo “error” es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente, en este caso el id será “-1” ya que no ha sido asignado ninguno; si es negativa todo ha ido correctamente y el id será el asignado a este nuevo enunciado. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+
+\item[•]
+Response: 
+\{'error': 'no', 'id': '4'\} 
+\{'error': 'si', 'id': '-1'\} 
+\end{itemize}
+
+\subsection{localhost/duocode/rest/enunciados/idEnunciado}
+En estos requisitos obtenemos el ID del candidato mediante la URL.
+\vspace{1em}
+
+
+\textbf{REQ17 – GET:} Devuelve los datos del enunciado.
+
+\begin{itemize}
+\item[•]
+Response: 
+\{'fechaCreacion': '17/11/2014', 'codigo': 'codigo del enunciado a resolver', 'nombreLenguaje': 'Java', 'idDelEjercicioQueResuelve': '1'\}
+\end{itemize}
+
+\textbf{REQ18 – PUT:} Modificamos un enunciado.
+
+\begin{itemize}
+\item[•]
+Payload: \{'nombreLenguaje': 'Java', 'codigo': 'código del enunciado', 'idDelEjercicioQueResuelve': '1'\}
+\vspace{1em}
+
+Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]
+Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\textbf{REQ19 – DELETE:} Borramos un enunciado completamente. Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+\begin{itemize}
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+\item[•]
+Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/lenguajes/}
+\textbf{REQ20 – GET:} No hace falta enviarle ninguna información. Devuelve la lista de todos los lenguajes existentes. 
+\begin{itemize}
+\item[•]
+Response: 
+\{'lenguajes': [\{'nombre': 'Java'\}, \{'nombre': 'C++'\}]\}
+\end{itemize}
+
+\textbf{REQ21 – POST:} Creamos un lenguaje nuevo. La única información necesaria es el nombre.
+
+\begin{itemize}
+\item[•]
+Payload: 
+\{'nombre': 'Python'\}
+\vspace{1em}
+
+Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error” y “nombreConfirmacion”, si la respuesta en el campo “error” es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente; si es negativa todo ha ido correctamente y el “nombreConfirmacion” será el asignado a este nuevo lenguaje. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+
+\item[•]
+Response: 
+\{'error': 'no', ' nombreConfirmacion ': 'Python'\}
+
+\end{itemize}
+
+\subsection{localhost/duocode/rest/candidatos/}
+\textbf{REQ22 – GET:} No hace falta enviarle ninguna información. Devuelve la lista de todos los candidatos existentes en modo URL. 
+
+\begin{itemize}
+\item[•]
+Response: 
+\{'candidatos': ['localhost/duocode/rest/candidatos/1', 'localhost/duocode/rest/candidatos/2']\}
+\end{itemize}
+
+\textbf{REQ23 – POST:} Generamos un nuevo candidato, y le asociamos el usuario que lo ha creado. Por un lado le enviamos el código del candidato, el ID del ejercicio que resuelve, el lenguaje en el que está escrito el candidato y el lenguaje del enunciado:
+\begin{itemize}
+\item[•]
+Payload: 
+\{'codigo': 'codigoDelCandidato', 'idEjercicio': '4', 'nombreLenguajeDestino': 'Java', 'nombreLenguajeOrigen': 'C++'\}
+\vspace{1em}
+
+Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para saber qué usuario es el que ha enviado el candidato:
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error” e “idCandidato”, si la respuesta en el campo “error” es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente, en este caso el id será “-1” ya que no ha sido asignado ninguno; si es negativa todo ha ido correctamente y el id será el asignado a este nuevo enunciado. 
+\item[•]
+Response: 
+\{'error': 'no', 'id': '4'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/candidatos/idCandidato}
+En estos requisitos obtenemos el ID del candidato mediante la URL.
+\vspace{1em}
+
+\textbf{REQ24 – GET:} Devuelve los datos de un candidato, incluidos los votos que tiene.
+
+\begin{itemize}
+\item[•]
+Response: 
+\{'idEjercicio': 'localhost/duocode/rest/ejercicios/4', 'nombreLenguajeOrigen' : 'Java', 'nombreLenguajeDestino : 'C++', 'codigo' : 'codigo del candidato', 'idUsuarioCreador' : '2', 'fechaCreacion': '17/11/2014', 'votos': [ \{idUsuarioVoto':'8', 'voto': 'pos'\}, \{idUsuarioVoto':'5', 'voto': 'neg'\} ] \}
+\end{itemize}
+
+\textbf{REQ25 – PUT:} Excepcionalmente no modificará todo el candidato, sino que servirá para que un usuario pueda votar, modificar el voto o eliminarlo (si se vuelve a votar positivo o negativo el voto se anula). Se envía el ID del usuario y el voto (1 si es positivo y 0 si es negativo).
+
+\begin{itemize}
+\item[•]
+Payload: 
+\{'votar': \{'idUsuario': 6, 'voto': 1\}\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por 'error', en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. 
+\item[•]
+Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\textbf{REQ26 – DELETE:} Borramos un candidato completamente.
+
+\begin{itemize}
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+
+\item[•]
+Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/usuarios/}
+El GET devuelve todos los usuarios, solo si lo pide un administrador (esta petición va con el ID de un usuario administrador y el token)
+\textbf{REQ27 – GET:} Devuelve todos los usuarios. A diferencia de otros, este GET sólo lo puede hacer un administrador por lo que necesitamos nuevamente del Header.
+
+\begin{itemize}
+\item[•]
+Header:
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error” y la lista de usuarios. Si “error” tiene una respuesta afirmativa, significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente y muestra la lista de usuarios mediante su URL. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+
+\item[•]
+Response: 
+\{'error': 'no”, 'usuarios' : ['localhost/duocode/rest/usuario/1', 'localhost/duocode/rest/usuario/2'] \}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/usuarios/idUsuario}
+En estos requisitos obtenemos el ID del candidato mediante la URL.
+\vspace{1em}
+
+\textbf{REQ28 – GET:} Devuelve la información asociada a un usuario. Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario que accede es el mismo del que se da la información:
+
+\begin{itemize}
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta es la información detallada de toda la sesión del usuario
+\item[•]
+Response: \{'nick' : 'nickDelUsuairo',
+'leccionesCompletadas' : ['localhost/duocode/rest/lecciones/1', 'localhost/duocode/rest/lecciones/2'],
+'favoritos': [\{'ejercicio' : 'localhost/duocode/rest/ejercicios/5', 'nombreLenguajeOrigien': 'Java', 'nombreLenguajeDestino': 'C++'\}, \{'ejercicio' : 'localhost/duocode/rest/ejercicios/7', 'nombreLenguajeOrigien': 'Python', 'nombreLenguajeDestino': 'C++'\}],
+'historialEjercicios' : [\{'idEnvio': '1', 'ejercicio' : 'localhost/duocode/rest/ejercicios/4', 'nombreLenguajeOrigien': 'Java', 'nombreLenguajeDestino': 'C++', 'codigo': 'codigo enviado', 'fecha': '17/11/2014', 'puntuacion' : '2'\}, \{'idEnvio': '2', 'ejercicio' : 'localhost/duocode/rest/ejercicios/9', 'nombreLenguajeOrigien': 'Python', 'nombreLenguajeDestino': 'Perl', 'codigo': 'codigo enviado', 'fecha': '18/11/2014', 'puntuacion' : '7'\}],
+'candidatosPropuestos': ['localhost/duocode/rest/candidatos/18', 'localhost/duocode/rest/candidatos/23'] \}
+\end{itemize}
+
+\textbf{REQ29 – DELETE}: Borramos un usuario completamente.
+Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
+
+\begin{itemize}
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error”, en caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. Un caso de error podría ser que el usuario no tenga los permisos necesarios.
+
+\item[•]
+Response: 
+\{'error': 'no'\}
+\end{itemize}
+
+\subsection{localhost/duocode/rest/envios}
+\textbf{REQ30 – GET}: Devuelve todos los envíos para que un administrador pueda tener información de ellos. Como sólo puede tener acceso a esto el administrador, es necesaria la siguiente información:
+
+\begin{itemize}
+\item[•]
+Header: 
+\{'idUsuario': '2', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta se compone de usuarios con historiales de ejercicios.
+
+\item[•]
+Response: \{ 'envios' : [ \{'idUsuario': '1', 'historialEjercicios' : [\{'idEnvio': '1', 'ejercicio' : 'localhost/duocode/rest/ejercicios/5', 'nombreLenguajeOrigien': 'Java', 'nombreLenguajeDestino': 'C++', 'codigo': 'codigo enviado', 'fecha': '17/11/2014', 'puntuacion' : '2'\}, \{'idEnvio': '2', 'ejercicio' : 'localhost/duocode/rest/ejercicios/7', 'nombreLenguajeOrigien': 'Python', 'nombreLenguajeDestino': 'Perl', 'codigo': 'codigo enviado', 'fecha': '18/11/2014', 'puntuacion' : '7'\}]\},
+\{'idUsuario': '4', 'historialEjercicios' : [\{'idEnvio': '1', 'ejercicio' : 'localhost/duocode/rest/ejercicios/6', 'nombreLenguajeOrigien': 'Java', 'nombreLenguajeDestino': 'C++', 'codigo': 'codigo enviado', 'fecha': '17/11/2014', 'puntuacion' : '2'\}, \{'idEnvio': '2', 'ejercicio' : 'localhost/duocode/rest/ejercicios/5', 'nombreLenguajeOrigien': 'Python', 'nombreLenguajeDestino': 'Perl', 'codigo': 'código enviado', 'fecha': '18/11/2014', 'puntuacion' : '7'\}]\} ] \}
+\end{itemize}
+
+\textbf{REQ31 – PUT:} Corregimos un ejercicio, y también se comprobará si se ha completado la lección y en caso afirmativo se marcará como completada en la BD. Por una parte enviamos la URL del ejercicio, el lenguaje del enunciado, el lenguaje de la solución y el código.
+
+\begin{itemize}
+\item[•]
+Payload: 
+\{'ejercicio': 'localhost/duocode/rest/ejercicios/idEjercicio1', 'nombreLenguajeOrigien': 'Java', 'nombreLenguajeDestino': 'C++', 'codigo': 'codigo enviado en el lenguaje de destino'\} 
+\vspace{1em}
+
+Por otra parte enviamos el idUsuaro, token y network para comprobar que el usuario que envía el ejercicio para corregir es el que tiene la sesión iniciada.
+\item[•]
+Header: \{'idUsuario': 'idDelUsuario', 'token': 'token', 'network': 'network'\}
+\vspace{1em}
+
+La respuesta que obtenemos está conformada por “error” y “puntuacion”. Si “error” tiene un valor afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente y devuelve la puntuación que ha obtenido el ejercicio al ser corregido. Un caso de error podría ser que el usuario no coincida.
+\item[•]
+Response: \{'error': 'no', 'puntuacion': '2'\}
+\end{itemize}
