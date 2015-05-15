@@ -1,0 +1,27 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Introducci\'on con ejemplos}{1}{section.1}
+\contentsline {section}{\numberline {2}Hola}{1}{section.2}
+\contentsline {subsection}{\numberline {2.1}Introducci\IeC {\'o}n}{1}{subsection.2.1}
+\contentsline {section}{\numberline {3}Introducci\'on}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Investigaci\IeC {\'o}n de campos}{2}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Revisi\IeC {\'o}n del estado del arte}{2}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Influencias tecnol\IeC {\'o}gicas}{3}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Propuestas y objetivos}{3}{subsection.3.4}
+\contentsline {section}{\numberline {4}Requisitos y base de datos}{5}{section.4}
+\contentsline {section}{\numberline {A}Todos los requisitos de Duocode}{7}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}localhost/duocode/rest/temas}{7}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}localhost/duocode/rest/temas/idTema}{7}{subsection.A.2}
+\contentsline {subsection}{\numberline {A.3}localhost/duocode/rest/lecciones/}{8}{subsection.A.3}
+\contentsline {subsection}{\numberline {A.4}localhost/duocode/rest/lecciones/idLeccion}{9}{subsection.A.4}
+\contentsline {subsection}{\numberline {A.5}localhost/duocode/rest/ejercicios}{10}{subsection.A.5}
+\contentsline {subsection}{\numberline {A.6}localhost/duocode/rest/ejercicios/idEjercicio}{10}{subsection.A.6}
+\contentsline {subsection}{\numberline {A.7}localhost/duocode/rest/enunciados}{11}{subsection.A.7}
+\contentsline {subsection}{\numberline {A.8}localhost/duocode/rest/enunciados/idEnunciado}{11}{subsection.A.8}
+\contentsline {subsection}{\numberline {A.9}localhost/duocode/rest/lenguajes/}{12}{subsection.A.9}
+\contentsline {subsection}{\numberline {A.10}localhost/duocode/rest/candidatos/}{12}{subsection.A.10}
+\contentsline {subsection}{\numberline {A.11}localhost/duocode/rest/candidatos/idCandidato}{13}{subsection.A.11}
+\contentsline {subsection}{\numberline {A.12}localhost/duocode/rest/usuarios/}{14}{subsection.A.12}
+\contentsline {subsection}{\numberline {A.13}localhost/duocode/rest/usuarios/idUsuario}{14}{subsection.A.13}
+\contentsline {subsection}{\numberline {A.14}localhost/duocode/rest/envios}{15}{subsection.A.14}
+\contentsline {section}{\numberline {A}Manual de instalaci\IeC {\'o}n}{16}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Instalaci\IeC {\'o}n paso a paso}{16}{subsection.A.1}

@@ -1,0 +1,247 @@
+En este apartado se detallarán los pasos a seguir para tener instalado \textbf{DuoCode} en el sistema, con el fin de poder trabajar directamente con los ficheros fuentes y extender el proyecto. El software necesario para trabajar con el proyecto se especifica a continuación.
+
+\begin{itemize}
+\item \textbf{Requisitos generales}
+\begin{itemize}
+\item Java 7
+\item Git
+\item Navegador Web - Google Chrome
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item \textbf{Requisitos para el Servicio Web}
+\begin{itemize}
+\item Xampp, Wampp o similar
+\item Tomcat 8.0
+\item NetBeans 8.0
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item \textbf{Requisitos para el Front-End}
+
+\begin{itemize}
+\item Soporte SSL en Xampp y Tomcat
+\end{itemize}
+\end{itemize}
+\begin{itemize}
+\item \textbf{Requisitos para la Aplicación móvil}
+\begin{itemize}
+\item Node.Js 0.10.X
+\item Phonegap 5.0.0
+\item Eclipse Luna con plugin para Android
+\end{itemize}
+\end{itemize}
+
+\subsection{Instalación paso a paso}
+\begin{itemize}
+\item \textbf{Java}
+
+En primer lugar necesitaremos tener instalada una versión de Java en nuestro sistema. La forma más sencilla es acceder a la web http://www.java.com/es/ y descargar la versión adecuada para nuestro sistema operativo.
+
+Si lo prefieres puedes usar la línea de comandos:
+{\codesize
+\begin{verbatim}
+$ sudo apt-get install openjdk-7-jdk openjdk-7-jre
+\end{verbatim}
+}
+
+
+\item \textbf{Git}
+
+Para poder descargar todos los ficheros fuentes del proyecto es necesario tener un cliente Git instalado y configurado.
+
+Una opción es acceder a la web http://git-scm.com/downloads/guis y elegir el cliente que queramos para nuestro sistema operativo. 
+
+Si lo prefieres puedes usar la línea de comandos:
+
+{\codesize
+\begin{verbatim}
+$ sudo apt-get install git
+\end{verbatim}
+}
+
+Una vez instalado git podremos clonar el proyecto DuoCode y obtener una copia en nuestro sistema. Si trabajas con un cliente gráfico simplemente tendrás que pinchar en el botón 'clone' y escribir la dirección del repositorio:
+
+{\codesize
+\begin{verbatim}
+https://github.com/jucallej/DuoCode.git
+\end{verbatim}
+}
+
+También puedes clonar el proyecto directamente desde la línea de comandos:
+{\codesize
+\begin{verbatim}
+$ git clone https://github.com/jucallej/DuoCode.git
+\end{verbatim}
+}
+
+
+\item \textbf{Google Chrome}
+
+Cualquier navegador sería válido pero Chrome cuenta con un plugin (Advance Rest Client) para hacer pruebas con el servicio web Rest bastante intuitivo. Para instalar el navegador accedemos a la web de Chrome https://www.google.es/chrome/ y pinchamos en el botón de descarga.
+
+Si lo prefieres también puedes usar la línea de comandos:
+{\codesize
+\begin{verbatim}
+$ sudo apt-get install google-chrome-stable
+\end{verbatim}
+}
+
+
+
+\item \textbf{XAMPP - WAMP - MAMP o similar}
+
+Será necesario tener en local instalado un servidor como cualquiera de los nombrados anteriormente. Nos proporcionan una base de datos MySQL y un server Apache.
+Para instalarlo solo hay que acceder a la web "https://www.apachefriends.org/index.html" (en el caso de querer instalar XAMPP) y descargar la versión para nuestro sistema operativo.
+
+
+Una vez instalado y funcionando accedemos a http://localhost/phpmyadmin  para importar la base de datos.
+Creamos una Base de datos nueva con el nombre 'Duocode', la seleccionamos e importamos el archivo 'Duocode.sql' para que nos cree las tablas y cargue la información del proyecto.
+
+
+En la carpeta 'htdocs' que se encuentra dentro de la carpeta del servidor XAMPP es donde tendremos que poner la parte del front-end.
+Copiamos la carpeta 'duocode' que contiene el index.html y todos los scripts y la pegamos en 'htdocs'.
+Podemos probar el funcionamiento accediendo a la dirección http://localhost/duocode
+
+
+
+\item \textbf{Tomcat}
+
+Para el servicio web REST necesitaremos tener instalado Tomcat 8.0 o superior.
+
+Accedemos a la web http://tomcat.apache.org/download-80.cgi (para la versión 8.0), descargamos la última versión para nuestro sistema operativo y lo descomprimimos.
+
+
+
+\item \textbf{NetBeans}
+
+El IDE que se ha usado para desarrollar el proyecto es NetBeans 8.0 o superior por su facilidad para integrar el control de versiones Git y los servidores, se puede descargar desde la web https://netbeans.org/downloads/ la versión para nuestro sistema operativo.
+
+Una vez instalado importamos el proyecto descargado desde el Git y seleccionamos el servidor con el que queremos que funcione, en nuestro caso será el Tomcat descargado anteriormente.
+
+Las librerías necesarias se importarán de manera automática una vez que hayamos cargado el proyecto en NetBeans.
+
+\item \textbf{Certificados SSL}
+
+Para que tanto el front-end como el servicio web funcionen con https es necesario activar SSL en los servidores Apache del XAMPP y el Tomcat descargado.
+
+Tomcat lo podemos configurar gracias al archivo server.xml encontrado en /apache-tomcat-8.0.21/conf/server.xml
+Lo abrimos y dentro del elemento:
+{\codesize
+\begin{verbatim}
+ < Service name = 'Catalina' >  
+\end{verbatim}
+}
+pegamos estas líneas de código (cambiando la ruta del proyecto):
+
+{\codesize
+\begin{verbatim}
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS"
+           keystoreType="PKCS12"
+           keystoreFile="{Ruta al repositorio}\DuoCode\duocode\certificados\mycert.p12" keystorePass="contraseña"/>
+\end{verbatim}
+}
+
+Para configurar el server Apache que nos proporciona XAMPP primero tendremos que poner los archivos "mars-server.crt, mars-server.key, my-ca.crt" en la siguiente ruta:
+
+'/opt/lampp/etc/ssl.crt/' los ficheros con la extensión .crt
+
+'/opt/lampp/etc/ssl.key/' el fichero con la extensión .key
+
+Una vez que tenemos los certificados y la clave en las rutas adecuadas editamos el fichero httpd-ssl.conf. Dependiendo de la versión puede tener un aspecto u otro, en nuestro caso hemos definido un nuevo VirtualHost con la siguiente información. En el caso de trabajar bajo un sistema Linux se puede copiar y pegar las siguientes líneas en el archivo:
+
+{\codesize
+\begin{verbatim}
+<VirtualHost _default_:443>
+
+DocumentRoot "/opt/lampp/htdocs"
+ServerName localhost:443
+ServerAdmin you@example.com
+ErrorLog "/opt/lampp/logs/error_log"
+TransferLog "/opt/lampp/logs/access_log"
+
+SSLEngine on
+
+SSLCertificateFile "/opt/lampp/etc/ssl.crt/mars-server.crt"
+SSLCertificateKeyFile "/opt/lampp/etc/ssl.key/mars-server.key"
+SSLCertificateChainFile "/opt/lampp/etc/ssl.crt/my-ca.crt"
+
+SSLCACertificateFile "/opt/lampp/etc/ssl.crt/my-ca.crt"
+
+<FilesMatch "\.(cgi|shtml|phtml|php)$">
+    SSLOptions +StdEnvVars
+</FilesMatch>
+<Directory "/opt/lampp/cgi-bin">
+    SSLOptions +StdEnvVars
+</Directory>
+
+BrowserMatch "MSIE [2-5]" \
+         nokeepalive ssl-unclean-shutdown \
+         downgrade-1.0 force-response-1.0
+
+CustomLog "/opt/lampp/logs/ssl_request_log" \
+          "%t %h %{SSL_PROTOCOL}x %{SSL_CIPHER}x \"%r\" %b"
+
+<Directory "/opt/lampp/htdocs">
+        Options Indexes
+        AllowOverride None
+        Allow from from all
+        Order allow,deny
+</Directory>
+
+</VirtualHost>
+\end{verbatim}
+}
+
+Si hemos seguido correctamente las instrucciones ya nos debería permitir acceder a la dirección https://localhost/duocode aunque nos saldrá un mensaje de que el certificado no está verificado (es un certificado que hemos creado nosotros) así que lo añadimos como excepción y ya tendríamos DuoCode instalado.
+
+
+\item \textbf{Node.js}
+
+Para poder trabajar con PhoneGap - Cordova será necesario tener instalado Node.js en nuestro equipo. Podemos hacerlo descargándolo desde la web 'https://nodejs.org/' o directamente desde un terminal:
+
+{\codesize
+\begin{verbatim}
+$ sudo add-apt-repository ppa:chris-lea/node.js
+$ sudo apt-get update
+$ sudo apt-get install nodejs
+\end{verbatim}
+}
+
+Es necesario que la versión sea 0.8+, podemos comprobarlo tecleando desde el terminal: 
+
+{\codesize
+\begin{verbatim}
+$ node -v
+\end{verbatim}
+}
+
+\item \textbf{PhoneGap}
+
+PhoneGap nos servirá para crear una app móvil desde el HTML5, CSS y JS de nuestro proyecto.
+
+Para instalarlo podemos descargarlo desde la web 'http://phonegap.com' o directamente desde un terminal:
+
+{\codesize
+\begin{verbatim}
+$ npm install -g phonegap
+\end{verbatim}
+}
+
+\item \textbf{Eclipse y Android SDK}
+
+Gracias al plugin de Android podremos usar Eclipse como IDE para probar la app móvil de DuoCode.
+
+Instalaremos la última versión de Eclipse descargándolo desde la web 'http://eclipse.org'
+
+Una vez descargado lo abrimos y vamos a añadir el plugin para Android.
+Pinchamos en \textbf{help - Install New Software } y añadimos la siguiente URL 'https://dl-ssl.google.com/android/eclipse/' y le damos a \textbf{next} hasta el final.
+
+Reiniciamos Eclipse y tendremos que especificar la dirección del \textbf{Android SDK} que acabamos de descargar para que se actualice y tener Eclipse listo.
+
+Podemos importar la carpeta del proyecto que encontramos en DuoCode y probarlo con el emulador.
+
+\end{itemize}
+
