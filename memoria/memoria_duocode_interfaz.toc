@@ -33,8 +33,8 @@
 \contentsline {subsection}{\numberline {A.13}localhost/duocode/rest/usuarios/idUsuario}{32}{subsection.A.13}
 \contentsline {subsection}{\numberline {A.14}localhost/duocode/rest/envios}{33}{subsection.A.14}
 \contentsline {section}{\numberline {B}Manual de instalaci\IeC {\'o}n}{35}{appendix.B}
-\contentsline {subsection}{\numberline {B.1}Instalaci\IeC {\'o}n paso a paso}{35}{subsection.B.1}
-\contentsline {subsection}{\numberline {B.2}Desplegado}{39}{subsection.B.2}
+\contentsline {subsection}{\numberline {B.1}Instalaci\IeC {\'o}n de desarrollador}{35}{subsection.B.1}
+\contentsline {subsection}{\numberline {B.2}Desplegado modo desarrollador}{39}{subsection.B.2}
 \contentsline {section}{\numberline {C}Manual de usuario}{40}{appendix.C}
 \contentsline {subsection}{\numberline {C.1}Lenguajes}{40}{subsection.C.1}
 \contentsline {subsection}{\numberline {C.2}Temas}{40}{subsection.C.2}
