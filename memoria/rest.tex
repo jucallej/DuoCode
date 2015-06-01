@@ -1,0 +1,268 @@
+Con el fin de que nuestro proyecto no consistiese en una única aplicación web, y se pudiesen desarrollar tanto una aplicación móvil como una aplicación de escritorio en el futuro, necesitábamos implementar un sistema \textit{interoperable} de acceso al contenido de nuestra base de datos.
+
+\vspace{1em}
+
+Un \textbf{servicio web} era nuestra solución, así que buscamos información sobre los estándares más empleados y nos centramos en tres: \textit{RPC} (Remote Procedure Call), \textit{SOAP} (Simple Object Access Protocol) y \textit{RESTful} (Representational State Transfer).
+\subsection{Arquitectura del servicio web}
+
+Cada integrante del grupo investigó a fondo un estándar en concreto y tras una puesta en común nos decantamos por un servicio web tipo \textit{RESTful} porque es ampliamente usado en la actualidad, es un protocolo ligero y cuenta con los siguientes puntos fuertes:
+\begin{itemize}
+\item \textbf{Sin estado}:
+
+Cada petición por parte del cliente ha de contener toda la información necesaria para poder procesarla, sin depender de contenidos almacenados en el servidor. Por esto todo el proceso de autentificación y el estado de la sesión se lleva a cabo en el cliente.
+
+\item \textbf{Cliente-Servidor}:
+
+\textit{REST} es una arquitectura \textit{cliente-servidor} que nos permite diferenciar dos componentes: la lógica de negocio (servidor) y la lógica de presentación(cliente).
+ 
+Gracias a esta arquitectura podemos desarrollar cada componente de manera independiente, siempre y cuando se mantengan coherentes con la interfaz. También se simplifican las tareas de mantenimiento ya que tanto la ampliación como la corrección del sistema se puede hacer por partes.
+
+\item \textbf{Protocolo HTTP}:
+
+El servidor proporciona al cliente una interfaz uniforme basada en \textit{URLs} para acceder a los recursos de nuestro sistema. El intercambio de información se realiza mediante peticiones \textit{HTTP}.
+
+Cada verbo \textit{HTTP} (Get, Post, Put y Delete) tiene su equivalente operación \textit{CRUD} (Create, Read, Update y Delete) y método \textit{SQL} (Insert, Select, Update y Delete). Se puede apreciar el mapeo en la siguiente tabla:
+
+
+$
+\begin{array}{|c|c|c|}
+\hline
+\textbf{Peticiones HTTP} & \textbf{Operaciones CRUD} & \textbf{Método SQL}\\
+\hline
+POST & CREATE & INSERT\\
+\hline
+GET & READ & SELECT\\
+\hline
+PUT & UPDATE & UPDATE\\
+\hline
+DELETE & DELETE & DELETE\\
+\hline
+\end{array}
+$
+
+\end{itemize} 
+
+\subsection{Recursos}
+
+Uno de los conceptos más importantes de una API \textit{REST} es la existencia de \textit{recursos}. Un recurso es un objeto de un tipo determinado, con datos asociados y que cuenta con un conjunto de métodos que operan sobre él (Get, Post, Put y Delete en el caso de nuestro proyecto).
+
+\vspace{1em}
+
+Una vez que teníamos clara la arquitectura de nuestro servicio web, definimos todos los \textit{recursos} que eran necesarios para desarrollar \textit{DuoCode}.Aunque hay una sección donde se habla detalladamente sobre cada recurso,  se pueden ver resumidos en la siguiente lista.
+
+\begin{itemize}
+
+\item \textbf{Temas}: 
+Recurso encargado de gestionar los conceptos más comunes de programación a los que el usuario se enfrenta (instrucciones de control, funciones, algoritmos iterativos, algoritmos recursivos, clases...). Cada tema consiste en una agrupación de lecciones con distintos niveles de dificultad.
+
+\item \textbf{Lecciones}:
+Recurso encargado de gestionar las distintas lecciones que conforman un tema. Una lección consta de un grupo de ejercicios con un nivel de dificultad similar (dentro del tema `clases' encontraríamos las lecciones `sintaxis', `herencia', `polimorfismo'...).
+
+\item \textbf{Ejercicios}:
+Recurso encargado de gestionar los distintos ejercicios que conforman una lección. Un ejercicio consta de una breve descripción y de una lista de enunciados que lo resuelven.
+
+\item \textbf{Enunciados}:
+Recurso encargado de gestionar los distintos enunciados que implementan un ejercicio. Un enunciado contiene un fragmento de código en un lenguaje de programación concreto que corresponde a la solución de un ejercicio.
+
+\item \textbf{Lenguajes}:
+Recurso encargado de gestionar todos los lenguajes con los que se puede trabajar en DuoCode.
+
+\item \textbf{Candidatos}:
+Recurso encargado de gestionar enunciados propuestos por el usuario que no han sido calificados como correctos. Los candidatos también pueden ser moderados por los usuarios.
+
+\item \textbf{Usuarios}:
+Recurso encargado de gestionar los usuarios registrados en la aplicación, la información personal, las lecciones que ha completado, los puntos que tiene, los ejercicios favoritos y los envíos realizados.
+
+\item \textbf{Envios}:
+Recurso encargado de gestionar los envíos de soluciones por los usuarios de cada ejercicio que realizan. La información de cada envio resulta útil para realizar estadísticas y encontrar fallos reiterativos a la hora de aprender un lenguaje de programación nuevo.
+
+\end{itemize}
+
+Con todos los recursos definidos pudimos diseñar la base de datos que utilizaríamos y comenzamos a pensar qué tecnologías íbamos a usar para la implementación del servicio web.
+
+\subsection{Implementación}
+
+Actualmente hay una gran diversidad de frameworks para implementar una API REST usando cualquier tecnología. Los lenguajes con los que más cómodos nos sentíamos programando eran PHP y Java así que centramos la investigación entorno a estos dos.
+\vspace{1em}
+
+Después de analizar ambas propuestas y ver el código de ejemplos sencillos nos dimos cuenta de que la curva de aprendizaje iba a ser menos pronunciada si lo hacíamos con Java.
+
+
+\subsubsection{Jersey}
+
+
+La API para servicios RESTful en Java es la \textit{JAX-RS}, definida en el \textit{JSR 311}, y el framework que usamos es \textit{Jersey}, ya que es su implementación más estándar y existe mucha documentación disponible.
+
+\vspace{1em}
+
+Cada uno de los recursos definidos anteriormente se implementaron en Java siguiendo la siguiente sintaxis, se usará de ejemplo la clase \textbf{EjerciciosResource}:
+
+\begin{itemize}
+
+\vspace{1em}
+{\codesize
+\lstset{}
+\begin{lstlisting}[frame=single]
+@Path("ejercicios")
+public class EjerciciosResource {
+	.
+	.
+	.
+}
+\end{lstlisting}
+}
+\vspace{1em}
+
+\item \textit{@Path(`ejercicios')}: Especifica la ruta de acceso relativa para una clase, un recurso o un método. En nuestro ejemplo indica la ruta relativa del recurso `Ejercicios' a la que hacer las peticiones HTTP.
+
+
+\vspace{1em}
+{\codesize
+\lstset{}
+\begin{lstlisting}[frame=single]
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Ejercicios getEjercicios() {
+        return new Ejercicios(this.ejercicioMapper.findAll());
+    }
+\end{lstlisting}
+}
+\vspace{1em}
+
+\item \textit{@GET}: Método que se ejecuta cuando hay una petición HTTP GET sobre el recurso al que pertenece.
+
+\item \textit{@Produces(MediaType.APPLICATION\_JSON)}: Especifica el tipo de MIME que el recurso produce y envía al cliente. En nuestro caso el tipo que produce nuestro método es \textit{JSON}.
+
+
+\vspace{1em}
+{\codesize
+\lstset{}
+\begin{lstlisting}[frame=single]
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ErrorYID newEjer(@HeaderParam("tk") String token){
+      .
+      .
+      .
+    }
+\end{lstlisting}
+}
+\vspace{1em}
+
+\item \textit{@POST}: Método que se ejecuta cuando hay una petición HTTP POST sobre el recurso al que pertenece.
+
+\item \textit{@Consumes(MediaType.APPLICATION\_JSON)}: Especifica los tipos de medios de petición aceptados. En nuestro caso el tipo que acepta nuestro método es \textit{JSON}.
+
+\item \textit{@HeaderParam(`token')}: Enlaza el parámetro a un valor de cabecera HTTP. En nuestro caso el parámetro `token' del método newEjer tomaría el valor del parámetro tk, perteneciente a la cabecera de la petición HTTP.
+
+
+\vspace{1em}
+{\codesize
+\lstset{}
+\begin{lstlisting}[frame=single]
+@GET
+@Path("{id}")
+@Produces(MediaType.APPLICATION_JSON)
+public Ejercicio getEjercicio(@PathParam("id") int idParam) {        
+	.
+	.
+	.
+}
+\end{lstlisting}
+}
+\vspace{1em}
+
+\item \textit{@Path(`\{id\}')}: En este caso @Path es la ruta relativa de un método. Se concatena con el Path definido en la clase y el resultado sería /ejercicios/\{id\}
+\item \textit{@PathParam(`id')}: Enlaza el parámetro `idParam' del método a un segmento de ruta. En este caso `idParam' tomaría el valor de `id' que aparece en la ruta a la que se realiza la petición.
+
+
+\vspace{1em}
+{\codesize
+\lstset{}
+\begin{lstlisting}[frame=single]
+@DELETE
+@Path("{idEjercicio}")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public ErrorSimple deleteEjercicio(...){
+	.
+	.
+	.
+}
+\end{lstlisting}
+}
+\vspace{1em}
+
+\item \textit{@DELETE}: Método que se ejecuta cuando hay una petición HTTP DELETE sobre el recurso al que pertenece.
+
+
+\vspace{1em}
+{\codesize
+\lstset{}
+\begin{lstlisting}[frame=single]
+@PUT
+@Path("{idEjercicio}")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public ErrorSimple putEjercicio(...){
+	.
+	.
+	.
+}
+\end{lstlisting}
+}
+\vspace{1em}
+
+\item \textit{@PUT}: Método que se ejecuta cuando hay una petición HTTP DELETE sobre el recurso al que pertenece.
+
+\end{itemize}
+
+\subsubsection{Advanced Rest Client}
+Para ir testeando la API y comprobar el correcto funcionamiento de los métodos usamos \textbf{Advance Rest Client}, un complemento de Google Chrome que permite hacer peticiones HTTP a una URL y muestra los datos que devuelve la petición, así como si ha fallado o ha saltado alguna excepción. Advance Rest Client se puede buscar y descargar en la siguiente dirección:
+ \url{https://chrome.google.com/webstore/category/apps} 
+ 
+\subsubsection{Acceso a la base de datos}
+
+El acceso a la base de datos era otro de los puntos delicados a la hora de desarrollar nuestro servicio web. No queríamos tener código SQL repartido por todo el servicio así que decidimos hacer uso de patrones clásicos de acceso a datos.
+
+Durante el curso pasado en la asignatura de `Ampliación de bases de datos' nos explicaron el patrón \textit{Data Mapper} y pensamos que podría ser útil en nuestro proyecto.
+
+\vspace{1em}
+
+El patrón \textit{Data Mapper} consiste en construir una capa de componentes (\textit{Mappers}) que traducen los objetos de la aplicación a la representación de la base de datos y viceversa. De esta manera se desacopla el código de acceso a datos de los objetos de dominio.
+La introducción de distintos tipos de objetos de dominio provoca la introducción de sus correspondientes \textit{Mappers}, y esto provoca que exista mucho código duplicado (los métodos insert, update, delete, findByID tienen un código muy similar entre dos objetos de dominio). La solución es abstraer todo el código común de los \textit{Data Mappers} a una clase \textbf{`AbstractMapper'} para facilitar el mantenimiento de la aplicación y reducir el código duplicado.
+
+La clase \textit{AbstractMapper} es una clase abstracta que implementa las operaciones \textit{SQL} más comunes y de la que heredan todos los \textit{Mappers} de cada objeto de dominio. Se puede ver un ejemplo de la implementación de un `select by id' a continuación.
+
+\vspace{1em}
+{\codesize
+\lstset{}
+\begin{lstlisting}[frame=single]
+public T findById(int id) {
+	Connection con = null;
+	PreparedStatement pst = null;
+	ResultSet rs = null;
+	T result = null;
+	try {
+		con = ds.getConnection();
+		pst = con.prepareStatement(getFindIdSQL());
+		pst.setInt(1, id);
+		rs = pst.executeQuery();
+		if (rs.next()) {
+			result = buildObject(rs);
+		} 
+	} catch (SQLException e) {
+		... 
+	} finally {
+		... 
+	}
+	return result;
+}
+\end{lstlisting}
+}
+\vspace{1em}
+
+Todos los \textit{Mappers} de nuestro están almacenados en la carpeta `src/java/mappers' y se pueden ver online en la siguiente dirección: \url{https://github.com/jucallej/DuoCode/tree/master/src/java/mappers}.
+
+La principal ventaja del uso del patrón \textit{Data Mapper} es que el código SQL se queda centrado en los distintos mappers creados, facilitando el mantenimiento y la flexibilidad del sistema.

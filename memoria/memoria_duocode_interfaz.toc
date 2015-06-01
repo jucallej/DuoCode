@@ -1,32 +1,45 @@
 \select@language {spanish}
-\contentsline {section}{\numberline {1}Introducci\'on con ejemplos}{1}{section.1}
-\contentsline {section}{\numberline {2}Hola}{1}{section.2}
-\contentsline {subsection}{\numberline {2.1}Introducci\IeC {\'o}n}{1}{subsection.2.1}
-\contentsline {section}{\numberline {3}Introducci\'on}{2}{section.3}
-\contentsline {subsection}{\numberline {3.1}Investigaci\IeC {\'o}n de campos}{2}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Revisi\IeC {\'o}n del estado del arte}{2}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Influencias tecnol\IeC {\'o}gicas}{3}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}Propuestas y objetivos}{3}{subsection.3.4}
-\contentsline {section}{\numberline {4}Requisitos y base de datos}{5}{section.4}
-\contentsline {subsection}{\numberline {4.1}Requisitos}{5}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Base de datos}{5}{subsection.4.2}
-\contentsline {subsubsection}{\numberline {4.2.1}Modelo entidad-relaci\IeC {\'o}n}{5}{subsubsection.4.2.1}
-\contentsline {subsubsection}{\numberline {4.2.2}Modelo relacional}{7}{subsubsection.4.2.2}
-\contentsline {subsubsection}{\numberline {4.2.3}Estructura de las tablas}{7}{subsubsection.4.2.3}
-\contentsline {section}{\numberline {5}Manual de instalaci\IeC {\'o}n}{11}{section.5}
-\contentsline {subsection}{\numberline {5.1}Instalaci\IeC {\'o}n paso a paso}{11}{subsection.5.1}
-\contentsline {section}{\numberline {A}Todos los requisitos de Duocode}{17}{appendix.Alph1}
-\contentsline {subsection}{\numberline {A.1}localhost/duocode/rest/temas}{17}{subsection.Alph1.1}
-\contentsline {subsection}{\numberline {A.2}localhost/duocode/rest/temas/idTema}{17}{subsection.Alph1.2}
-\contentsline {subsection}{\numberline {A.3}localhost/duocode/rest/lecciones/}{18}{subsection.Alph1.3}
-\contentsline {subsection}{\numberline {A.4}localhost/duocode/rest/lecciones/idLeccion}{19}{subsection.Alph1.4}
-\contentsline {subsection}{\numberline {A.5}localhost/duocode/rest/ejercicios}{20}{subsection.Alph1.5}
-\contentsline {subsection}{\numberline {A.6}localhost/duocode/rest/ejercicios/idEjercicio}{20}{subsection.Alph1.6}
-\contentsline {subsection}{\numberline {A.7}localhost/duocode/rest/enunciados}{21}{subsection.Alph1.7}
-\contentsline {subsection}{\numberline {A.8}localhost/duocode/rest/enunciados/idEnunciado}{21}{subsection.Alph1.8}
-\contentsline {subsection}{\numberline {A.9}localhost/duocode/rest/lenguajes/}{22}{subsection.Alph1.9}
-\contentsline {subsection}{\numberline {A.10}localhost/duocode/rest/candidatos/}{22}{subsection.Alph1.10}
-\contentsline {subsection}{\numberline {A.11}localhost/duocode/rest/candidatos/idCandidato}{23}{subsection.Alph1.11}
-\contentsline {subsection}{\numberline {A.12}localhost/duocode/rest/usuarios/}{24}{subsection.Alph1.12}
-\contentsline {subsection}{\numberline {A.13}localhost/duocode/rest/usuarios/idUsuario}{24}{subsection.Alph1.13}
-\contentsline {subsection}{\numberline {A.14}localhost/duocode/rest/envios}{25}{subsection.Alph1.14}
+\contentsline {section}{\numberline {1}Introducci\'on}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Revisi\IeC {\'o}n del estado del arte}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Influencias tecnol\IeC {\'o}gicas}{3}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Propuestas y objetivos}{4}{subsection.1.3}
+\contentsline {section}{\numberline {2}Servicio web}{6}{section.2}
+\contentsline {subsection}{\numberline {2.1}Arquitectura del servicio web}{6}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Recursos}{6}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Implementaci\IeC {\'o}n}{7}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Jersey}{8}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Advanced Rest Client}{9}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Acceso a la base de datos}{10}{subsubsection.2.3.3}
+\contentsline {section}{\numberline {3}Front-end}{11}{section.3}
+\contentsline {subsection}{\numberline {3.1}Protitipo}{11}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Conexi\IeC {\'o}n con el servicio REST}{12}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Integraci\IeC {\'o}n con redes sociales}{14}{subsection.3.3}
+\contentsline {section}{\numberline {4}Requisitos y base de datos}{16}{section.4}
+\contentsline {subsection}{\numberline {4.1}Requisitos}{16}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Base de datos}{16}{subsection.4.2}
+\contentsline {section}{\numberline {A}Especificaci\IeC {\'o}n de requisitos}{23}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}localhost/duocode/rest/temas}{23}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}localhost/duocode/rest/temas/idTema}{23}{subsection.A.2}
+\contentsline {subsection}{\numberline {A.3}localhost/duocode/rest/lecciones/}{25}{subsection.A.3}
+\contentsline {subsection}{\numberline {A.4}localhost/duocode/rest/lecciones/idLeccion}{25}{subsection.A.4}
+\contentsline {subsection}{\numberline {A.5}localhost/duocode/rest/ejercicios}{27}{subsection.A.5}
+\contentsline {subsection}{\numberline {A.6}localhost/duocode/rest/ejercicios/idEjercicio}{27}{subsection.A.6}
+\contentsline {subsection}{\numberline {A.7}localhost/duocode/rest/enunciados}{28}{subsection.A.7}
+\contentsline {subsection}{\numberline {A.8}localhost/duocode/rest/enunciados/idEnunciado}{29}{subsection.A.8}
+\contentsline {subsection}{\numberline {A.9}localhost/duocode/rest/lenguajes/}{30}{subsection.A.9}
+\contentsline {subsection}{\numberline {A.10}localhost/duocode/rest/candidatos/}{30}{subsection.A.10}
+\contentsline {subsection}{\numberline {A.11}localhost/duocode/rest/candidatos/idCandidato}{31}{subsection.A.11}
+\contentsline {subsection}{\numberline {A.12}localhost/duocode/rest/usuarios/}{32}{subsection.A.12}
+\contentsline {subsection}{\numberline {A.13}localhost/duocode/rest/usuarios/idUsuario}{32}{subsection.A.13}
+\contentsline {subsection}{\numberline {A.14}localhost/duocode/rest/envios}{33}{subsection.A.14}
+\contentsline {section}{\numberline {B}Manual de instalaci\IeC {\'o}n}{35}{appendix.B}
+\contentsline {subsection}{\numberline {B.1}Instalaci\IeC {\'o}n paso a paso}{35}{subsection.B.1}
+\contentsline {subsection}{\numberline {B.2}Desplegado}{39}{subsection.B.2}
+\contentsline {section}{\numberline {C}Manual de usuario}{40}{appendix.C}
+\contentsline {subsection}{\numberline {C.1}Lenguajes}{40}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.2}Temas}{40}{subsection.C.2}
+\contentsline {subsection}{\numberline {C.3}Lecciones}{43}{subsection.C.3}
+\contentsline {subsection}{\numberline {C.4}Ejercicios}{43}{subsection.C.4}
+\contentsline {subsection}{\numberline {C.5}Mis favoritos}{47}{subsection.C.5}
+\contentsline {subsection}{\numberline {C.6}Mis candidatos}{48}{subsection.C.6}
+\contentsline {subsection}{\numberline {C.7}Candidatos}{49}{subsection.C.7}
