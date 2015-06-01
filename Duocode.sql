@@ -17,12 +17,18 @@ CREATE TABLE IF NOT EXISTS `candidato` (
   `idEjercicio` int(20) unsigned NOT NULL,
   `lenguajeOrigen` varchar(20) NOT NULL,
   `lenguajeDestino` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+INSERT INTO `candidato` (`ID`, `codigo`, `fecha`, `estado`, `gestionadoPor`, `idUsuario`, `idEjercicio`, `lenguajeOrigen`, `lenguajeDestino`) VALUES
+(2, 'public int positivo_o_negativo(int n, boolean valor) {\r\n	int solucion;\r\n	if (valor = true) {\r\n		solucion = Math.abs(n);\r\n	}\r\n	else {\r\n		solucion = -Math.abs(n);\r\n	}\r\n	return solucion;\r\n}', '2015-05-30 19:07:42', 0, 1, 1, 4, 'Java', 'C++');
 
 CREATE TABLE IF NOT EXISTS `desbloqueadapor` (
   `idLeccion` int(20) unsigned NOT NULL,
   `desbloqueadaPor` int(20) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `desbloqueadapor` (`idLeccion`, `desbloqueadaPor`) VALUES
+(50, 49);
 
 CREATE TABLE IF NOT EXISTS `ejercicio` (
 `ID` int(20) unsigned NOT NULL,
@@ -49,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `enunciado` (
   `fecha` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idEjercicio` int(20) unsigned NOT NULL,
   `lenguaje` varchar(20) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 INSERT INTO `enunciado` (`ID`, `texto`, `fecha`, `idEjercicio`, `lenguaje`) VALUES
 (1, 'public boolean positivo(double n) {\r\n	boolean valor = false;\r\n	if (n == Math.abs(n)) {\r\n		valor = true;\r\n	}\r\n	return valor;\r\n}\r\n', '2015-05-28 16:02:23', 1, 'Java'),
@@ -63,7 +69,8 @@ INSERT INTO `enunciado` (`ID`, `texto`, `fecha`, `idEjercicio`, `lenguaje`) VALU
 (9, 'public boolean bisiesto(int n) {\r\n	boolean valor = false;\r\n	if (((n % 4 == 0) && (n % 100 != 0)) || (n%400 == 0)) {\r\n		valor = true;\r\n	}\r\n	return valor;\r\n}\r\n', '2015-05-28 16:02:23', 9, 'Java'),
 (10, 'private boolean cuadrado_perfecto(double m) {\r\n	double cuadrado = Math.sqrt(m);\r\n	boolean resultado = (cuadrado*cuadrado == m);\r\n	return resultado;\r\n}\r\n', '2015-05-28 16:02:23', 10, 'Java'),
 (11, 'public double cuadrado_perfecto_previo(double n) { \r\n	double raiz = Math.sqrt(n);\r\n	if (!cuadrado_perfecto(n)) {\r\n		raiz = (int) raiz; // Función parte entera\r\n	}\r\n	else {\r\n		raiz = ((int) raiz) - 1;\r\n	}\r\n	double cuadrado = raiz*raiz;\r\n	return cuadrado;\r\n}\r\n', '2015-05-28 16:02:23', 11, 'Java'),
-(12, 'public Pareja<Integer, Integer> ec_segundo_grado(int a, int b, int c) {\r\n	Pareja<Integer, Integer> solucion = new Pareja<Integer, Integer>(0, 0);\r\n	int raiz1 = b*b - 4*a*c;\r\n	int exp1 = (int) Math.sqrt(raiz1);\r\n	if (Math.sqrt(raiz1) == exp1){\r\n		int sol1 = (-b - exp1)/(2*a);\r\n		int sol2 = (-b + exp1)/(2*a);\r\n		solucion = new Pareja<Integer, Integer>(sol1, sol2);\r\n	}\r\n	return solucion; \r\n}\r\n', '2015-05-28 16:02:23', 12, 'Java');
+(12, 'public Pareja<Integer, Integer> ec_segundo_grado(int a, int b, int c) {\r\n	Pareja<Integer, Integer> solucion = new Pareja<Integer, Integer>(0, 0);\r\n	int raiz1 = b*b - 4*a*c;\r\n	int exp1 = (int) Math.sqrt(raiz1);\r\n	if (Math.sqrt(raiz1) == exp1){\r\n		int sol1 = (-b - exp1)/(2*a);\r\n		int sol2 = (-b + exp1)/(2*a);\r\n		solucion = new Pareja<Integer, Integer>(sol1, sol2);\r\n	}\r\n	return solucion; \r\n}\r\n', '2015-05-28 16:02:23', 12, 'Java'),
+(13, 'public int positivo_o_negativo(int n, boolean valor) {\r\n	int solucion;\r\n	if (valor == true) {\r\n		solucion = Math.abs(n);\r\n	}\r\n	else {\r\n		solucion = -Math.abs(n);\r\n	}\r\n	return solucion;\r\n}\r\n', '2015-05-28 16:02:23', 4, 'C++');
 
 CREATE TABLE IF NOT EXISTS `envio` (
 `ID` int(20) NOT NULL,
@@ -82,6 +89,10 @@ CREATE TABLE IF NOT EXISTS `favorito` (
   `lenguajeOrigen` varchar(20) NOT NULL,
   `lenguajeDestino` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `favorito` (`idUsuario`, `idEjercicio`, `lenguajeOrigen`, `lenguajeDestino`) VALUES
+(1, 2, 'Java', 'C++'),
+(1, 4, 'Java', 'C++');
 
 CREATE TABLE IF NOT EXISTS `leccion` (
 `ID` int(20) unsigned NOT NULL,
@@ -173,9 +184,13 @@ INSERT INTO `tema` (`ID`, `orden`, `titulo`, `descripcion`) VALUES
 
 CREATE TABLE IF NOT EXISTS `usuario` (
 `ID` int(20) unsigned NOT NULL,
-  `IDGoogle` text NOT NULL,
+  `IDGoogle` text,
+  `IDFacebook` text,
   `rol` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+INSERT INTO `usuario` (`ID`, `IDGoogle`, `IDFacebook`, `rol`) VALUES
+(1, NULL, '10152704840257827', 0);
 
 CREATE TABLE IF NOT EXISTS `usuariocompletaleccion` (
   `idUsuario` int(20) unsigned NOT NULL DEFAULT '0',
@@ -188,6 +203,9 @@ CREATE TABLE IF NOT EXISTS `usuariovotacandidato` (
   `idCandidato` int(20) unsigned NOT NULL,
   `voto` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `usuariovotacandidato` (`idUsuario`, `idCandidato`, `voto`) VALUES
+(1, 2, 0);
 
 
 ALTER TABLE `candidato`
@@ -231,11 +249,11 @@ ALTER TABLE `usuariovotacandidato`
 
 
 ALTER TABLE `candidato`
-MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT;
+MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 ALTER TABLE `ejercicio`
 MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 ALTER TABLE `enunciado`
-MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 ALTER TABLE `envio`
 MODIFY `ID` int(20) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `leccion`
@@ -243,7 +261,7 @@ MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=86;
 ALTER TABLE `tema`
 MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 ALTER TABLE `usuario`
-MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT;
+MODIFY `ID` int(20) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 
 ALTER TABLE `candidato`
 ADD CONSTRAINT `candidato_ibfk_1` FOREIGN KEY (`gestionadoPor`) REFERENCES `usuario` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
