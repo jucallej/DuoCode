@@ -49,7 +49,6 @@
 %todo
 \newcommand{\todo}[1]{\textcolor{red}{#1}}
 
-
 \newtheorem{example}{Ejemplo}
 
 \graphicspath{{images/}}
@@ -161,6 +160,9 @@ Desarrollo de un front-end para DuoCode}
 
 \newpage
 
+% Distancia entre párrafos
+{\setlength{\parskip}{0.4cm plus4mm minus3mm}
+
 \pagenumbering{gobble}% Remove page numbers (and reset to 1)
 \clearpage
 \thispagestyle{empty}
@@ -217,7 +219,7 @@ Desarrollo de un front-end para DuoCode}
 \newpage
 \section{Manual de instalación\label{app:manual}}
 \input{manual}
-
+}
 \appendix
 
 
