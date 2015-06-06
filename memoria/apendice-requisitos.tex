@@ -3,10 +3,8 @@ En esta sección se exponen todos los requisitos existentes del servicio web RES
 
 \subsection{localhost/duocode/rest/temas}
 En este apartado se explica cómo hacer un GET para obtener todos los temas y un POST para crear un nuevo tema.
-\vspace{1em}
 
 \textbf{REQ01 – GET:} Devuelve la lista de todos los temas existentes en modo URL. No hace falta enviarle ninguna información. 
-
 \begin{itemize}
 \item[•] Response:
 {\codesize
@@ -48,10 +46,8 @@ La respuesta que obtenemos está conformada por ``error'' e ``id''. Si la respue
 \subsection{localhost/duocode/rest/temas/idTema}
 En este apartado se explica cómo hacer un GET para obtener un tema en específico, un PUT para modificarlo y un DELETE para eliminarlo.
 En estos requisitos obtenemos el ID del tema mediante la URL.
-\vspace{1em}
 
 \textbf{REQ03 – GET:} Devuelve los datos y las lecciones que tiene el tema.
-
 \begin{itemize}
 \item[•]Response:
 {\codesize
@@ -75,7 +71,6 @@ En estos requisitos obtenemos el ID del tema mediante la URL.
 }
 
 Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
-
 \item[•]Header: 
 {\codesize
 \begin{verbatim}
@@ -84,7 +79,6 @@ Enviamos por Header el ID del usuario, el token y el network, que nos sirven par
 }
 
 La respuesta que obtenemos está conformada por ``error''. En caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•]Response: 
 {\codesize
 \begin{verbatim}
@@ -113,7 +107,6 @@ La respuesta que obtenemos está conformada por ``error'', en caso afirmativo si
 
 \subsection{localhost/duocode/rest/lecciones/}
 En este apartado se explica cómo hacer un GET para obtener todas las lecciones y un POST para crear una nueva lección.
-\vspace{1em}
 
 \textbf{REQ06 – GET:} Devuelve la lista de todas las lecciones existentes en modo URL. No hace falta enviarle ninguna información. 
 \begin{itemize}
@@ -127,7 +120,6 @@ En este apartado se explica cómo hacer un GET para obtener todas las lecciones 
 \end{itemize}
 
 \textbf{REQ07 – POST:} Crea una nueva lección. Por una parte le pasamos por Payload la información de la lección que queremos crear (título, descripción, explicación que aparecerá al inicio de ésta, orden en el que queremos que se muestre, ID del tema al que pertenecerá, un array de ejercicios que compondrán la lección y otro array de lecciones de las que depende para ser desbloqueada):
-
 \begin{itemize}
 \item[•]Payload: 
 {\codesize
@@ -159,11 +151,8 @@ La respuesta que obtenemos está conformada por ``error'' e ``id''. Si la respue
 \subsection{localhost/duocode/rest/lecciones/idLeccion}
 En este apartado se explica cómo hacer un GET para obtener una lección específica, un PUT para modificarla y un DELETE para eliminarla.
 En estos requisitos obtenemos el ID de la lección mediante la URL.
-\vspace{1em}
-
 
 \textbf{REQ08 – GET:} Devuelve los datos de la lección.
-
 \begin{itemize}
 \item[•]Response:
 {\codesize
@@ -179,7 +168,6 @@ En estos requisitos obtenemos el ID de la lección mediante la URL.
 \end{itemize}
 
 \textbf{REQ09 – PUT:} Modifica una lección. Aparte de cambiar los datos de una lección, en este método también podemos marcar como completada la lección para un usuario en un determinado lenguaje, por lo que tenemos dos posibles Payloads:
-
 \begin{itemize}
 \item[•]Payload para modificar lección:
 {\codesize
@@ -204,7 +192,6 @@ Payload para marcar como lección completada para un usuario:
 }
 
 Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
-
 \item[•]Header:
 {\codesize
 \begin{verbatim}
@@ -223,7 +210,6 @@ La respuesta que obtenemos está conformada por ``error''. En caso afirmativo si
 
 \textbf{REQ10 – DELETE:} Borra la lección completamente. Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
 \begin{itemize}
-
 \item[•]
 Header: 
 {\codesize
@@ -233,7 +219,6 @@ Header:
 }
 
 La respuesta que obtenemos está conformada por ``error''. En caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•] 
 Response:
 {\codesize
@@ -245,10 +230,8 @@ Response:
 
 \subsection{localhost/duocode/rest/ejercicios}
 En este apartado se explica cómo hacer un GET para obtener todos los ejercicios y un POST para crear un nuevo ejercicio.
-\vspace{1em}
 
 \textbf{REQ11 – GET:} Devuelve la lista de todos los ejercicios existentes en modo URL. No hace falta enviarle ninguna información. 
-
 \begin{itemize}
 \item[•]
 Response: 
@@ -261,7 +244,6 @@ Response:
 \end{itemize}
 
 \textbf{REQ12 – POST:} Crea un ejercicio nuevo. Por una parte le pasamos el nombre y los enunciados (un mismo ejercicio puede tener varios enunciados porque cada uno corresponde a distintos lenguajes de programación):
-
 \begin{itemize}
 \item[•]
 Payload: 
@@ -272,7 +254,6 @@ Payload:
 }
 
 Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
-
 \item[•]
 Header: 
 {\codesize
@@ -282,7 +263,6 @@ Header:
 }
 
 La respuesta que obtenemos está conformada por ``error'' e ``id''. Si la respuesta en el campo ``error'' es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente, en este caso el id será ``-1'' ya que no ha sido asignado ninguno; si es negativa todo ha ido correctamente y el id será el asignado a este nuevo recurso. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•]
 Response: 
 {\codesize
@@ -296,10 +276,8 @@ Response:
 \subsection{localhost/duocode/rest/ejercicios/idEjercicio}
 En este apartado se explica cómo hacer un GET para obtener un ejercicio en específico, un PUT para modificarlo y un DELETE para eliminarlo.
 En estos requisitos obtenemos el ID del ejercicio mediante la URL.
-\vspace{1em}
 
 \textbf{REQ13 – GET:} Devuelve los datos del ejercicio, los enunciados que tiene y el nombre del lenguaje asociado a cada uno.
-
 \begin{itemize}
 \item[•]
 Response: 
@@ -314,7 +292,6 @@ Response:
 \end{itemize}
 
 \textbf{REQ14 – DELETE:} Borra un ejercicio completamente. Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
-
 \begin{itemize}
 \item[•]
 Header: 
@@ -336,10 +313,8 @@ Response:
 
 \subsection{localhost/duocode/rest/enunciados}
 En este apartado se explica cómo hacer un GET para obtener todos los enunciados y un POST para crear un nuevo enunciado.
-\vspace{1em}
 
 \textbf{REQ15 – GET:} Devuelve la lista de todos los enunciados existentes en modo URL. No hace falta enviarle ninguna información.
-
 \begin{itemize}
 \item[•]
 Response:
@@ -350,11 +325,9 @@ Response:
 `nombreLenguaje': `C++'}]}
 \end{verbatim}
 }
-
 \end{itemize}
 
 \textbf{REQ16 – POST:} Crea un enunciado nuevo. Por una parte le pasamos el lenguaje, el código y el ID del ejercicio correspondiente:
-
 \begin{itemize}
 \item[•]
 Payload: 
@@ -366,7 +339,6 @@ Payload:
 }
 
 Por otra parte le enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
-
 \item[•]
 Header:
 {\codesize
@@ -376,7 +348,6 @@ Header:
 }
 
 La respuesta que obtenemos está conformada por ``error'' e ``id''. Si la respuesta en el campo ``error'' es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente, en este caso el id será ``-1'' ya que no ha sido asignado ninguno; si es negativa todo ha ido correctamente y el id será el asignado a este nuevo enunciado. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•]
 Response: 
 {\codesize
@@ -390,11 +361,8 @@ Response:
 \subsection{localhost/duocode/rest/enunciados/idEnunciado}
 En este apartado se explica cómo hacer un GET para obtener un enunciado en específico, un PUT para modificar un enunciado y un DELETE para eliminarlo.
 En estos requisitos obtenemos el ID del candidato mediante la URL.
-\vspace{1em}
-
 
 \textbf{REQ17 – GET:} Devuelve los datos del enunciado.
-
 \begin{itemize}
 \item[•]
 Response: 
@@ -407,7 +375,6 @@ Response:
 \end{itemize}
 
 \textbf{REQ18 – PUT:} Modifica un enunciado.
-
 \begin{itemize}
 \item[•]
 Payload: 
@@ -459,10 +426,8 @@ Response:
 
 \subsection{localhost/duocode/rest/lenguajes/}
 En este apartado se explica cómo hacer un GET para obtener todos los lenguajes y un POST para crear un nuevo lenguaje.
-\vspace{1em}
 
 \textbf{REQ20 – GET:} Devuelve la lista de todos los lenguajes existentes. No hace falta enviarle ninguna información.
-  
 \begin{itemize}
 \item[•]
 Response:
@@ -474,7 +439,6 @@ Response:
 \end{itemize}
 
 \textbf{REQ21 – POST:} Crea un lenguaje nuevo. La única información necesaria es el nombre.
-
 \begin{itemize}
 \item[•]
 Payload: 
@@ -485,7 +449,6 @@ Payload:
 }
 
 Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
-
 \item[•]
 Header: 
 {\codesize
@@ -495,7 +458,6 @@ Header:
 }
 
 La respuesta que obtenemos está conformada por ``error'' y ``nombreConfirmacion''. Si la respuesta en el campo ``error'' es afirmativa significa que algo ha fallado y no ha podido terminar la operación correctamente; si es negativa todo ha ido correctamente y el ``nombreConfirmacion'' será el asignado a este nuevo lenguaje. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•]
 Response: 
 {\codesize
@@ -507,10 +469,8 @@ Response:
 
 \subsection{localhost/duocode/rest/candidatos/}
 En este apartado se explica cómo hacer un GET para obtener todos los candidatos y un POST para crear un nuevo candidato.
-\vspace{1em}
 
 \textbf{REQ22 – GET:} Devuelve la lista de todos los candidatos existentes en modo URL. No hace falta enviarle ninguna información. 
-
 \begin{itemize}
 \item[•]
 Response: 
@@ -554,10 +514,8 @@ Response:
 \subsection{localhost/duocode/rest/candidatos/idCandidato}
 En este apartado se explica cómo hacer un GET para obtener un candidato en específico, un PUT para modificarlo y un DELETE para eliminarlo.
 En estos requisitos obtenemos el ID del candidato mediante la URL.
-\vspace{1em}
 
 \textbf{REQ24 – GET:} Devuelve los datos de un candidato, incluidos los votos que tiene:
-
 \begin{itemize}
 \item[•]
 Response: 
@@ -573,7 +531,6 @@ Response:
 \end{itemize}
 
 \textbf{REQ25 – PUT:} Excepcionalmente no modifica todo el candidato, sino que sirve para que un usuario pueda votar, modificar el voto o eliminarlo (si se vuelve a votar positivo o negativo el voto se anula). Se envía el ID del usuario y el voto (1 si es positivo y 0 si es negativo).
-
 \begin{itemize}
 \item[•]
 Payload: 
@@ -594,7 +551,6 @@ Response:
 \end{itemize}
 
 \textbf{REQ26 – DELETE:} Borra un candidato completamente.
-
 \begin{itemize}
 \item[•]
 Header:
@@ -605,7 +561,6 @@ Header:
 }
 
 La respuesta que obtenemos está conformada por ``error''. En caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•]
 Response: 
 {\codesize
@@ -617,10 +572,8 @@ Response:
 
 \subsection{localhost/duocode/rest/usuarios/}
 En este apartado se explica cómo hacer un GET para obtener todos los usuarios.
-\vspace{1em}
 
 \textbf{REQ27 – GET:} Devuelve todos los usuarios. A diferencia de otros, este GET solo lo puede hacer un administrador por lo que necesitamos nuevamente del Header.
-
 \begin{itemize}
 \item[•]
 Header:
@@ -631,7 +584,6 @@ Header:
 }
 
 La respuesta que obtenemos está conformada por ``error'' y la lista de usuarios. Si ``error'' tiene una respuesta afirmativa, significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente y muestra la lista de usuarios mediante su URL. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•]
 Response: 
 {\codesize
@@ -645,10 +597,8 @@ Response:
 \subsection{localhost/duocode/rest/usuarios/idUsuario}
 En este apartado se explica cómo hacer un GET para obtener un usuario en específico y un DELETE para eliminarlo.
 En estos requisitos obtenemos el ID del candidato mediante la URL.
-\vspace{1em}
 
 \textbf{REQ28 – GET:} Devuelve la información asociada a un usuario. Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario que accede es el mismo del que se da la información:
-
 \begin{itemize}
 \item[•]
 Header: 
@@ -684,7 +634,6 @@ Response:
 
 \textbf{REQ29 – DELETE}: Borra un usuario completamente.
 Enviamos por Header el ID del usuario, el token y el network, que nos sirven para comprobar que el usuario es administrador y tiene permisos para hacer esta operación:
-
 \begin{itemize}
 \item[•]
 Header: 
@@ -695,7 +644,6 @@ Header:
 }
 
 La respuesta que obtenemos está conformada por ``error''. En caso afirmativo significa que algo ha fallado y no ha podido terminar la operación correctamente; en caso negativo todo ha ido correctamente. El único caso de error posible es que el usuario no tenga los permisos necesarios.
-
 \item[•]
 Response: 
 {\codesize
@@ -707,10 +655,8 @@ Response:
 
 \subsection{localhost/duocode/rest/envios}
 En este apartado se explica cómo hacer un GET para obtener todos los envíos y un POST para crear un nuevo envío.
-\vspace{1em}
 
 \textbf{REQ30 – GET}: Devuelve todos los envíos para que un administrador pueda tener información de ellos. Como solo puede tener acceso a esto el administrador, es necesaria la siguiente información:
-
 \begin{itemize}
 \item[•]
 Header: 
@@ -721,7 +667,6 @@ Header:
 }
 
 La respuesta se compone de usuarios con historiales de ejercicios.
-
 \item[•]
 Response: 
 {\codesize
@@ -745,7 +690,6 @@ Response:
 \end{itemize}
 
 \textbf{REQ31 – PUT:} Corrige un ejercicio y también se comprueba si se ha completado la lección; en caso afirmativo se marca como completada en la base de datos. Por una parte enviamos la URL del ejercicio, el lenguaje del enunciado, el lenguaje de la solución y el código:
-
 \begin{itemize}
 \item[•]
 Payload: 

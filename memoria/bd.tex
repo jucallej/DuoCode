@@ -1,6 +1,5 @@
 %!TEX root = memoria_duocode_interfaz.tex
 \subsection{Base de datos}
-
 A la vez que íbamos definiendo los requisitos, fuimos dándonos cuenta de las entidades y atributos que necesitaríamos en la base de datos y formamos el modelo entidad-relación (figura \ref{fig:ent_rel}). Una vez conseguido esto, definimos las tablas y elaboramos el modelo relacional (figura \ref{fig:rel}).
 
 \begin{sidewaysfigure}
@@ -18,11 +17,8 @@ A la vez que íbamos definiendo los requisitos, fuimos dándonos cuenta de las e
 \end{figure}
 
 \newpage
-
 \textbf{Estructura de las tablas}
-
 \begin{description}
-
 \item[Usuario:] Tabla que contiene los datos de los usuarios. No hace falta guardar el nombre u otros datos personales ya que los obtenemos de la aplicación con la que haya iniciado sesión.
 
 \begin{tabularx}{14cm}{|l|X|}
@@ -33,7 +29,6 @@ IDGoogle        & ID que le asigna Google. Es opcional ya que el usuario puede i
 IDFacebook      & ID que le asigna Facebook. Es opcional ya que el usuario puede iniciar con Google. \\ \hline
 rol      & Indica si el usuario es administrador (1) o no (0). \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[UsuarioVotaCandidato:] Tabla que contiene todos los votos de los usuarios a los candidatos.
 
@@ -44,7 +39,6 @@ idUsuario       & ID del usuario que vota.                                      
 idCandidato     & ID del candidato al que se quiere votar.                                           \\ \hline
 voto            & Puede tomar los valores 0 o 1 dependiendo de si el voto es positivo (1) o negativo (0). \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Candidato:] Tabla que contiene la información de los candidatos enviados por los usuarios de la aplicación.
 
@@ -61,7 +55,6 @@ idEjercicio              & ID del ejercicio que resuelve dicho candidato.       
 lenguajeOrigen        & Lenguaje en el que se encuentra el enunciado del ejercicio. \\ \hline
 lenguajeDestino      & Lenguaje en el que está la posible solución. \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Tema:] Tabla que contiene la información de los temas, primer nivel para organizar los ejercicios según a qué van dedicados. Los temas se conforman de una colección de lecciones.
 
@@ -73,7 +66,6 @@ orden     & Orden en el que queremos que aparezca el tema.                      
 título            & Nombre que distingue a los temas. \\ \hline
 descripción            & Texto breve que describe el tema. \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Lección:] Tabla que contiene la información de las lecciones, segundo nivel para la organización. Las lecciones se conforman de una serie de ejercicios y están incluidas en temas.
 
@@ -87,7 +79,6 @@ descripción              & Texto breve que describe la lección.               
 expliciación        & Texto largo que sirve como introducción a la lección.  \\ \hline
 idTema      & ID del tema al que pertenece esta lección. \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[UsuarioCompletaLeccion:] Tabla que contiene la relación de las lecciones con los usuarios que las han completado.
 
@@ -98,7 +89,6 @@ idUsuario       & ID del usuario que ha completado la lección.                 
 idLección     & Lección que ha sido completada.                                           \\ \hline
 lenguaje            & Lenguaje en el que se ha completado dicha lección, ya que una lección puede ser completada por el mismo usuario en distintos lenguajes. \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[DesbloqueadaPor:] Tabla que contiene la dependencia entre lecciones. Hay lecciones a las que solo se puede acceder si se han superado otras anteriormente.
 
@@ -108,7 +98,6 @@ lenguaje            & Lenguaje en el que se ha completado dicha lección, ya que
 idLección       & ID de la lección a la que queremos asignar dependencia.                                                          \\ \hline
 desbloqueadaPor     & Lección que debe ser superada para poder acceder a la mencionada anteriormente.                                           \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Ejercicio:] Tabla que contiene la información de los ejercicios existentes.
 
@@ -118,7 +107,6 @@ desbloqueadaPor     & Lección que debe ser superada para poder acceder a la men
 ID       & Identificador asignado por la aplicación para cada ejercicio. \\ \hline
 nombre     & Nombre con el que se diferenciará de los demás.                                           \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[LeccionConstaEjercicio:] Tabla que contiene la relación donde se asignan los ejercicios a las correspondientes lecciones. Un mismo ejercicio puede estar en varias lecciones a la vez.
 
@@ -128,7 +116,6 @@ nombre     & Nombre con el que se diferenciará de los demás.                  
 idLección       & ID de la lección a la que se añade un ejercicio. \\ \hline
 idEjercicio     & ID del ejercicio añadido a la lección.                                           \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Lenguaje:] Tabla que contiene los lenguajes que podrán aprender los usuarios.
 
@@ -137,7 +124,6 @@ idEjercicio     & ID del ejercicio añadido a la lección.                      
 \textbf{Nombre} & \textbf{Descripción}                                                              \\ \hline
 nombre       & Nombre del lenguaje. \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Enunciado:] Tabla que contiene la información de los enunciados. Un enunciado es un código con un correspondiente lenguaje que forma parte de un ejercicio. Un ejercicio puede tener varios enunciados en varios idiomas.
 
@@ -150,7 +136,6 @@ fecha     & Fecha en la que fue añadido el enunciado.                          
 idEjercicio     & ID del ejercicio al que corresponde este enunciado.                                           \\ \hline
 lenguaje     & Lenguaje en el que está escrito el código de dicho enunciado.                                           \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Favorito:] Tabla que contiene la relación entre los usuarios y los ejercicios favoritos de estos.
 
@@ -162,7 +147,6 @@ idEjercicio     & ID del ejercicio que ha sido marcado como favorito.           
 lenguajeOrigen     & Lenguaje del enunciado que ha sido marcado como favorito.                                           \\ \hline
 lenguajeDestino     & Lenguaje que el usuario quería aprender al marcar este ejercicio como favorito.                                           \\ \hline
 \end{tabularx}
-\vspace{1em}
 
 \item[Envío:] Tabla que contiene la relación entre los usuarios y todos los ejercicios que han realizado en la aplicación.
 
