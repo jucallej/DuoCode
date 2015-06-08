@@ -5,9 +5,56 @@ permitido afianzar otros conocimientos sobre programación y planificación de p
 %así como afianzar Todo ello sin olvidarnos de los valiosos conocimientos ya afianzados que seguro serán de utilidad.
 A continuación presentamos detalladamente nuestros objetivos y el estado del arte.
 
+\subsection{Estado del arte\label{subsec:introduction}}
+
+En la actualidad hay numerosas maneras de aprender online. Para empezar, existen recursos típicos donde el que quiere aprender lee y realiza poca interacción. El líder por antonomasia de esta modalidad es Wikipedia \cite{wiki}, una enciclopedia libre y editada colaborativamente en múltiples idiomas. Ante dudas concretas hay sitios de preguntas y respuestas como Stack Overflow \cite{stack}, donde los programadores se ayudan mutuamente en base a cuestiones concretas. Asimismo, muchas universidades usan plataformas digitales como Moodle \cite{moodle}, que permiten publicar apuntes de las diferentes asignaturas. También existen cursos online, los llamados MOOC (acrónimo en inglés de \emph{Massive Open Online Course}) donde puedes aprender distintas materias. Estos requieren  que se suba material como vídeos con explicaciones detalladas. Suelen estar enfocados a la obtención de algún tipo de diploma o certificado. Ejemplos de este enfoque son Coursera \cite{coursera}, EdX \cite{edX} y Miriada X \cite{miriadaX}. Requieren un esfuerzo constante y duradero por parte del profesorado, que tiene que actualizar el material académico disponible y corregir los distintos trabajos de los alumnos. 
+
+Otra manera de enfocar la enseñanza, sobre todo cuando quieres ampliar algo sobre lo que ya tienes una base, es a base de ejercicios. Durante bastantes años se han usado los \emph{jueces online} o \emph{correctores automáticos}. Hay un análisis general sobre este tema, donde se estudia la viabilidad de un proyecto colaborativo para enseñar lenguajes de programación~\cite{pimcdDuoCode14}. En él se explica como normalmente este tipo de sistemas, aplicados a lenguajes de programación, se basan en la ejecución de unos casos de prueba para comprobar la corrección de los programas del usuario. La desventaja de estos sistemas es que exige que los instructores desarrollen previamente estas pruebas, tarea poco grata. Además, solamente te indican si el ejercicio está bien o mal pero no te indica donde está el fallo.
+
+Saliéndonos del mundo de la programación hay otros ejemplos, como Duolingo \cite{duolingo} que permiten aprender un idioma a partir de otro que ya sabes previamente. Sus características más relevantes son:
+
+\begin{itemize}
+\item
+Plantear el aprendizaje como un juego, haciendo que el usuario gane puntos y experiencia según va avanzando. Además incluye vidas, que hacen centrar la atención en la tarea presente para no tener que reiniciar el nivel.
+
+\item
+Guardar información sobre los fallos del usuario para intentar repetir esas preguntas y que aprenda los concepto de manera definitiva.
+
+\item
+Incluir prácticas con tiempo y la posibilidad de certificar el nivel del idioma mediante tests online.
+\end{itemize}
+
+Hay otras alternativas como Bussu \cite{bussu}, donde los usuarios hacen simultáneamente de alumnos y profesores e interactúan entre ellos en una red social con el objetivo de aprender otro idioma.
+
+\subsection{Influencias tecnológicas\label{subsec:introduction}}
+
+Antes de definir cómo llevar a la práctica este proyecto, quisimos ver desde alto nivel qué tipo de sistema queríamos desarrollar. Todas las asignaturas que nombraremos a continuación son las correspondientes al plan de estudios de la Universidad \cite{plan, boe}.
+
+Durante la carrera hemos aprendido, entre otras cosas, lenguajes de programación que nos permiten hacer software ejecutable en ordenadores de sobremesa, en asignaturas como Fundamentos de la Programación o Tecnologías de la Programación. Aunque éste podría ser un enfoque válido, no era el que queríamos seguir. Nos parece que podríamos hacer algo mucho más rápido de probar y usar por primera vez, sin la necesidad de instalar pesado software adicional.
+
+En otras asignaturas como Software Corporativo aprendimos a montar y configurar un sistemas de gestión de contenidos, también llamados CMS (acrónimo en inglés de Content Management System) y con ello montamos una Web. Este enfoque presenta más ventajas, pues permite a cualquiera que tenga un navegador de Internet acceder a nuestra plataforma. Sin embargo, los CMS actuales no permiten hacer cosas tan concretas y específicas como lo que queríamos hacer. Además, dejaríamos sin usar la mayoría de las características de estos y pensamos que no usaríamos todo el potencial que ofrecen estas plataformas.
+
+También cursamos Aplicaciones Web, donde aprendimos a desarrollar una Web desde el principio. Realizar un desarrollo de este tipo nos parecía sumamente interesante, pues nos permitiría un alto grado de flexibilidad con la manera en que queremos realizar el proyecto, y permitiría a los potenciales usuarios probar y usar la plataforma de manera rápida. Además el uso de llamadas asíncronas nos puede permitir hacer la Web plenamente interactiva y fluida ante las acciones del usuario. Por esto decidimos utilizar HTML, CSS y JavaScript en nuestro proyecto. En esta asignatura también nos apoyábamos en conocimientos adquiridos en otras como Bases de Datos y Ampliación de Base de Datos, donde aprendimos a diseñar e implementar bases de datos relacionales y a usarlas desde las aplicaciones. Su uso permite establecer interconexiones (relaciones) entre los datos (guardados en las distintas tablas), y tiene como principal ventaja evitar duplicidades de los datos, y garantizar la integridad de los datos relacionados entre si. Con todos estos conocimientos podemos hacer un sitio Web interactivo y que guarde una gran variedad de datos. Por todo esto decidimos usar una base de datos de este tipo.
+
+También sentíamos particular inclinación por hacer que el contenido estuviera disponible en dispositivos móviles, bien sea adaptando la Web o a través de una aplicación móvil. Algunos estábamos matriculados en la asignatura Programación de Aplicaciones para Dispositivos Móviles, y vimos una oportunidad para poner de manifiesto lo que se podría aprender en esa asignatura.
+
+Por último investigamos la utilidad de implementar un servicio Web, una tecnología que utiliza un conjunto de protocolos y estándares para intercambiar datos entre aplicaciones. Lo más parecido a este enfoque que hemos estudiado es el uso de \emph{sockets} en Ampliación de Sistemas Operativos y Redes. Su uso permite abstraer y separar la manipulación de los datos de la representación de la interfaz del usuario, pudiendo incluso tener varias interfaces para la misma aplicación. Por todo ello decidimos usar este enfoque. Investigamos varias maneras de implementar el servicio Web:
+
+\begin{itemize}
+\item
+La llamada a procedimiento remoto (RPC, del inglés \emph{Remote Procedure Call}) es un protocolo que permite a un ordenador ejecutar código de manera remota en otro. Vimos que hay diversas maneras de realizar un RPC, basándose en distintas especificaciones, siendo una de las más populares SOAP.
+
+\item
+SOAP (acrónimo de \emph{Simple Object Access Protocol}) es un protocolo que define cómo diferentes ordenadores pueden comunicarse a base del intercambio de mensajes XML. Sus principales desventajas son que se apoya en un descriptor de los servicios disponibles, que hay que actualizar con cada nueva funcionalidad añadida. Además, usa XML, un lenguaje de marcado que ha perdido fuelle frente al más ligero JSON. Por último, no todos los lenguajes de programación ofrecen facilidades para el uso de este tipo de servicio Web.
+
+\item
+REST es un protocolo cliente/servicor sin estado que usa HTTP y los métodos de este protocolo (GET, POST, PUT, DELETE, ...) para consultar y modificar los distintos recursos. Con frecuencia a este tipo de sistemas se les llama RESTful. Permiten mucha libertad a la hora de desarrollarlo y, como para consumir este tipo de servicio Web solo hace falta hacer peticiones HTTP, es ampliamente soportado por numerosos lenguajes de programación. Además, permite ofrecer los datos en JSON. Por todo ello decidimos usar esta tecnología para nuestro proyecto.
+
+\end{itemize}
+
 \subsection{Propuestas y objetivos\label{subsec:introduction}}
 
-Desarrollaremos un proyecto colaborativo para aprender lenguajes de programación. Como estará a estar centrado en código de programación, decidimos llamarlo DuoCode, pues aprenderás lenguajes de programación nuevos a partir de otros que ya sabes. 
+Gracias a la investigación de todo lo expuesto anteriormente, fijamos nuestras ideas. Nos decidimos a hacer un proyecto para aprender lenguajes de programación, similar a Duolingo. Como estará a estar centrado en código de programación, decidimos llamarlo DuoCode, pues aprenderás lenguajes de programación nuevos a partir de otros que ya sabes. 
 
 Las principales características que queríamos que tuviese disponibles el usuario son:
 
@@ -19,7 +66,7 @@ Se podrá seleccionar el idioma de programación que sabes y el que quieres apre
 Habrá una clara organización con código agrupado por temas.
 
 \item
-El usuario tendrá una puntuación que irá aumentando según avance. Además, los ejercicios estarán agrupados y tendrán una serie de vidas para completarlos. Esto favorecerá  que el usuario se fidelice con la aplicación.
+El usuario tendrá una puntuación que irá aumentando según avance. Además, los ejercicios estarán agrupados y tendrán una serie de vidas para completarlos. Esto favorecerá  que el usuario se fidelice con la aplicación a través de la gamificación.
 
 \item
 Cuando el usuario falle un ejercicio pero no esté de acuerdo, podrá proponerlo como solución. Con la ayuda de la comunidad y de los moderadores, estos se podrán incorporar como soluciones en un lenguaje de programación determinado.
@@ -30,15 +77,13 @@ Se podrán guardar ejercicios favoritos para poder consultarlos de nuevo.
 \item
 Habrá una interacción con las redes sociales. El usuario se podrá autenticar utilizando alguna de ellas y compartir sus resultados en esta.
 
-\item
-Tendrá un componente de \emph{gamificación} que permitirá al usuario ganar puntos por cada ejercicio realizado.
 \end{itemize}
 
 Basándonos en las conclusiones extraídas del apartado anterior, nuestro objetivos para el proyecto son:
 
 \begin{itemize}
 \item
-Desarollar un sistema Web RESTful para el aprendizaje de la programación. Para ello nos planteamos los siguientes pasos:
+Desarollar un sistema Web REST para el aprendizaje de la programación. Para ello nos planteamos los siguientes pasos:
 
 \begin{itemize}
 \item

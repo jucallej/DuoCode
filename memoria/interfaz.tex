@@ -18,10 +18,8 @@ También tiene una serie de componentes reutilizables creados con CSS como icono
 
 Por todo esto decidimos usar este \emph{framework} en nuestro proyecto.
  
-\vspace{1em}
 Como los usuarios principales de la aplicación serán desarrolladores, queríamos que se sintieran cómodos con el diseño. Además queríamos que tuviera personalidad y fuera reconocible. Por ello decidimos usar la paleta de colores \emph{Monokai} \cite{monokai}, disponible en la mayoría de editores de texto orientados a código.
 
-\vspace{1em}
 A la hora de mostrar el código que el usuario debe traducir, queríamos que se resaltara la sintaxis del lenguaje para facilitar al usuario su lectura. Para ello usamos \texttt{highlight.js} \cite{highlight}, un biblioteca JavaScript que hace precisamente esto. Para ello hay que poner el código de la siguiente manera:
 
 {\codesize
@@ -32,7 +30,6 @@ A la hora de mostrar el código que el usuario debe traducir, queríamos que se 
 
 Opcionalmente se le puede especificar en qué lenguaje está escrito el código, pero bajo nuestras pruebas resulta suficiente con la detección automática que tiene la biblioteca. Se puede especificar la paleta que colores que quieres que use para resaltar el código, y para mantener la coherencia usamos de nuevo \emph{Monokai}.
 
-\vspace{1em}
 Teniendo todo esto en cuenta realizamos el prototipo usando diversos documentos HTML, y un único archivo CSS con todo lo necesario para dar estilo a estos. Nos aseguramos de que todo el diseño fuera correctamente visible en varios tipos de dispositivos (nos centramos principalmente en móviles y ordenadores). Desarrollamos varios comportamientos personalizados, como una barra lateral con la información del usuario que se queda fija en ordenadores y dispositivos con alta resolución (no hace \emph{scroll} con el resto del contenido), pero que mueve y se coloca al final cuando estás en un dispositivo móvil. Todos los archivos CSS están dentro de la carpeta `css', al igual que todos los archivos JavaScript están dentro de la carpeta `js'. El resultado se puede ver reflejado en el producto final, pues el diseño lo conservamos intacto.
 
 \subsection{Conexión con el servicio REST\label{subsec:interfaz}}
@@ -61,7 +58,6 @@ Tras ver las características de AngularJS y comprobar que se adaptaría muy bie
 
 Configuramos los fragmentos de HTML que le corresponde a cada URL, en un archivo JavaScript que llamamos \texttt{`duocode.js'}, así:
 
-\vspace{1em}
 {\codesize
 \lstset{}
 \begin{lstlisting}[frame=single]
@@ -80,7 +76,6 @@ duocodeApp.config(['$routeProvider',
 }]);
 \end{lstlisting}
 }
-\vspace{1em}
 
 Asociamos los distintos controladores, poniéndolos en los fragmentos de HTML:
 
@@ -92,7 +87,6 @@ ng-controller="LeccionesController"
 
 Y creando dicho controlador en el archivo arriba mencionado \texttt{`duocode.js'}:
 
-\vspace{1em}
 {\codesize
 \lstset{}
 \begin{lstlisting}[frame=single]
@@ -104,11 +98,9 @@ duocodeApp.controller('LeccionesController', ['$scope', '$http', [...],
 }]);
 \end{lstlisting}
 }
-\vspace{1em}
 
 En nuestra aplicación tenemos varias vistas que muestran la información del usuario (su nombre, foto, puntos conseguidos, etc.), pero no todas lo hacen. Una manera poco eficiente de hacer esto sería duplicar el código para aquellas que sí muestran dicha información. Sin embargo la manera más efectiva y adecuada sería crear un componente reutilizable, de manera que lo usen los que quieran mostrar esta información. AngularJS permite este último enfoque, haciendo que un fragmento de HTML pueda ser mostrado por varias vistas. Lo hace permitiéndonos extender los elementos HTML disponibles. Para ello debemos indicar en el archivo \texttt{`duocode.js'} qué fragmento es reutilizable: 
 
-\vspace{1em}
 {\codesize
 \lstset{}
 \begin{lstlisting}[frame=single]
@@ -120,7 +112,6 @@ duocodeApp.directive('infoUsuario', function() {
 });
 \end{lstlisting}
 }
-\vspace{1em}
 
 Una vez hecho esto podemos usar en las vistas que correspondan el siguiente elemento HTML que acabamos de crear:
 
@@ -132,7 +123,6 @@ Una vez hecho esto podemos usar en las vistas que correspondan el siguiente elem
 
 La última característica que creemos importante explicar es cómo hemos conseguido que los distintos controladores compartan datos entre ellos. Para esto usamos lo que AngularJS llama `Providers' \cite{providers}, que permiten crear servicios y objetos especiales que puedes añadir a tus controladores. Estos solo se cargan la primera vez; las siguientes se devuelven los mismos datos. De esta manera varios controladores pueden tener acceso por ejemplo al mismo usuario y no tener que hacer varias peticiones al servicio Web REST por los mismos datos. Lo pusimos en un archivo separado llamado \texttt{`providers.js'}.
 
-\vspace{1em}
 {\codesize
 \lstset{}
 \begin{lstlisting}[frame=single]
@@ -145,18 +135,14 @@ duocodeProviders.factory('usuarioServicio', ['$http', [...],
 }]);
 \end{lstlisting}
 }
-\vspace{1em}
 
 Con todo esto conseguimos hacer que la interfaz usara los datos reales que le proporcionaba el servicio Web REST. En este punto usábamos un usuario predefinido, y suponíamos que el usuario estaba siempre \emph{logueado}.
 
 \subsection{Integración con redes sociales\label{subsec:interfaz}}
 Una vez conectados con los datos reales, nos dispusimos a impedir que los distintos usuarios pudieran ver cierto contenido sin estar autenticados y permitirles hacerlo usando varias redes sociales. En primer lugar queríamos que fuera posible usar nuestra aplicación con una cuenta de Google. Todos los profesores y alumnos tienen una dirección de correo del tipo \textless usuario\textgreater @ucm.es, y esta está gestionada por Google, de manera que todos ellos  pueden acceder al servicio. En segundo lugar queríamos que pudiera ser accesible usando una cuenta de Facebook \cite{facebook}, pues es una de las redes sociales más populares en España y en el mundo. 
 
-\vspace{1em}
 Cada red social pone a disposición de los desarrolladores bibliotecas JavaScript que permiten obtener un campo único para identificar al usuario, y un \emph{token} que permite acceder a ciertos datos del usuario y autenticarlo durante un periodo limitado de tiempo. El problema es que estás bibliotecas no funcionan más que con su propio servicio. También se puede obtener este campo para identificar al usuario y el \emph{token} haciendo una serie de peticiones a sus servidores e intercambiando algunos datos (es el servidor de la red social el que pide autorización al usuario). Este enfoque tiene el mismo problema, pues es distinto para cada red social. Para solucionar esto hay bibliotecas como la que usamos, HelloJS \cite{hello}, que permiten obtener los datos para autenticar a un usuario de una manera sencilla, y que funcionan para multitud de redes sociales. Integramos esto con la aplicación que ya habíamos creado con AngularJS, e hicimos que si estás autenticado siempre se mande el código que identifica al usuario y el \emph{token} por la cabecera de cada petición al servicio Web REST. Es este el encargado de verificar que esto es valido, y obtener ciertos datos básicos del usuario, como su nombre, o un enlace a su foto de perfil.
 
-\vspace{1em}
 Además, para que el usuario se implicara más, queríamos que pudiera compartir sus avances. Consideramos que Google+ tiene poco uso, por eso solo permitimos compartir cuando estás autenticado con Facebook. Para ello usamos la biblioteca que pone a disposición de los desarrolladores para tales fines \cite{libreriaFacebook}.
 
-\vspace{1em}
 Para último, recordar que para usar estos servicios de las distintas redes sociales es necesario registrarse como desarrollador en los distintos portales de las compañías.
