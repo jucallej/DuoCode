@@ -93,9 +93,7 @@ $ sudo apt-get install google-chrome-stable
 Es necesario tener instalado un servidor local. XAMPP nos proporciona una base de datos MySQL y un servidor Apache.
 Para instalarlo solo hay que acceder a la web \url{https://www.apachefriends.org/index.html} y descargar la última versión disponible.
 
-
-Una vez instalado y funcionando accedemos a \url{http://localhost/phpmyadmin} para importar la Base de datos.
-Creamos una Base de datos nueva con el nombre `Duocode', la seleccionamos e importamos el archivo 'Duocode.sql' para que nos cree las tablas y cargue la información del proyecto.
+Una vez instalado y funcionando accedemos a \url{http://localhost/phpmyadmin} para importar la Base de datos. Creamos la Base de datos nueva con el nombre `Duocode', la seleccionamos e importamos el archivo 'Duocode.sql' para que nos cree las tablas y cargue la información del proyecto.
 
 
 En la carpeta \textit{`htdocs'}, que se encuentra dentro de la carpeta del servidor XAMPP, es donde tenemos que poner la parte del front-end.
@@ -136,10 +134,11 @@ pegamos estas líneas de código (cambiando la ruta del proyecto):
 {\codesize
 \begin{verbatim}
 <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
-               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS"
+               maxThreads="150" SSLEnabled="true" scheme="https" 
+               secure="true" clientAuth="false" sslProtocol="TLS"
            keystoreType="PKCS12"
-           keystoreFile="{Ruta al repositorio}\DuoCode\duocode\certificados\mycert.p12" keystorePass="contraseña"/>
+           keystoreFile="{Ruta al repositorio}\DuoCode\duocode\certificados\
+           mycert.p12" keystorePass="contraseña"/>
 \end{verbatim}
 }
 
