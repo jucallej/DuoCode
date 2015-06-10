@@ -2,7 +2,7 @@
 
 En esta sección describiremos cómo realizamos la interfaz gráfica que usa el servicio Web REST creado previamente. En primer lugar realizamos un prototipo con HTML/CSS, luego conectamos ese prototipo con los datos reales, y por último integramos varias redes sociales en la aplicación.
 
-\subsection{Prototipo\label{subsec:interfaz}}
+\subsection{Prototipo\label{subsec:prototipo}}
 Antes de conectar la interfaz con los datos del servicio Web decidimos hacer un prototipo con datos de prueba. Lo hicimos usando HTML, un lenguaje de marcado para la elaboración de páginas Web, y hojas de estilo CSS, que sirven para definir la presentación de un documento HTML. Hacer interfaces visuales coherentes y vistosas puede ser complejo y laborioso si se decide partir desde cero. En la actualidad se suele usar \emph{frameworks} como Bootstrap \cite{bootstrap} para tener una base sólida. Sus principales características son:
 
 \begin{itemize}
@@ -32,7 +32,7 @@ Opcionalmente se le puede especificar en qué lenguaje está escrito el código,
 
 Teniendo todo esto en cuenta realizamos el prototipo usando diversos documentos HTML, y un único archivo CSS con todo lo necesario para dar estilo a estos. Nos aseguramos de que todo el diseño fuera correctamente visible en varios tipos de dispositivos (nos centramos principalmente en móviles y ordenadores). Desarrollamos varios comportamientos personalizados, como una barra lateral con la información del usuario que se queda fija en ordenadores y dispositivos con alta resolución (no hace \emph{scroll} con el resto del contenido), pero que mueve y se coloca al final cuando estás en un dispositivo móvil. Todos los archivos CSS están dentro de la carpeta `css', al igual que todos los archivos JavaScript están dentro de la carpeta `js'. El resultado se puede ver reflejado en el producto final, pues el diseño lo conservamos intacto.
 
-\subsection{Conexión con el servicio REST\label{subsec:interfaz}}
+\subsection{Conexión con el servicio REST\label{subsec:rest}}
 Para conectar la interfaz visual con el servicio Web realizamos llamadas asíncronas, como hemos comentado en la introducción. Nos planteamos hacer una Web con una única página, que se va modificando con estas peticiones. Con JavaScript, el lenguaje de programación del lado del cliente para interactuar con el HTML y CSS, hay varias maneras de realizar estas llamadas asíncronas, y hacer que la interfaz reaccione correctamente a las acciones del usuario. Por ello nos planteamos cómo realizarlo:
 
 
@@ -138,7 +138,7 @@ duocodeProviders.factory('usuarioServicio', ['$http', [...],
 
 Con todo esto conseguimos hacer que la interfaz usara los datos reales que le proporcionaba el servicio Web REST. En este punto usábamos un usuario predefinido, y suponíamos que el usuario estaba siempre \emph{logueado}.
 
-\subsection{Integración con redes sociales\label{subsec:interfaz}}
+\subsection{Integración con redes sociales\label{subsec:redes_sociales}}
 Una vez conectados con los datos reales, nos dispusimos a impedir que los distintos usuarios pudieran ver cierto contenido sin estar autenticados y permitirles hacerlo usando varias redes sociales. En primer lugar queríamos que fuera posible usar nuestra aplicación con una cuenta de Google. Todos los profesores y alumnos tienen una dirección de correo del tipo \textless usuario\textgreater @ucm.es, y esta está gestionada por Google, de manera que todos ellos  pueden acceder al servicio. En segundo lugar queríamos que pudiera ser accesible usando una cuenta de Facebook \cite{facebook}, pues es una de las redes sociales más populares en España y en el mundo. 
 
 Cada red social pone a disposición de los desarrolladores bibliotecas JavaScript que permiten obtener un campo único para identificar al usuario, y un \emph{token} que permite acceder a ciertos datos del usuario y autenticarlo durante un periodo limitado de tiempo. El problema es que estás bibliotecas no funcionan más que con su propio servicio. También se puede obtener este campo para identificar al usuario y el \emph{token} haciendo una serie de peticiones a sus servidores e intercambiando algunos datos (es el servidor de la red social el que pide autorización al usuario). Este enfoque tiene el mismo problema, pues es distinto para cada red social. Para solucionar esto hay bibliotecas como la que usamos, HelloJS \cite{hello}, que permiten obtener los datos para autenticar a un usuario de una manera sencilla, y que funcionan para multitud de redes sociales. Integramos esto con la aplicación que ya habíamos creado con AngularJS, e hicimos que si estás autenticado siempre se mande el código que identifica al usuario y el \emph{token} por la cabecera de cada petición al servicio Web REST. Es este el encargado de verificar que esto es valido, y obtener ciertos datos básicos del usuario, como su nombre, o un enlace a su foto de perfil.
