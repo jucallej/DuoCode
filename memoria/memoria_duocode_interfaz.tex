@@ -172,20 +172,21 @@ Desarrollo de un front-end para DuoCode}
 \input{abstract}
 }
 
-\pagenumbering{gobble}% Remove page numbers (and reset to 1)
-\clearpage
-\thispagestyle{empty}
+{\clearpage
 \tableofcontents
+\newpage}
 
-{\setlength{\parskip}{0.4cm plus4mm minus3mm}
+{
+\thispagestyle{empty}
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\setlength{\parskip}{0.4cm plus4mm minus3mm}
 %\listoffigures
-
-% New pagestyle
-%\pagestyle{fancy}
 % New numbering
 \pagenumbering{arabic}
 
-\newpage
+% New pagestyle
+%\pagestyle{fancy}
+
 \section{Introducci\'on\label{sec:intro}}
 \input{introduction}
 
