@@ -1,15 +1,15 @@
 %!TEX root = memoria_duocode_interfaz.tex
 
-En este proyecto hemos realizado un servicio Web REST y un \emph{front-end} que lo usa, para crear un proyecto de aprendizaje colaborativo de lenguajes de programación en base a otros que ya sabes llamado DuoCode. Este proyecto ha permitido a los alumnos que lo desarrollan profundizar en tecnologías y paradigmas que no se aprenden a lo largo del grado o que se dan como meras referencias; asimismo, ha
+En este proyecto hemos realizado un servicio Web REST y un \emph{front-end} que lo usa, para crear un proyecto de aprendizaje colaborativo de lenguajes de programación llamado DuoCode. Este proyecto ha permitido a los alumnos que lo desarrollan profundizar en tecnologías y paradigmas que no se aprenden a lo largo del grado o que se dan como meras referencias; asimismo, ha
 permitido afianzar otros conocimientos sobre programación y planificación de proyectos.
 %así como afianzar Todo ello sin olvidarnos de los valiosos conocimientos ya afianzados que seguro serán de utilidad.
-A continuación presentamos detalladamente nuestros objetivos y el estado del arte.
+A continuación presentamos el estado del arte, las influencias tecnológicas y nuestros objetivos.
 
 \subsection{Estado del arte\label{subsec:estado_arte}}
 
-En la actualidad hay numerosas maneras de aprender online. Para empezar, existen recursos típicos donde el que quiere aprender lee y realiza poca interacción. El líder por antonomasia de esta modalidad es Wikipedia \cite{wiki}, una enciclopedia libre y editada colaborativamente en múltiples idiomas. Ante dudas concretas hay sitios de preguntas y respuestas como Stack Overflow \cite{stack}, donde los programadores se ayudan mutuamente en base a cuestiones concretas. Asimismo, muchas universidades usan plataformas digitales como Moodle \cite{moodle}, que permiten publicar apuntes de las diferentes asignaturas. También existen cursos online, los llamados MOOC (acrónimo en inglés de \emph{Massive Open Online Course}) donde puedes aprender distintas materias. Estos requieren  que se suba material como vídeos con explicaciones detalladas. Suelen estar enfocados a la obtención de algún tipo de diploma o certificado. Ejemplos de este enfoque son Coursera \cite{coursera}, EdX \cite{edX} y Miriada X \cite{miriadaX}. Requieren un esfuerzo constante y duradero por parte del profesorado, que tiene que actualizar el material académico disponible y corregir los distintos trabajos de los alumnos. 
+En la actualidad hay numerosas maneras de aprender online. Para empezar, existen recursos típicos donde el que quiere aprender lee y realiza poca interacción. El líder por antonomasia de esta modalidad es Wikipedia \cite{wiki}, una enciclopedia libre y editada colaborativamente en múltiples idiomas. Ante dudas concretas hay sitios de preguntas y respuestas como Stack Overflow \cite{stack}, donde los programadores se ayudan mutuamente en base a cuestiones concretas. Asimismo, muchas universidades usan \emph{entornos virtuales de aprendizaje} como Moodle \cite{moodle}, que facilitan la gestión completa de las asignaturas. También existen cursos online, los llamados MOOC (acrónimo en inglés de \emph{Massive Open Online Course}) donde puedes aprender distintas materias. Estos requieren  que se suba material como vídeos con explicaciones detalladas. Suelen estar enfocados a la obtención de algún tipo de diploma o certificado. Ejemplos de este enfoque son Coursera \cite{coursera}, EdX \cite{edX} y Miriada X \cite{miriadaX}.
 
-Otra manera de enfocar la enseñanza, sobre todo cuando quieres ampliar algo sobre lo que ya tienes una base, es a base de ejercicios. Durante bastantes años se han usado los \emph{jueces online} o \emph{correctores automáticos}. Hay un análisis general sobre este tema, donde se estudia la viabilidad de un proyecto colaborativo para enseñar lenguajes de programación~\cite{pimcdDuoCode14}. En él se explica como normalmente este tipo de sistemas, aplicados a lenguajes de programación, se basan en la ejecución de unos casos de prueba para comprobar la corrección de los programas del usuario. La desventaja de estos sistemas es que exige que los instructores desarrollen previamente estas pruebas, tarea poco grata. Además, solamente te indican si el ejercicio está bien o mal pero no te indica donde está el fallo.
+Otra manera de enfocar la enseñanza, sobre todo cuando quieres ampliar algo sobre lo que ya tienes una base, es la realización de ejercicios. Durante bastantes años se han usado los \emph{jueces online} o \emph{correctores automáticos}. Hay un análisis general sobre este tema, donde se estudia la viabilidad de un proyecto colaborativo para enseñar lenguajes de programación~\cite{pimcdDuoCode14}. En él se explica como normalmente este tipo de sistemas, aplicados a lenguajes de programación, se basan en la ejecución de unos casos de prueba para comprobar la corrección de los programas del usuario. La desventaja de estos sistemas es que exige que los instructores desarrollen previamente estas pruebas, tarea poco grata. Además, solamente te indican si el ejercicio está bien o mal pero no te indica donde está el fallo.
 
 Saliéndonos del mundo de la programación hay otros ejemplos, como Duolingo \cite{duolingo} que permiten aprender un idioma a partir de otro que ya sabes previamente. Sus características más relevantes son:
 
@@ -18,7 +18,7 @@ Saliéndonos del mundo de la programación hay otros ejemplos, como Duolingo \ci
 Plantear el aprendizaje como un juego, haciendo que el usuario gane puntos y experiencia según va avanzando. Además incluye vidas, que hacen centrar la atención en la tarea presente para no tener que reiniciar el nivel.
 
 \item
-Guardar información sobre los fallos del usuario para intentar repetir esas preguntas y que aprenda los concepto de manera definitiva.
+Guardar información sobre los fallos del usuario para intentar repetir esas preguntas y que aprenda los conceptos de manera definitiva.
 
 \item
 Incluir prácticas con tiempo y la posibilidad de certificar el nivel del idioma mediante tests online.
@@ -54,7 +54,7 @@ REST es un protocolo cliente/servicor sin estado que usa HTTP y los métodos de 
 
 \subsection{Propuestas y objetivos\label{subsec:objetivos}}
 
-Gracias a la investigación de todo lo expuesto anteriormente, fijamos nuestras ideas. Nos decidimos a hacer un proyecto para aprender lenguajes de programación, similar a Duolingo. Como estará a estar centrado en código de programación, decidimos llamarlo DuoCode, pues aprenderás lenguajes de programación nuevos a partir de otros que ya sabes. 
+Gracias a la investigación de todo lo expuesto anteriormente, fijamos nuestras ideas. Nos decidimos a hacer un proyecto para aprender lenguajes de programación, similar a Duolingo. Como estará centrado en código de programación, decidimos llamarlo DuoCode, pues aprenderás lenguajes de programación nuevos a partir de otros que ya sabes. 
 
 Las principales características que queríamos que tuviese disponibles el usuario son:
 
@@ -105,7 +105,7 @@ Desarrollar una (o dos) interfaces gráficas que usen el servicio que acabamos d
 Diseñar la interfaz usando HTML/CSS, usando datos de prueba.
 
 \item
-Conectar la interfaz con el servicio Web mediante llamadas asíncronas y JavaScript, de manera que use los datos reales proporcionados por el servicio REST. Al uso de esta técnica se le suele llamar AJAX (acrónimo en inglés de  \emph{Asynchronous JavaScript And XML}).
+Conectar la interfaz con el servicio Web mediante llamadas asíncronas y JavaScript, de manera que use los datos reales proporcionados por el servicio REST. Al uso de esta técnica se le suele llamar AJAJ (acrónimo en inglés de  \emph{Asynchronous JavaScript And JSON}).
 
 \item
 En caso de tener tiempo diseñar la interfaz de la aplicación para Android y realizar su implementación, o adaptar la Web para su visualización en dispositivos móviles.
