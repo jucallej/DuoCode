@@ -1,18 +1,18 @@
 %!TEX root = memoria_duocode_interfaz.tex
 
-In this project we have done a REST Web service and a \emph{front-end} which uses it, for creating a collaborative learning project of programming languages called DuoCode. This project has allowed the students that develop it to go in depth into technologies and paradigms that are not learned during the degree or that are merely referenced; additionally, it has allowed to secure other knowledge about programming and planning projects. Coming up next we will introduce in the state of the art, the technological influences and our objectives.
+In this project we have done a REST Web service and a \emph{front-end} which uses it, for creating a collaborative learning project of programming languages called DuoCode. This project has allowed the students that develop it to go in depth into technologies and paradigms that are not learned during the degree or that are merely referenced; additionally, it has allowed to reinforce other knowledge about programming and planning projects. In the next of the section we will introduce in the state of the art, the technological influences and our objectives.
 
 \subsection{State of the art\label{subsec:state_art}}
 
-Nowadays there are numerous ways of learning online. To begin with, there are typical resources where the person who wants to learn reads and performs few interactions. The leader per excellence in this modality is Wikipedia \cite{wiki}, an open and collaborative multi-language encyclopedia. To assist in solving specific doubts there are sites for questions and answers like Stack Overflow \cite{stack}, were programmers help each other solve particular problems. Additionally, many universities use \emph{virtual learning environments} like Moodle \cite{moodle}, that make easier the full management of subjects. There are also online courses, called MOOC (acronym for Massive Open Online Course) where you can learn different subjects. These require material like videos with detailed explanations to be uploaded. Usually the purpose of these courses is to obtain some sort of diploma or certificate. Examples of this approach are Coursera \cite{coursera}, EdX \cite{edX} and Miriada X \cite{miriadaX}.
+Nowadays there are numerous ways of learning online. First, there are typical resources where learners read and perform few interactions. The leader per excellence in this modality is Wikipedia \cite{wiki}, an open and collaborative multi-language encyclopedia. To assist in solving specific doubts there are sites for questions and answers like Stack Overflow \cite{stack}, were programmers help each other to solve particular problems. Additionally, many universities use \emph{virtual learning environments} like Moodle \cite{moodle}, which make easier the full management of subjects. There are also online courses, called MOOC (acronym for Massive Open Online Course) where you can learn different subjects. These require material like videos with detailed explanations to be uploaded. Usually the purpose of these courses is to obtain some sort of diploma or certificate. Examples of this approach are Coursera \cite{coursera}, EdX \cite{edX} and Miriada X \cite{miriadaX}.
 
-Another way of approaching teaching, specially when you want to expand something you already have a base of, is exercises. \emph{Online judges} or \emph{automatic correctors} have been used for many years. There is a general analysis about the topic, where the viability of a collaborative project for teaching programming languages is studied~\cite{pimcdDuoCode14}. It explains that normally these types of systems, applied to programming language, are based on the execution of several test cases to check the correction of the user's programs. The disadvantage of these systems is that they require the trainers to develop these tests in advance, an unwelcome task. Besides, they only point out whether there is an error or not but they do not show where the mistake is.
+Another teaching approach, specially when you want to expand something you already have a base of, is exercises. \emph{Online judges} or \emph{automated assessment system} have been used for many years. There is a general analysis about the topic, where the viability of a collaborative project for teaching programming languages is studied~\cite{pimcdDuoCode14}. It explains that normally these types of systems, applied to programming language, are based on the execution of several test cases to check the correction of the user's programs. The disadvantage of these systems is that they require the trainers to develop these tests in advance, an unwelcome task. Besides, they only point out whether there is an error or not but they do not show where the mistake is.
 
 Outside of the world of programming there are other examples, such as Duolingo \cite{duolingo} which allows users to learn a language based on others that they already know. Its most relevant features are:
 
 \begin{itemize}
 \item
-Make learning similar to a game, where users earns points and experience as they progress. Furthermore it includes lives, which encourage users to focus their attention on the current task to avoid having to restart the level.
+Make learning similar to a game, where users earn points and experience as they progress. Furthermore it includes lives, which encourage users to focus their attention on the current task to avoid having to restart the level.
 
 \item
 Store information regarding failures of the users to try to repeat these questions and force them to learn the concepts in a definitive manner.
@@ -28,11 +28,11 @@ Before defining how to carry out this project, we wanted to plan from a high-lev
 
 During our degree we have learned, among other things, programming languages to write executable software for desktop computers, in subjects such as Fundamentals of Programming or Computer Programming Technology. We chose not to follow this approach, even though it could be appropriate for our project. We are certain that we could come up with a solution that would be much faster to try and use for the first time, without the need to install heavy software.
 
-In other subjects such as Corporative Software we learned to build and configure a CMS (acronym for Content Management System) and build a Web with it. This approach introduces more advantages, since it allows anybody with a Web browser to access our platform. However, current CMS do not allow to do such specific and peculiar things as we would like. Besides we would left unused most of their features and we would not use them up to their full potential.
+In other subjects such as Corporative Software we learned to build and configure a CMS (acronym for Content Management System) and build a web page with it. This approach introduces more advantages, since it allows anybody with a Web browser to access our platform. However, current CMS do not allow to do such specific and peculiar things as we would like. Besides we would leave unused most of their features and we would not use them up to their full potential.
 
-We also took Web Applications, where we learned to develop a Web from scratch. We were interested in carrying out a development of this kind, since it would allow a high degree of flexibility in the way of making the project, and it would allow potential users trying and using the platform in a quick way. Furthermore the use of asynchronous calls can allow us to make a fully interactive and fluid to user interactions Web. For these reason we decided to use HTML, CSS and JavaScript in our project. In this subject we rely on knowledge gain on others such as Databases and Databases Extensions, where we learned to design and implement relational databases and using them from applications. Their use allows to establish interconnections (relations) between data (stored in different tables), and has as principals advantages avoid data duplicity, and securing the integrity of related data. With this knowledge we can make fully interactive websites that stores a wide variety of data. For all of these facts we decided to use one of these types of databases.  
+We also took Web Applications, where we learned to develop a Web from scratch. We were interested in carrying out a development of this kind, since it would allow a high degree of flexibility, and potential users could use the platform quick and easily. Furthermore the use of asynchronous calls can allow us to make a fully interactive and fluid to user interactions Web. For these reason we decided to use HTML, CSS and JavaScript in our project. In this subject we rely on knowledge gain on others such as Databases and Databases Extensions, where we learned to design and implement relational databases and use them from applications. Their use allows to establish interconnections (relations) between data (stored in different tables), and and whose principal advantages are avoiding data duplicity, and securing the integrity of related data. With this knowledge we can make fully interactive websites that stores a wide variety of data. For all of these facts we decided to use one of these types of databases.  
 
-We also have a desire for making the content mobile friendly, either adapting the website or making a mobile application. Some of us are enrolled on the subject Application Programming for Mobile Devices, and we saw an opportunity for showing what we could learn.  
+We also have a desire for making the content mobile friendly, either by adapting the website or or by making a mobile application. Some of us are enrolled on the subject Application Programming for Mobile Devices, and we saw an opportunity for showing what we could learn.  
 
 Lastly we research the utility of implementing a Web service, a technology that uses a set of protocols and standards to exchange data between applications. The more similar approach that we have studied is the use of \emph{sockets} in Operating Systems and Network Extension. Their use allows to abstract and split data manipulation from the graphical interface of the user, been able of even having multiple interfaces for the same application. For all of these we decided to use this approach. We research several ways of implementing a Web service:
 
@@ -41,7 +41,7 @@ Lastly we research the utility of implementing a Web service, a technology that 
 RPC (acronym for Remote Procedure Call) is a protocol that allows one computer to execute code in another one in a remote location. We saw that there a several ways of implementing RPC, using different specifications, been SOAP one of the most popular.
 
 \item
-SOAP (acronym for Simple Object Access Protocol) is a protocol that defines how different computers can compunicate exchanging XML messages. Their principal disadvantages are that it leans on a service descriptor, that you have to update with every new functionality. Moreover, it uses XML, a markup language that has lost popularity facing the more light JSON. Lastly, not all programming languages offer utilities for integrating this kind of Web service.
+SOAP (acronym for Simple Object Access Protocol) is a protocol that defines how different computers can compunicate by exchanging XML messages. Their principal disadvantages are that it relies on a service descriptor, that you have to update with every new functionality. Moreover, it uses XML, a markup language that has lost popularity facing the more light JSON. Lastly, not all programming languages offer utilities for integrating this kind of Web service.
 
 \item
 REST is a stateless client/server protocol that uses HTTP and its methods (GET, POST, PUT, DELETE, ...) to check and modify the different resources. Frequently these kinds of systems are also called RESTful. They allow a lot of freedom when developing and, as you only need no make HTTP requests to consume these Web services, its widly supported by numerous programming languages. Furthermore, they allow to offer the data in JSON format. For all of these we decide to use this technology for our project.
@@ -50,13 +50,13 @@ REST is a stateless client/server protocol that uses HTTP and its methods (GET, 
 
 \subsection{Objectives and proposals\label{subsec:proposals}}
 
-Through the previous research, we grounded our ideas. We decide to do a project for learning programming languages, similar to Duolingo. As it will be oriented to programming code, we decide to call it DuoCode, since you will learn new programming language from others that you already know.
+Through the previous research, we grounded our ideas. We decided to do a project for learning programming languages, similar to Duolingo. As it will be oriented to programming code, we decided to call it DuoCode, since you will learn new programming language from others that you already know.
 
 The main features that we want to make available  to the user are:
 
 \begin{itemize}
 \item
-You will be able to select the programming language that you already know and the one you want to learn. The system will show code in the language that you master and will ask for the translation int the one you do not.
+Select the programming language that you already know and the one you want to learn. The system will show code in the language that you master and will ask for the translation into the one you do not.
 
 \item
 The code will have a clear organization grouping it by subjects.
@@ -68,17 +68,17 @@ Users will have a score that will rise as they progress. Furthermore, exercises 
 When users fail an exercise but they do not agree, they will be able to propose it as a solution. With the help of the community and moderators, they will be able to add solutions in a determined programming language. 
 
 \item
-Exercises will be able to be stored as favorites to be check them again.
+Exercises can be stored as favorites to be check them again.
 
 \item
-There will be interaction with social networks. The user will be able to authenticate using some of them and sharing the results on them. 
+There will be interaction with social networks. The user will be able to authenticate using some of them and share the results on them. 
 
 \end{itemize}
 Basing on the conclusions extracted from the previous section, our objectives for the project are:
 
 \begin{itemize}
 \item
-To develop a REST Web service for learning programming language. We intend to follow the following steps:
+To develop a REST Web service for learning programming languages. We intend to follow the following steps:
 
 \begin{itemize}
 \item
@@ -103,12 +103,12 @@ Design the interface using HTML/CSS, using test data.
 Connect the interface with the Web service through asynchronous calls and JavaScript, using the real data provided by the REST service. The use of this technique is often called AJAJ (acronym for Asynchronous JavaScript And JSON)
 
 \item
-If we have time we will to develop an application for Android, or we will adapt the website for its visualization on mobile devices.
+If we have time we will develop an application for Android, or we will adapt the website for its visualization on mobile devices.
 
 \end{itemize}
 
 \end{itemize}
 
-The rest of the memory is structured as follows: in the section~\ref{sec:s_web} we introduce our web service, while on the section~\ref{sec:front} the front-end that uses it is detailed.
-The section~\ref{sec:req} presents the requirements and the database used on the proyect. The section~\ref{sec:manual} introduces the user's manual and the section~\ref{sec:conc} concludes and presents some of the future work lines.
+The rest of the memory is structured as follows: in Section~\ref{sec:s_web} we introduce our web service, while on Section~\ref{sec:front} the front-end that uses it is detailed.
+Section~\ref{sec:req} presents the requirements and the database used on the proyect. Section~\ref{sec:manual} introduces the user's manual and the Section~\ref{sec:conc} concludes and presents some of the future work lines.
 Lastly, the appendix~\ref{app:req} describes in detail the requirements and the appendix~\ref{app:manual} the installation guide.
