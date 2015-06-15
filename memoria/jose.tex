@@ -4,13 +4,13 @@ Todos nos hemos ayudado y colaborado durante este proyecto pero en esta sección
 
 \begin{itemize}
 \item
-Cuando investigamos los diferentes enfoques para realizar servicios web, me encargué de buscar información sobre \textit{RESTful}, vi sus ventajas y desventajas frente a \textit{SOAP} y \textit{RCP}.
+Cuando investigamos los diferentes enfoques para realizar servicios web, me encargué de buscar información sobre REST, vi sus ventajas y desventajas frente a \textit{SOAP} y \textit{RCP}.
 
 \item
-En la reunión para decidir qué tipo de servicio web implementaríamos compartí la información encontrada sobre \textit{RESTful} y mi punto de vista. Discutimos los pros y los contras de cada tecnología y al final decididmos que \textit{RESTful} era lo que más se ajustaba a nuestras necesidades.
+En la reunión para decidir qué tipo de servicio web implementaríamos compartí la información encontrada sobre REST y mi punto de vista. Discutimos los pros y los contras de cada tecnología y al final decidimos que REST era lo que más se ajustaba a nuestras necesidades.
 
 \item
-Hice un ejemplo simple de servicio web \textit{RESTful} usando el IDE \textit{Netbeans} y el \emph{framework} \textit{Jersey}. Consistía en devolver el factorial de un número, pasándole el número en la cabecera de la petición \textit{HTTP} y en la \textit{query}. El objetivo era poder comparar distintos \textit{IDEs} y  \emph{frameworks} con los que realizar el servicio web. \textit{NetBeans} era una buena opción por su integración de \textit{Git} y toda la documentación online que hay para desarrollar servicios web usando este entorno.
+Hice un ejemplo simple de servicio web REST usando el IDE \textit{Netbeans} y el \emph{framework} \textit{Jersey}. Consistía en devolver el factorial de un número, pasándole el número en la cabecera de la petición \textit{HTTP} y en la \textit{query}. El objetivo era poder comparar distintos \textit{IDEs} y  \emph{frameworks} con los que realizar el servicio web. \textit{NetBeans} era una buena opción por su integración de \textit{Git} y toda la documentación online que hay para desarrollar servicios web usando este entorno.
 
 \item
 Hicimos una reunión para decidir el \emph{framework} y el IDE que íbamos a usar y yo fui el organizador. Al final decidimos usar \textit{Jersey} como framework y \textit{Netbeans} como IDE.
@@ -19,20 +19,20 @@ Hicimos una reunión para decidir el \emph{framework} y el IDE que íbamos a usa
 Me encargué de crear el proyecto, con la estructura básica de todas las clases que necesitaríamos y lo subí a github.
 
 \item
-Descargué el framework \textit{Jersey} y lo integré en el proyecto. Completé las clases creadas con la sintaxis de \textit{Jersey} y comprobé su correcto funcionamiento con datos sencillos usando `Advanced Rest Client', una aplicación para testear servicios web tipo \textit{RESTful}.
+Descargué el framework \textit{Jersey} y lo integré en el proyecto. Completé las clases creadas con la sintaxis de \textit{Jersey} y comprobé su correcto funcionamiento con datos sencillos usando `Advanced Rest Client', una aplicación para testear servicios web tipo REST.
 
 \item
-Creé varias clases que representan el modelo de la aplicación, sus correspondientes \texttt{`mappers'} para acceder a la base de datos~\ref{sec:accesoBD} y las funciones para los distintos verbos de los recursos RESTful (GET, POST, PUT y DELETE):
+Creé varias clases que representan el modelo de la aplicación, sus correspondientes `\texttt{mappers}' para acceder a la base de datos explicada en la sección~\ref{sec:accesoBD} y las funciones para los distintos verbos de los recursos REST (GET, POST, PUT y DELETE). En concreto implementé:
 
 \begin{itemize}
 \item
-Todo lo relacionado con la gestión de los favoritos. La implementación del `mapper' necesario y los métodos del recurso \textit{RESTful}.
+Todo lo relacionado con la gestión de los favoritos. La implementación del `\texttt{mapper}' necesario y los métodos del recurso REST.
 
 \item
-Todo lo relacionado con las lecciones. La implementación del `mapper' necesario y los métodos del recurso \textit{RESTful}.
+Todo lo relacionado con las lecciones. La implementación del `\texttt{mapper}' necesario y los métodos del recurso REST.
 
 \item
-Todo lo relacionado con los temas. La implementación del `mapper' necesario y los métodos del recurso \textit{RESTful}.
+Todo lo relacionado con los temas. La implementación del `\texttt{mapper}' necesario y los métodos del recurso REST.
 \end{itemize}
     
 \item
@@ -57,7 +57,7 @@ Implementé las peticiones HTTP al servicio web para obtener la lista de lenguaj
 Implementé las peticiones HTTP al servicio web para obtener todos los temas disponibles en nuestro sistema.
 
 \item
-Me encargué de que ciertas partes de la aplicación solo fuesen visibles cuando el usuario está logueado. Por ejemplo el `compartir en facebook' solo se mostraría cuando el usuario se ha logueado usando su cuenta de facebook. Para ello usé la clase ng-hide de AngularJS y en los controladores desarrollé las funciones necesarias para gestionar la visibilidad.
+Me encargué de que ciertas partes de la aplicación solo fuesen visibles cuando el usuario está logueado. Por ejemplo `compartir en Facebook' solo se mostraría cuando el usuario se ha identificado usando su cuenta de Facebook. Para ello usé la clase \texttt{ng-hide} de AngularJS y desarrollé las funciones necesarias para gestionar la visibilidad en los controladores.
 
 \item
 Me encargué del desarrollo de la aplicación móvil. Usé \textit{PhoneGap} y creé la aplicación Android usando la clase `WebView', que lo que hace básicamente es cargar una vista web en el móvil optimizada para su correcta visualización. \textit{PhoneGap} también gestiona los touch events, por lo que el programador no los tiene que tener en cuenta durante el desarrollo.

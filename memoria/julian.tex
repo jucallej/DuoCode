@@ -7,19 +7,19 @@ Todos nos hemos ayudado y colaborado durante este proyecto pero en esta sección
 Cuando investigamos los diferentes enfoques para realizar servicios web, me encargué de SOAP, vi sus ventajas y desventajas e incluso hice un pequeño ejemplo para entender mejor su funcionamiento.
 
 \item
-Hicimos una reunión para ponernos de acuerdo en cual era el mejor enfoque para el servicio web antes de presentar los resultados a los profesores . Me encargué de organizarla y presidirla.
+Hicimos una reunión para ponernos de acuerdo en cual era el mejor enfoque para el servicio web antes de presentar los resultados a los profesores. Me encargué de organizarla y presidirla.
 
 \item
 Hice un ejemplo simple de servicio web REST usando el IDE eclipse y el \emph{framework} Spring. Consistía en hacer el factorial de un número. El objetivo era poder comparar distintos IDEs y distintos \emph{frameworks} con los que poder realizar el servicio web.
 
 \item
-Me encargué de revisar las tablas de la base de datos y me aseguré que estaban como mínimo normalizadas hasta la forma normal de \emph{Boyce-Codd}.
+Me encargué de revisar las tablas de la base de datos y comprobé que estaban como mínimo normalizadas hasta la forma normal de \emph{Boyce-Codd}.
 
 \item
-Aporté la clase AbstractMapper~\ref{sec:accesoBD} y amplié su funcionalidad, permitiendo que el método \texttt{`insert'} devuelve un entero con el valor del campo autoincremental de la tabla en caso de que exista y \emph{-1} en caso contrario. Además añadí todo lo necesario para usar la base de datos dese el proyecto REST.
+Aporté la clase AbstractMapper explicada en la sección~\ref{sec:accesoBD} y amplié su funcionalidad, permitiendo que el método \texttt{`insert'} devuelviese un entero con el valor del campo autoincremental de la tabla en caso de que exista y $-1$ en caso contrario. Además añadí todo lo necesario para usar la base de datos desde el proyecto REST.
 
 \item
-Creé varias clases que representan el modelo de la aplicación, sus correspondientes \texttt{`mappers'} para acceder a la base de datos~\ref{sec:accesoBD} y las funciones para los distintos verbos de los recursos REST (GET, POST, PUT y DELETE):
+Creé varias clases que representan el modelo de la aplicación, sus correspondientes \texttt{`mappers'} para acceder a la base de datos descrita en la sección~\ref{sec:accesoBD} y las funciones para los distintos verbos de los recursos REST (GET, POST, PUT y DELETE). En concreto implementé:
 
 \begin{itemize}
 \item
@@ -29,11 +29,11 @@ Todo lo relacionado con los ejercicios, incluyendo la lista de los enunciados de
 Todo lo relacionado con los enunciados, incluyendo un método en su \texttt{`mapper'} para obtener todos los enunciados de un ejercicio específico.
 
 \item
-Todo lo relacionado con los envíos, incluyendo un método en su \texttt{`mapper'} para obtener todos los envíos de un usuario específico y creé la clase \texttt{`Puntuador'} que como su propio nombre indica encapsula la capacidad de evaluar un fragmento de código en un lenguaje concreto para un ejercicio específico.
+Todo lo relacionado con los envíos, incluyendo un método en su \texttt{`mapper'} para obtener todos los envíos de un usuario. Además creé la clase \texttt{`Puntuador'}, que encapsula la capacidad de evaluar un fragmento de código en un lenguaje concreto para un ejercicio específico.
 \end{itemize}
     
 \item
-Realicé lo necesario para asegurarnos en el proyecto REST que el usuario se ha autenticado correctamente y es quien dice ser. Para ello cree un paquete llamada \texttt{`autentificacion'}, que contiene clases que preguntan a los servidores de Google y Facebook por los datos de un usuario (nombre, enlace a su foto de perfil, etc.) y otra clase con métodos estáticos que se encarga de comprobar si el usuario existe en nuestra base de datos, y en caso contrario lo crea. Todo esto si el usuario está correctamente autenticado.
+Realicé lo necesario para asegurarnos que el usuario se ha autenticado correctamente y es quien dice ser. Para ello creé un paquete llamado \texttt{`autentificacion'}, que contiene clases que preguntan a los servidores de Google y Facebook por los datos de un usuario (nombre, enlace a su foto de perfil, etc.) y otra clase con métodos estáticos que se encarga de comprobar, una vez el usuario está correctamente autenticado, si existe en nuestra base de datos, y en caso contrario lo crea.
 
 \item
 Me encargué de que la visualización de la web se adaptara correctamente a distintos dispositivos, teniendo en cuenta principalmente dispositivos móviles y ordenadores de sobremesa. Para ello usé el sistema de columnas de Bootstrap.
@@ -46,7 +46,7 @@ Hice la barra que muestra el progreso de los ejercicios completados en una lecci
 % Si se quita ' y los configuré para que tuvieran el color y la apariencia deseados' salen menos de dos páginas.
 
 \item
-Hice una parte de varias vistas que muestra la información del usuario. Contiene su imagen de perfil, su nombre, los puntos conseguidos hasta el momento y enlaces a sus favoritos y sus candidatos.
+Hice parte de las vistas que muestran la información del usuario. En concreto me encargué de la imagen de perfil, el nombre, los puntos conseguidos hasta el momento y los enlaces a sus favoritos y sus candidatos.
 
 \item
 Busqué una biblioteca JavaScript que resaltara la sintaxis de los distintos lenguajes de programación. Descargué \texttt{`highlight.js'} y la configuré adecuadamente.
@@ -61,10 +61,10 @@ Realicé la vista que muestra que no hay más candidatos disponibles para votar 
 Me encargué de realizar las peticiones al servicio web para saber los ejercicios que corresponden a una lección.
 
 \item
-Controlé cuando un usuario ha terminado todos los ejercicios necesarios para completar la lección. En ese caso se muestra una pantalla de felicitación y se le invita a seguir aprendiendo.
+Controlé cuándo un usuario ha terminado todos los ejercicios necesarios para completar la lección. En ese caso se muestra una pantalla de felicitación y se le invita a seguir aprendiendo.
 
 \item
-Realicé la función que se encarga de marcar un ejercicio como favorito y la asocié al botón correspondiente e hice que esté cambiara de color según su estado.
+Realicé la función que se encarga de marcar un ejercicio como favorito y la asocié al botón correspondiente. Además, hice que este cambiara de color según su estado.
 
 \item
 Realicé la función que se encarga de crear un candidato a partir de una solución incorrecta y la asocié al botón correspondiente.
@@ -73,17 +73,17 @@ Realicé la función que se encarga de crear un candidato a partir de una soluci
 Conecté la vista para votar candidatos con el servicio web e hice que el botón para pasar al siguiente candidato tuviera la funcionalidad deseada.
 
 \item
-Realicé la función que se encarga de votar a un candidato, la asocié a los botones correspondientes, hice que cuando votas se actualice la barra que muestra los votos a favor y en contra y cambié los colores de los botones para votar positiva o negativamente según la acción del usuario.
+Realicé la función que se encarga de votar a un candidato, la asocié a los botones correspondientes, hice que al votar se actualizase la barra que muestra los votos a favor y en contra y cambié los colores de los botones para votar positiva o negativamente según la acción del usuario.
 
 \item
-Añadí toda la estructura genérica para permitir al usuario autenticarse. Para ello usé la biblioteca HelloJS. Además, me encargué de que cuando el usuario está autenticado se mande en cada petición su identificador y su \emph{token}. Por último hice que el componente que se usa cuando quieres información del usuario devuelva uno vacío con el rol \emph{-1} cuando no hay un usuario autenticado.
+Añadí toda la estructura genérica para permitir al usuario autenticarse. Para ello usé la biblioteca HelloJS. Además, me encargué de que cuando el usuario está autenticado se mande en cada petición su identificador y su \emph{token}. Por último hice que el componente que se usa cuando quieres información del usuario devuelva uno vacío con el rol $-1$ cuando no hay un usuario autenticado.
 
 
 \item
-En la memoria me encargué de hacer la sección Introducción~\ref{sec:intro} y su traducción al inglés~\ref{sec:introEn}.
+En la memoria me encargué de hacer la introducción (sección~\ref{sec:intro}) y su traducción al inglés (sección~\ref{sec:introEn}).
 
 \item
-En la memoria me encargué de hacer la sección \emph{Front-end}~\ref{sec:front}.
+En la memoria me encargué de escribir sobre el \emph{front-end} (sección~\ref{sec:front}).
 
 \item
 Realicé una lista con las tareas más importantes realizadas durante el proyecto y me encargué de organizar una reunión y presidirla. En ella revisamos cada tarea, nos acordamos de quién la realizó y lo apuntamos para poder especificarlo en la memoria.
