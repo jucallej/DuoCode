@@ -2,7 +2,4 @@
 nbproject/private/private.properties
 nbproject/private/private.xml
 /build/
-#Para incluir solo los .tex y las imagenes:
-memoria/*
-!memoria/images/*
-!memoria/*.tex
+
